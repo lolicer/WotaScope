@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.awt.SwingPanel
@@ -22,15 +23,27 @@ import uk.co.caprica.vlcj.player.base.MediaPlayer
 import uk.co.caprica.vlcj.player.base.MediaPlayerEventAdapter
 import uk.co.caprica.vlcj.player.component.EmbeddedMediaPlayerComponent
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer
+import java.awt.event.MouseAdapter
+import java.awt.event.MouseEvent
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun SingleVideoScreen(
     mediaPlayerComponent: EmbeddedMediaPlayerComponent,
     mediaPlayer: EmbeddedMediaPlayer,
-    url: String,
-    isSelect: MutableState<Boolean>
+    path: String,
+    isSelected: MutableState<Boolean>
 ) {
+    val listenerInit = remember {mutableStateOf(false)}
+    if(!listenerInit.value){
+        mediaPlayerComponent.videoSurfaceComponent().addMouseListener(object: MouseAdapter(){
+            override fun mouseReleased(event: MouseEvent) {
+                isSelected.value = !isSelected.value
+                println("isSelected == ${isSelected.value}")
+            }
+        })
+        listenerInit.value = true
+    }
 
     val factory = remember { { mediaPlayerComponent } }
 
@@ -47,7 +60,7 @@ fun SingleVideoScreen(
             .fillMaxWidth()
             .height(screenHeight- 4.dp)
             .onClick{
-                isSelect.value = !isSelect.value
+                println("click")
             }
     ){
         SwingPanel(
@@ -59,7 +72,7 @@ fun SingleVideoScreen(
         )
 
         LaunchedEffect(Unit){
-            mediaPlayer.media().startPaused(url)
+            mediaPlayer.media().startPaused(path)
         }
     }
 

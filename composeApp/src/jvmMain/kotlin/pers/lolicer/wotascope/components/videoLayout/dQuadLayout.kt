@@ -52,15 +52,14 @@ fun QuadLayout(
 
         val mediaPlayerList = mutableListOf<EmbeddedMediaPlayer>()
         for(i in 0 until paths.size){
-            Box(modifier = constraintList[i].then(Modifier.fillMaxSize(0.5f))){
-                SingleVideoPanelItem(
-                    paths[i],
-                    {mediaPlayer ->
-                        mediaPlayerList.add(mediaPlayer)
-                    },
-                    {}
-                )
-            }
+            SingleVideoPanelItem(
+                paths[i],
+                {mediaPlayer ->
+                    mediaPlayerList.add(mediaPlayer)
+                },
+                {},
+                constraintList[i].then(Modifier.fillMaxSize(0.5f))
+            )
         }
         onMediaPlayerList(mediaPlayerList)
     }

@@ -72,15 +72,14 @@ fun HexaLayout(
 
         val mediaPlayerList = mutableListOf<EmbeddedMediaPlayer>()
         for(i in 0 until paths.size){
-            Box(modifier = constraintList[i].then(Modifier.fillMaxSize(1/3f))){
-                SingleVideoPanelItem(
-                    paths[i],
-                    {mediaPlayer ->
-                        mediaPlayerList.add(mediaPlayer)
-                    },
-                    {}
-                )
-            }
+            SingleVideoPanelItem(
+                paths[i],
+                {mediaPlayer ->
+                    mediaPlayerList.add(mediaPlayer)
+                },
+                {},
+                constraintList[i].then(Modifier.fillMaxSize(1/3f))
+            )
         }
         onMediaPlayerList(mediaPlayerList)
     }

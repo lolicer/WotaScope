@@ -100,7 +100,7 @@ fun ProgressBar(
                     .height(4.dp)
             ){
                 Box(modifier = Modifier.fillMaxWidth(progress.value).height(4.dp).background(color = Color(	0, 191, 255)))
-                Box(modifier = Modifier.fillMaxWidth().height(4.dp).background(color = Color(212, 212, 212)))
+                Box(modifier = Modifier.fillMaxWidth().height(4.dp).background(color = Color.LightGray))
             }
         },
         value = progress.value,
