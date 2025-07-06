@@ -1,0 +1,75 @@
+package pers.lolicer.wotascope
+
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.*
+//import org.jetbrains.compose.ui.tooling.preview.Preview
+import androidx.compose.desktop.ui.tooling.preview.Preview
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.FrameWindowScope
+import androidx.compose.ui.window.WindowState
+import pers.lolicer.wotascope.components.bottomController.BottomController
+import pers.lolicer.wotascope.components.titleBar.TitleBar
+import pers.lolicer.wotascope.components.videoLayout.DualLayout
+import pers.lolicer.wotascope.components.videoLayout.HeptalLayout
+import pers.lolicer.wotascope.components.videoLayout.HexaLayout
+import pers.lolicer.wotascope.components.videoLayout.NonaLayout
+import pers.lolicer.wotascope.components.videoLayout.OctaLayout
+import pers.lolicer.wotascope.components.videoLayout.PentaLayout
+import pers.lolicer.wotascope.components.videoLayout.QuadLayout
+import pers.lolicer.wotascope.components.videoLayout.SingleLayout
+import pers.lolicer.wotascope.components.videoLayout.TripleLayout
+import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer
+import kotlin.collections.emptyList
+
+@Composable
+@Preview
+fun App(
+    windowState: WindowState,
+    windowScope: FrameWindowScope
+) {
+
+    val paths = remember { mutableStateOf<List<String>>(emptyList()) }
+    val mediaPlayerList = remember { mutableStateOf<List<EmbeddedMediaPlayer>>(emptyList()) }
+
+    MaterialTheme {
+        val titleHeight = 30.dp
+        val controllerHeight = 40.dp
+
+        Column(
+            Modifier.background(Color.White)
+        ){
+            windowScope.TitleBar(titleHeight, windowState, paths)
+
+            Box(
+                Modifier
+                    .fillMaxWidth()
+                    .background(Color(30, 31, 34))
+                    .height(windowState.size.height - titleHeight - controllerHeight)
+            ){
+                when(paths.value.size){
+                    0 -> { /* 取消选择 */ }
+                    1 -> { SingleLayout(paths.value, {mediaPlayerList.value = it}) }
+                    2 -> { DualLayout(paths.value, {mediaPlayerList.value = it}) }
+                    3 -> { TripleLayout(paths.value, {mediaPlayerList.value = it}) }
+                    4 -> { QuadLayout(paths.value, {mediaPlayerList.value = it}) }
+                    5 -> { PentaLayout(paths.value, {mediaPlayerList.value = it}) }
+                    6 -> { HexaLayout(paths.value, {mediaPlayerList.value = it}) }
+                    7 -> { HeptalLayout(paths.value, {mediaPlayerList.value = it}) }
+                    8 -> { OctaLayout(paths.value, {mediaPlayerList.value = it}) }
+                    9 -> { NonaLayout(paths.value, {mediaPlayerList.value = it}) }
+
+                    else -> { /* 已经塞不下了 */ }
+                }
+            }
+
+            BottomController(controllerHeight, mediaPlayerList.value)
+        }
+    }
+}
