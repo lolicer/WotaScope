@@ -3,6 +3,7 @@ package pers.lolicer.wotascope.components.videoLayout
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester.Companion.createRefs
 import androidx.constraintlayout.compose.ChainStyle
@@ -84,16 +85,25 @@ fun OctaLayout(
         val constraintList = listOf(panel1Constraint, panel2Constraint, panel3Constraint, panel4Constraint, panel5Constraint, panel6Constraint, panel7Constraint, panel8Constraint)
 
         val mediaPlayerList = mutableListOf<EmbeddedMediaPlayer>()
+        val selectedMediaPlayerSet = remember { mutableSetOf<EmbeddedMediaPlayer>() }
         for(i in 0 until paths.size){
-            Box(modifier = constraintList[i].then(Modifier.fillMaxSize(1/3f))){
-                SingleVideoPanelItem(
-                    paths[i],
-                    {mediaPlayer ->
-                        mediaPlayerList.add(mediaPlayer)
-                    },
-                    {}
-                )
-            }
+            SingleVideoPanelItem(
+                paths[i],
+                {mediaPlayer ->
+                    mediaPlayerList.add(mediaPlayer)
+                    selectedMediaPlayerSet.add(mediaPlayer)
+                },
+                { isSelected ->
+                    if(isSelected){
+                        selectedMediaPlayerSet.add(mediaPlayerList[i])
+                    }
+                    else{
+                        selectedMediaPlayerSet.remove(mediaPlayerList[i])
+                    }
+                    onMediaPlayerList(selectedMediaPlayerSet.toList())
+                },
+                constraintList[i].then(Modifier.fillMaxSize(1/3f))
+            )
         }
         onMediaPlayerList(mediaPlayerList)
     }

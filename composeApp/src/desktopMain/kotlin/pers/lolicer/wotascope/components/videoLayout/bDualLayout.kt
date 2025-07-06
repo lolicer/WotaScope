@@ -3,6 +3,7 @@ package pers.lolicer.wotascope.components.videoLayout
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester.Companion.createRefs
 import androidx.constraintlayout.compose.ConstrainedLayoutReference
@@ -40,15 +41,14 @@ fun DualLayout(
 
         val mediaPlayerList = mutableListOf<EmbeddedMediaPlayer>()
         for(i in 0 until paths.size){
-            Box(modifier = constraintList[i].then(Modifier.fillMaxSize(0.5f))){
-                SingleVideoPanelItem(
-                    paths[i],
-                    {mediaPlayer ->
-                        mediaPlayerList.add(mediaPlayer)
-                    },
-                    {}
-                )
-            }
+            SingleVideoPanelItem(
+                paths[i],
+                {mediaPlayer ->
+                    mediaPlayerList.add(mediaPlayer)
+                },
+                {},
+                constraintList[i].then(Modifier.fillMaxSize(0.5f))
+            )
         }
         onMediaPlayerList(mediaPlayerList)
     }
