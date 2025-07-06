@@ -10,7 +10,7 @@ fun main() = application {
     Window(
         state = windowState,
         onCloseRequest = ::exitApplication,
-        title = "MultiTest",
+        title = "WotaScope",
         undecorated = true
     ) {
         App(windowState, this)

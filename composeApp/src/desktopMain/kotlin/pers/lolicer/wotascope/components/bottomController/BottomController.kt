@@ -5,21 +5,28 @@ package pers.lolicer.wotascope.components.bottomController
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.onClick
 import androidx.compose.material.Icon
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Slider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import wotascope.composeapp.generated.resources.Res
 import wotascope.composeapp.generated.resources.media_fastforward
 import wotascope.composeapp.generated.resources.media_pause
@@ -31,21 +38,32 @@ import org.jetbrains.compose.resources.painterResource
 import uk.co.caprica.vlcj.player.base.MediaPlayer
 import uk.co.caprica.vlcj.player.base.MediaPlayerEventAdapter
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer
+import wotascope.composeapp.generated.resources.volume_0
+import wotascope.composeapp.generated.resources.volume_1
+import wotascope.composeapp.generated.resources.volume_2
 
 @Composable
 fun BottomController(
     controllerHeight: Dp,
     mediaPlayerList: List<EmbeddedMediaPlayer>
 ){
-    Column(
+    Row(
         modifier = Modifier
             .height(controllerHeight)
             .fillMaxWidth()
             .background(Color(43, 45, 48)),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        verticalAlignment = Alignment.CenterVertically
     ){
-        PauseButton(mediaPlayerList)
+        Spacer(Modifier.weight(0.5f))
+        Volume(Modifier.weight(1f), mediaPlayerList)
+        Spacer(Modifier.weight(2f))
+        Row(
+            modifier = Modifier.weight(3f),
+            horizontalArrangement = Arrangement.Center
+        ){
+            PauseButton(Modifier, mediaPlayerList)
+        }
+        Spacer(Modifier.weight(3.5f))
     }
 }
 
@@ -85,6 +103,7 @@ fun BottomController(
  */
 @Composable
 fun PauseButton(
+    modifier: Modifier,
     mediaPlayerList: List<EmbeddedMediaPlayer>
 ){
     val mediaStates = remember(mediaPlayerList) {
@@ -98,8 +117,21 @@ fun PauseButton(
     }
     val isAnyVideoPlaying = remember { mutableStateOf(false) }
 
+    // 这段代码在每次界面重组时运行，防止“添加视频引发的页面重组”导致的isAnyVideoPlaying未更新为false的问题。
+    // 后续想办法优化一下，每次重组都运行不太好，应该改掉。
+    var res = false
+    for(mediaPlayer in mediaPlayerList){
+        if(mediaPlayer.status().isPlaying){
+            res = true
+            break
+        }
+    }
+    isAnyVideoPlaying.value = res
+    println("check")
+
     Icon(
         modifier = Modifier
+            .then(modifier)
             .pointerHoverIcon(PointerIcon.Hand)
             .onClick{
                 if(mediaPlayerList.isNotEmpty()){
@@ -129,9 +161,8 @@ fun PauseButton(
                             }
                         }
                     }
+                    isAnyVideoPlaying.value = !isAnyVideoPlaying.value
                 }
-
-                isAnyVideoPlaying.value = !isAnyVideoPlaying.value
             },
         painter = painterResource(if(isAnyVideoPlaying.value) Res.drawable.media_pause else Res.drawable.media_play),
         contentDescription = if(isAnyVideoPlaying.value) "暂停" else "播放",
@@ -205,6 +236,69 @@ fun SkipForwardButton(
     mediaPlayer: EmbeddedMediaPlayer
 ){
     Icon(painter = painterResource(Res.drawable.media_skip_forward_10), contentDescription = "快进十秒")
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun Volume(
+    modifier: Modifier,
+    mediaPlayerList: List<EmbeddedMediaPlayer>
+){
+    val volumeSize = remember { mutableStateOf(1f) }
+
+    for(mediaPlayer in mediaPlayerList){
+        println(mediaPlayer.audio().volume())
+    }
+
+    Row(
+        modifier = Modifier.then(modifier),
+        verticalAlignment = Alignment.CenterVertically
+    ){
+        Icon(
+            modifier = Modifier.onClick{
+                if(volumeSize.value > 0 + 1e-7){
+                    for(mediaPlayer in mediaPlayerList){
+                        mediaPlayer.audio().setVolume(0)
+                    }
+                    volumeSize.value = 0f
+                }
+            },
+            painter =
+                painterResource(resource =
+                    if(volumeSize.value <= 0 + 1e-7)
+                        Res.drawable.volume_0
+                    else
+                        if(volumeSize.value <= 0.66)
+                            Res.drawable.volume_1
+                        else
+                            Res.drawable.volume_2
+                ),
+            contentDescription = "音量开关",
+            tint = Color.White
+        )
+
+        Slider(
+            modifier = Modifier.height(4.dp),
+            value = volumeSize.value,
+            onValueChange = {
+                volumeSize.value = it
+                for(mediaPlayer in mediaPlayerList){
+                    mediaPlayer.audio().setVolume((volumeSize.value * 100).toInt())
+                }
+            },
+            thumb = {Box{}},
+            track = {
+                Row(
+                    modifier = Modifier
+                        .clip(shape = RectangleShape)
+                        .height(4.dp)
+                ){
+                    Box(modifier = Modifier.fillMaxWidth(volumeSize.value).height(4.dp).background(color = Color(	0, 191, 255)))
+                    Box(modifier = Modifier.fillMaxWidth().height(4.dp).background(color = Color(212, 212, 212)))
+                }
+            }
+        )
+    }
 }
 
 /**
