@@ -16,6 +16,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Slider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -41,6 +42,7 @@ import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer
 import wotascope.composeapp.generated.resources.volume_0
 import wotascope.composeapp.generated.resources.volume_1
 import wotascope.composeapp.generated.resources.volume_2
+import javax.swing.UIManager.put
 
 @Composable
 fun BottomController(
@@ -106,15 +108,15 @@ fun PauseButton(
     modifier: Modifier,
     mediaPlayerList: List<EmbeddedMediaPlayer>
 ){
-    val mediaStates = remember(mediaPlayerList) {
-        mediaPlayerList.map { mediaPlayer ->
-            MediaState(
-                mediaPlayer = mediaPlayer,
-                isPlaying = false,
-                isFinished = false
-            )
+    val finishedStatusMap = mutableMapOf<EmbeddedMediaPlayer, MutableState<Boolean>>().apply{
+        println("Re")
+        mediaPlayerList.forEach{ mediaPlayer ->
+            // 现在每次点击SingleVideoPanel都会让list里面多一条点击的mediaPlayer，没找着为什么，有空再找找。 2025.7.7 17:27
+            this.putIfAbsent(mediaPlayer, remember{mutableStateOf(false)})
+            println(mediaPlayer)
         }
     }
+    println("mapSize: ${finishedStatusMap.values}")
     val isAnyVideoPlaying = remember { mutableStateOf(false) }
 
     // 这段代码在每次界面重组时运行，防止“添加视频引发的页面重组”导致的isAnyVideoPlaying未更新为false的问题。
@@ -127,74 +129,80 @@ fun PauseButton(
         }
     }
     isAnyVideoPlaying.value = res
-    println("check")
+    println("Check isAnyVideoPlaying")
+
+    /*
+    // val mediaStates = remember(mediaPlayerList) {
+    //     mediaPlayerList.map { mediaPlayer ->
+    //         MediaState(
+    //             mediaPlayer = mediaPlayer,
+    //             isPlaying = false,
+    //             isFinished = false,
+    //             isSelected = true
+    //         )
+    //     }
+    // }
+    // val isAnyVideoPlaying = remember { mutableStateOf(false) }
+*/
 
     Icon(
         modifier = Modifier
             .then(modifier)
             .pointerHoverIcon(PointerIcon.Hand)
             .onClick{
+                println("mediaPlayerListSize: ${mediaPlayerList.size}")
                 if(mediaPlayerList.isNotEmpty()){
-                    if(mediaStates.isAnyVideoPlaying()){
+                    if(mediaPlayerList.isAnyPlaying()){
                         println("isAnyVideoPlaying")
-                        for(mediaState in mediaStates){
-                            if(mediaState.isPlaying)
-                                println("mediaState.isPlaying")
-                            mediaState.mediaPlayer.controls().setPause(true)
+                        for(mediaPlayer in mediaPlayerList){
+                            if(mediaPlayer.status().isPlaying) println("mediaState.isPlaying")
+                            mediaPlayer.controls().setPause(true)
                         }
                     }
                     else{
-                        if(mediaStates.isAllVideoFinished()){
+                        if(finishedStatusMap.isAllFinished()){
                             println("isAllVideoFinished")
-                            for(mediaState in mediaStates){
-                                mediaState.mediaPlayer.controls().play()
-                                mediaState.mediaPlayer.controls().play()
-                                mediaState.isFinished = false
+                            for(mediaPlayer in mediaPlayerList){
+                                mediaPlayer.controls().play()
+                                mediaPlayer.controls().play()
+                                // try {
+                                    finishedStatusMap[mediaPlayer]!!.value = false
+                                // }
+                                // catch(e: Exception){
+                                //     println(e)
+                                // }
                             }
                         }
                         else{
                             println("None of isAnyVideoPlaying/isAllVideoFinished")
-                            for(mediaState in mediaStates){
-                                if(!mediaState.isPlaying && !mediaState.isFinished){
-                                    mediaState.mediaPlayer.controls().play()
+                            for(mediaPlayer in mediaPlayerList){
+                                if(!mediaPlayer.status().isPlaying && !finishedStatusMap[mediaPlayer]!!.value){
+                                    mediaPlayer.controls().play()
                                 }
                             }
                         }
                     }
-                    isAnyVideoPlaying.value = !isAnyVideoPlaying.value
                 }
+                isAnyVideoPlaying.value = !isAnyVideoPlaying.value
             },
         painter = painterResource(if(isAnyVideoPlaying.value) Res.drawable.media_pause else Res.drawable.media_play),
         contentDescription = if(isAnyVideoPlaying.value) "暂停" else "播放",
         tint = Color.White
     )
 
-    for(mediaState in mediaStates){
-        DisposableEffect(mediaState.mediaPlayer){
+    for(mediaPlayer in mediaPlayerList){
+        DisposableEffect(mediaPlayer){
             val listener = object : MediaPlayerEventAdapter() {
-                override fun paused(mediaPlayer: MediaPlayer) {
-                    mediaState.isPlaying = false
-                }
-                override fun playing(mediaPlayer: MediaPlayer) {
-                    mediaState.isPlaying = true
-                }
 
                 override fun finished(mediaPlayer: MediaPlayer) {
-                    // coroutineScope.launch(Dispatchers.Main){
-                    //     mediaPlayer.controls().play()
-                    //     delay(100)
-                    //     mediaPlayer.controls().setPause(true)
-                    // }
-                    mediaState.isPlaying = false
-                    mediaState.isFinished = true
-
-                    if(mediaStates.isAllVideoFinished()){
+                    finishedStatusMap[mediaPlayer]!!.value = true
+                    if(finishedStatusMap.isAllFinished()){
                         isAnyVideoPlaying.value = false
                     }
                 }
             }
-            mediaState.mediaPlayer.events().addMediaPlayerEventListener(listener)
-            onDispose { mediaState.mediaPlayer.events().removeMediaPlayerEventListener(listener) }
+            mediaPlayer.events().addMediaPlayerEventListener(listener)
+            onDispose { mediaPlayer.events().removeMediaPlayerEventListener(listener) }
         }
     }
 
@@ -301,30 +309,51 @@ fun Volume(
     }
 }
 
-/**
- * 检查是否有视频在播放。
- *
- * 有视频在播放则返回`true`，否则返回`false`。
- */
-fun List<MediaState>.isAnyVideoPlaying(): Boolean{
-    for(mediaState in this){
-        if(mediaState.isPlaying){
-           return true
+fun List<EmbeddedMediaPlayer>.isAnyPlaying(): Boolean{
+    for(mediaPlayer in this){
+        if(mediaPlayer.status().isPlaying){
+            return true
         }
     }
     return false
 }
 
-/**
- * 检查所有视频是否结束。
- *
- * 有视频未结束则返回`false`，否则返回`true`。
- */
-fun List<MediaState>.isAllVideoFinished(): Boolean{
-    for(mediaState in this){
-        if(!mediaState.isFinished){
+fun MutableMap<EmbeddedMediaPlayer, MutableState<Boolean>>.isAllFinished(): Boolean{
+    for(finishStatus in this){
+        if(!finishStatus.value.value){
             return false
         }
     }
     return true
+
+    // AI说写下面一行就行了，看不懂，先不这么写
+    // return values.all{it.value}
 }
+
+// /**
+//  * 检查是否有视频在播放。
+//  *
+//  * 有视频在播放则返回`true`，否则返回`false`。
+//  */
+// fun List<MediaState>.isAnyVideoPlaying(): Boolean{
+//     for(mediaState in this){
+//         if(mediaState.isPlaying){
+//            return true
+//         }
+//     }
+//     return false
+// }
+//
+// /**
+//  * 检查所有视频是否结束。
+//  *
+//  * 有视频未结束则返回`false`，否则返回`true`。
+//  */
+// fun List<MediaState>.isAllVideoFinished(): Boolean{
+//     for(mediaState in this){
+//         if(!mediaState.isFinished){
+//             return false
+//         }
+//     }
+//     return true
+// }
