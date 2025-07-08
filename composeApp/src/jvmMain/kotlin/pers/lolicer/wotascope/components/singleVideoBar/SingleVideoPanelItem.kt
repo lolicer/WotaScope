@@ -6,18 +6,15 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
+import pers.lolicer.wotascope.components.selectStatusMap.SelectStatusMap
 import uk.co.caprica.vlcj.player.component.EmbeddedMediaPlayerComponent
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer
 
@@ -67,7 +64,18 @@ fun SingleVideoPanelItem(
         }
 
         LaunchedEffect(isSelected.value){
-                onSelectedChanged(isSelected.value)
+            onSelectedChanged(isSelected.value)
+
+            if(!isSelected.value){
+                mediaPlayer.controls().setPause(true)
+            }
+
+            if(SelectStatusMap.mutableMap.containsKey(mediaPlayer)){
+                SelectStatusMap.mutableMap[mediaPlayer] = isSelected.value
+            }
+            else{
+                throw Exception("SelectCommandMap ERROR")
+            }
         }
     }
 }
