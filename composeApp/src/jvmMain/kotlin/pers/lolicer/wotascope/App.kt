@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.FrameWindowScope
 import androidx.compose.ui.window.WindowState
 import pers.lolicer.wotascope.components.bottomController.BottomController
-import pers.lolicer.wotascope.components.selectStatusMap.SelectStatusMap
+import pers.lolicer.wotascope.components.videoStatus.SelectStatusMap
 import pers.lolicer.wotascope.components.titleBar.TitleBar
 import pers.lolicer.wotascope.components.videoLayout.DualLayout
 import pers.lolicer.wotascope.components.videoLayout.HeptalLayout
