@@ -1,17 +1,28 @@
 package pers.lolicer.wotascope.components.bottomController
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.onClick
 import androidx.compose.material.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.PointerEventType
 import androidx.compose.ui.input.pointer.PointerIcon
+import androidx.compose.ui.input.pointer.onPointerEvent
 import androidx.compose.ui.input.pointer.pointerHoverIcon
+import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.painterResource
 import pers.lolicer.wotascope.components.selectStatusMap.SelectStatusMap
 import uk.co.caprica.vlcj.player.base.MediaPlayer
@@ -58,7 +69,7 @@ import kotlin.collections.get
  * 监听结束视频个数，全结束则显示`播放`按钮
  * ```
  */
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalComposeUiApi::class)
 @Composable
 fun PauseButton(
     modifier: Modifier,
@@ -102,49 +113,59 @@ fun PauseButton(
     // val isAnyVideoPlaying = remember { mutableStateOf(false) }
 */
 
-    Icon(
-        modifier = Modifier
-            .then(modifier)
-            .pointerHoverIcon(PointerIcon.Hand)
-            .onClick{
-                if(mediaPlayerList.isNotEmpty()){
-                    if(mediaPlayerList.isAnyPlaying()){
-                        println("isAnyVideoPlaying")
-                        for(mediaPlayer in mediaPlayerList){
-                            if(SelectStatusMap.mutableMap[mediaPlayer] == true){
-                                // if(mediaPlayer.status().isPlaying) println("$mediaPlayer isPlaying")
-                                mediaPlayer.controls().setPause(true)
-                            }
-                        }
-                    }
-                    else{
-                        if(finishedStatusMap.isAllFinished()){
-                            println("isAllVideoFinished")
+
+    var active by remember { mutableStateOf(false) }
+    Box(
+        modifier = modifier
+            .background(color = if(!active) Color.Transparent else Color(56, 58, 61)),
+        contentAlignment = Alignment.Center
+    ){
+        Icon(
+            modifier = Modifier
+                .pointerHoverIcon(PointerIcon.Hand)
+                .onPointerEvent(PointerEventType.Enter) { active = true }
+                .onPointerEvent(PointerEventType.Exit) { active = false }
+                .size(32.dp)
+                .onClick{
+                    if(mediaPlayerList.isNotEmpty()){
+                        if(mediaPlayerList.isAnyPlaying()){
+                            println("isAnyVideoPlaying")
                             for(mediaPlayer in mediaPlayerList){
                                 if(SelectStatusMap.mutableMap[mediaPlayer] == true){
-                                    mediaPlayer.controls().play()
-                                    mediaPlayer.controls().play()
-                                    finishedStatusMap[mediaPlayer]!!.value = false
+                                    // if(mediaPlayer.status().isPlaying) println("$mediaPlayer isPlaying")
+                                    mediaPlayer.controls().setPause(true)
                                 }
                             }
                         }
                         else{
-                            println("None of isAnyVideoPlaying/isAllVideoFinished")
-                            for(mediaPlayer in mediaPlayerList){
-                                if(SelectStatusMap.mutableMap[mediaPlayer] == true && !mediaPlayer.status().isPlaying && !finishedStatusMap[mediaPlayer]!!.value){
-                                    mediaPlayer.controls().play()
+                            if(finishedStatusMap.isAllFinished()){
+                                println("isAllVideoFinished")
+                                for(mediaPlayer in mediaPlayerList){
+                                    if(SelectStatusMap.mutableMap[mediaPlayer] == true){
+                                        mediaPlayer.controls().play()
+                                        mediaPlayer.controls().play()
+                                        finishedStatusMap[mediaPlayer]!!.value = false
+                                    }
+                                }
+                            }
+                            else{
+                                println("None of isAnyVideoPlaying/isAllVideoFinished")
+                                for(mediaPlayer in mediaPlayerList){
+                                    if(SelectStatusMap.mutableMap[mediaPlayer] == true && !mediaPlayer.status().isPlaying && !finishedStatusMap[mediaPlayer]!!.value){
+                                        mediaPlayer.controls().play()
+                                    }
                                 }
                             }
                         }
                     }
-                }
-                // 下面的监听好像可以控制状态了，这行先注释掉
-                // isAnyVideoPlaying.value = !isAnyVideoPlaying.value
-            },
-        painter = painterResource(if(isAnyVideoPlaying.value) Res.drawable.media_pause else Res.drawable.media_play),
-        contentDescription = if(isAnyVideoPlaying.value) "暂停" else "播放",
-        tint = Color.White
-    )
+                    // 下面的监听好像可以控制状态了，这行先注释掉
+                    // isAnyVideoPlaying.value = !isAnyVideoPlaying.value
+                },
+            painter = painterResource(if(isAnyVideoPlaying.value) Res.drawable.media_pause else Res.drawable.media_play),
+            contentDescription = if(isAnyVideoPlaying.value) "暂停" else "播放",
+            tint = Color.White
+        )
+    }
 
     for(mediaPlayer in mediaPlayerList){
         DisposableEffect(mediaPlayer){

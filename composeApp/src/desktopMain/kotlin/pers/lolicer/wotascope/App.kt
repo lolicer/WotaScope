@@ -41,7 +41,7 @@ fun App(
 
     MaterialTheme {
         val titleHeight = 30.dp
-        val controllerHeight = 40.dp
+        val controllerHeight = 50.dp
 
         Column(
             Modifier.background(Color.White)
