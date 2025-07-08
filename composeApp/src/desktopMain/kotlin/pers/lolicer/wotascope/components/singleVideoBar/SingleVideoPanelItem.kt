@@ -14,7 +14,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import pers.lolicer.wotascope.components.selectStatusMap.SelectStatusMap
+import pers.lolicer.wotascope.components.videoStatus.SelectStatusMap
 import uk.co.caprica.vlcj.player.component.EmbeddedMediaPlayerComponent
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer
 

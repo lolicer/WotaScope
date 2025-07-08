@@ -3,7 +3,6 @@ package pers.lolicer.wotascope.components.bottomController
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.onClick
 import androidx.compose.material.Icon
@@ -24,7 +23,7 @@ import androidx.compose.ui.input.pointer.onPointerEvent
 import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.painterResource
-import pers.lolicer.wotascope.components.selectStatusMap.SelectStatusMap
+import pers.lolicer.wotascope.components.videoStatus.SelectStatusMap
 import uk.co.caprica.vlcj.player.base.MediaPlayer
 import uk.co.caprica.vlcj.player.base.MediaPlayerEventAdapter
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer
