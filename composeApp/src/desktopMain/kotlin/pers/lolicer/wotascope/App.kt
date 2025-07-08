@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.FrameWindowScope
 import androidx.compose.ui.window.WindowState
 import pers.lolicer.wotascope.components.bottomController.BottomController
+import pers.lolicer.wotascope.components.selectStatusMap.SelectStatusMap
 import pers.lolicer.wotascope.components.titleBar.TitleBar
 import pers.lolicer.wotascope.components.videoLayout.DualLayout
 import pers.lolicer.wotascope.components.videoLayout.HeptalLayout
@@ -55,15 +56,87 @@ fun App(
             ){
                 when(paths.value.size){
                     0 -> { /* 取消选择 */ }
-                    1 -> { SingleLayout(paths.value, {mediaPlayerList.value = it}) }
-                    2 -> { DualLayout(paths.value, {mediaPlayerList.value = it}) }
-                    3 -> { TripleLayout(paths.value, {mediaPlayerList.value = it}) }
-                    4 -> { QuadLayout(paths.value, {mediaPlayerList.value = it}) }
-                    5 -> { PentaLayout(paths.value, {mediaPlayerList.value = it}) }
-                    6 -> { HexaLayout(paths.value, {mediaPlayerList.value = it}) }
-                    7 -> { HeptalLayout(paths.value, {mediaPlayerList.value = it}) }
-                    8 -> { OctaLayout(paths.value, {mediaPlayerList.value = it}) }
-                    9 -> { NonaLayout(paths.value, {mediaPlayerList.value = it}) }
+                    1 -> { SingleLayout(
+                            paths = paths.value,
+                            onMediaPlayerList = {
+                                mediaPlayerList.value = it
+                                it.forEach{ mediaPlayer ->
+                                    SelectStatusMap.mutableMap.putIfAbsent(mediaPlayer, true)
+                                }
+                            }
+                    )}
+                    2 -> { DualLayout(
+                            paths = paths.value,
+                            onMediaPlayerList = {
+                                mediaPlayerList.value = it
+                                it.forEach{ mediaPlayer ->
+                                    SelectStatusMap.mutableMap.putIfAbsent(mediaPlayer, true)
+                                }
+                            }
+                    )}
+                    3 -> { TripleLayout(
+                        paths.value,
+                        {
+                            mediaPlayerList.value = it
+                            it.forEach{ mediaPlayer ->
+                                SelectStatusMap.mutableMap.putIfAbsent(mediaPlayer, true)
+                            }
+                        }
+                    )}
+                    4 -> { QuadLayout(
+                        paths.value,
+                        {
+                            mediaPlayerList.value = it
+                            it.forEach{ mediaPlayer ->
+                                SelectStatusMap.mutableMap.putIfAbsent(mediaPlayer, true)
+                            }
+                        }
+                    )}
+                    5 -> { PentaLayout(
+                        paths.value,
+                        {
+                            mediaPlayerList.value = it
+                            it.forEach{ mediaPlayer ->
+                                SelectStatusMap.mutableMap.putIfAbsent(mediaPlayer, true)
+                            }
+                        }
+                    )}
+                    6 -> { HexaLayout(
+                        paths.value,
+                        {
+                            mediaPlayerList.value = it
+                            it.forEach{ mediaPlayer ->
+                                SelectStatusMap.mutableMap.putIfAbsent(mediaPlayer, true)
+                            }
+                        }
+                    )}
+                    7 -> { HeptalLayout(
+                        paths.value,
+                        {
+                            mediaPlayerList.value = it
+                            it.forEach{ mediaPlayer ->
+                                SelectStatusMap.mutableMap.putIfAbsent(mediaPlayer, true)
+                            }
+                        }
+                    )}
+                    8 -> { OctaLayout(
+                        paths.value,
+                        {
+                            mediaPlayerList.value = it
+                            it.forEach{ mediaPlayer ->
+                                SelectStatusMap.mutableMap.putIfAbsent(mediaPlayer, true)
+                            }
+                        }
+                    )}
+                    9 -> { NonaLayout(
+                        paths.value,
+                        {
+                            mediaPlayerList.value = it
+                            it.forEach{ mediaPlayer ->
+                                SelectStatusMap.mutableMap.putIfAbsent(mediaPlayer, true)
+                            }
+                        }
+                    )}
 
                     else -> { /* 已经塞不下了 */ }
                 }

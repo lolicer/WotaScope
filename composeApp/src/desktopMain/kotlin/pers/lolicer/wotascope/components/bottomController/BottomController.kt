@@ -36,13 +36,13 @@ import wotascope.composeapp.generated.resources.media_rewind
 import wotascope.composeapp.generated.resources.media_skip_back_5
 import wotascope.composeapp.generated.resources.media_skip_forward_10
 import org.jetbrains.compose.resources.painterResource
+import pers.lolicer.wotascope.components.selectStatusMap.SelectStatusMap
 import uk.co.caprica.vlcj.player.base.MediaPlayer
 import uk.co.caprica.vlcj.player.base.MediaPlayerEventAdapter
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer
 import wotascope.composeapp.generated.resources.volume_0
 import wotascope.composeapp.generated.resources.volume_1
 import wotascope.composeapp.generated.resources.volume_2
-import javax.swing.UIManager.put
 
 @Composable
 fun BottomController(
@@ -109,28 +109,30 @@ fun PauseButton(
     mediaPlayerList: List<EmbeddedMediaPlayer>
 ){
     val finishedStatusMap = mutableMapOf<EmbeddedMediaPlayer, MutableState<Boolean>>().apply{
-        println("Re")
+        println("PauseButton Recombined.")
         mediaPlayerList.forEach{ mediaPlayer ->
             // 现在每次点击SingleVideoPanel都会让list里面多一条点击的mediaPlayer，没找着为什么，有空再找找。 2025.7.7 17:27
             // 知道了，因为SingleVideoPanelItem重组导致onMediaPlayer被多次调用，导致Layout中的mediaPlayerList.add(mediaPlayer)被多次调用，已经解决 2025.7.7 17:56
             this.putIfAbsent(mediaPlayer, remember{mutableStateOf(false)})
-            println(mediaPlayer)
         }
     }
-    println("mapSize: ${finishedStatusMap.values}")
+    // println("mapSize: ${finishedStatusMap.values}")
     val isAnyVideoPlaying = remember { mutableStateOf(false) }
 
     // 这段代码在每次界面重组时运行，防止“添加视频引发的页面重组”导致的isAnyVideoPlaying未更新为false的问题。
     // 后续想办法优化一下，每次重组都运行不太好，应该改掉。
     var res = false
     for(mediaPlayer in mediaPlayerList){
-        if(mediaPlayer.status().isPlaying){
+        if(SelectStatusMap.mutableMap[mediaPlayer] == true && mediaPlayer.status().isPlaying){
+            println("isAnyVideoPlaying")
             res = true
             break
+        }else{
+            println("noVideoPlaying")
         }
     }
     isAnyVideoPlaying.value = res
-    println("Check isAnyVideoPlaying")
+    // println("Check isAnyVideoPlaying")
 
     /*
     // val mediaStates = remember(mediaPlayerList) {
@@ -151,40 +153,39 @@ fun PauseButton(
             .then(modifier)
             .pointerHoverIcon(PointerIcon.Hand)
             .onClick{
-                println("mediaPlayerListSize: ${mediaPlayerList.size}")
                 if(mediaPlayerList.isNotEmpty()){
                     if(mediaPlayerList.isAnyPlaying()){
                         println("isAnyVideoPlaying")
                         for(mediaPlayer in mediaPlayerList){
-                            if(mediaPlayer.status().isPlaying) println("mediaState.isPlaying")
-                            mediaPlayer.controls().setPause(true)
+                            if(SelectStatusMap.mutableMap[mediaPlayer] == true){
+                                // if(mediaPlayer.status().isPlaying) println("$mediaPlayer isPlaying")
+                                mediaPlayer.controls().setPause(true)
+                            }
                         }
                     }
                     else{
                         if(finishedStatusMap.isAllFinished()){
                             println("isAllVideoFinished")
                             for(mediaPlayer in mediaPlayerList){
-                                mediaPlayer.controls().play()
-                                mediaPlayer.controls().play()
-                                // try {
+                                if(SelectStatusMap.mutableMap[mediaPlayer] == true){
+                                    mediaPlayer.controls().play()
+                                    mediaPlayer.controls().play()
                                     finishedStatusMap[mediaPlayer]!!.value = false
-                                // }
-                                // catch(e: Exception){
-                                //     println(e)
-                                // }
+                                }
                             }
                         }
                         else{
                             println("None of isAnyVideoPlaying/isAllVideoFinished")
                             for(mediaPlayer in mediaPlayerList){
-                                if(!mediaPlayer.status().isPlaying && !finishedStatusMap[mediaPlayer]!!.value){
+                                if(SelectStatusMap.mutableMap[mediaPlayer] == true && !mediaPlayer.status().isPlaying && !finishedStatusMap[mediaPlayer]!!.value){
                                     mediaPlayer.controls().play()
                                 }
                             }
                         }
                     }
                 }
-                isAnyVideoPlaying.value = !isAnyVideoPlaying.value
+                // 下面的监听好像可以控制状态了，这行先注释掉
+                // isAnyVideoPlaying.value = !isAnyVideoPlaying.value
             },
         painter = painterResource(if(isAnyVideoPlaying.value) Res.drawable.media_pause else Res.drawable.media_play),
         contentDescription = if(isAnyVideoPlaying.value) "暂停" else "播放",
@@ -194,9 +195,23 @@ fun PauseButton(
     for(mediaPlayer in mediaPlayerList){
         DisposableEffect(mediaPlayer){
             val listener = object : MediaPlayerEventAdapter() {
+                override fun playing(mediaPlayer: MediaPlayer?) {
+                    isAnyVideoPlaying.value = true
+                }
+
+                override fun paused(mediaPlayer: MediaPlayer?) {
+                    var res = false
+                    mediaPlayerList.forEach { mediaPlayer ->
+                        if(mediaPlayer.status().isPlaying){
+                            res = true
+                        }
+                    }
+                    isAnyVideoPlaying.value = res
+                }
 
                 override fun finished(mediaPlayer: MediaPlayer) {
                     finishedStatusMap[mediaPlayer]!!.value = true
+                    println("$mediaPlayer JieShu Le")
                     if(finishedStatusMap.isAllFinished()){
                         isAnyVideoPlaying.value = false
                     }
@@ -256,7 +271,7 @@ fun Volume(
     val volumeSize = remember { mutableStateOf(1f) }
 
     for(mediaPlayer in mediaPlayerList){
-        println(mediaPlayer.audio().volume())
+        print(mediaPlayer.audio().volume().toString() + ' ')
     }
 
     Row(
@@ -312,7 +327,7 @@ fun Volume(
 
 fun List<EmbeddedMediaPlayer>.isAnyPlaying(): Boolean{
     for(mediaPlayer in this){
-        if(mediaPlayer.status().isPlaying){
+        if(SelectStatusMap.mutableMap[mediaPlayer] == true && mediaPlayer.status().isPlaying){
             return true
         }
     }
@@ -321,10 +336,12 @@ fun List<EmbeddedMediaPlayer>.isAnyPlaying(): Boolean{
 
 fun MutableMap<EmbeddedMediaPlayer, MutableState<Boolean>>.isAllFinished(): Boolean{
     for(finishStatus in this){
-        if(!finishStatus.value.value){
+        if(SelectStatusMap.mutableMap[finishStatus.key] == true && !finishStatus.value.value){
             return false
         }
     }
+
+    println("Dou JieShu Le")
     return true
 
     // AI说写下面一行就行了，看不懂，先不这么写
