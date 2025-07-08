@@ -31,7 +31,13 @@ fun SingleVideoPanelItem(
 ){
     val mediaPlayerComponent = remember { EmbeddedMediaPlayerComponent() }
     val mediaPlayer = remember { mediaPlayerComponent.mediaPlayer() }
-    onMediaPlayer(mediaPlayer)
+
+    // 重组会导致 onMediaPlayer(mediaPlayer) 多次调用
+    val returnMediaPlayer = remember { mutableStateOf(false) }
+    if(!returnMediaPlayer.value){
+        onMediaPlayer(mediaPlayer)
+        returnMediaPlayer.value = true
+    }
 
     val isSelected = remember { mutableStateOf(true) }
 
