@@ -6,12 +6,15 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import pers.lolicer.wotascope.components.selectStatusMap.SelectStatusMap
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer
 
@@ -27,16 +30,19 @@ fun BottomController(
             .background(Color(43, 45, 48)),
         verticalAlignment = Alignment.CenterVertically
     ){
-        Spacer(Modifier.weight(0.5f))
-        Volume(Modifier.weight(1f), mediaPlayerList)
-        Spacer(Modifier.weight(2f))
+        Spacer(Modifier.width((controllerHeight.value * 0.5).dp))
+        Volume(Modifier.width(controllerHeight * 3), mediaPlayerList)
         Row(
-            modifier = Modifier.weight(3f),
+            modifier = Modifier.weight(1f),
             horizontalArrangement = Arrangement.Center
         ){
-            PauseButton(Modifier, mediaPlayerList)
+            SkipBackButton(Modifier.size(controllerHeight), mediaPlayerList)
+            RewindButton(Modifier.size(controllerHeight), mediaPlayerList)
+            PauseButton(Modifier.size(controllerHeight), mediaPlayerList)
+            FastForwardButton(Modifier.size(controllerHeight), mediaPlayerList)
+            SkipForwardButton(Modifier.size(controllerHeight), mediaPlayerList)
         }
-        Spacer(Modifier.weight(3.5f))
+        Spacer(Modifier.width((controllerHeight.value * 3.5).dp))
     }
 }
 
