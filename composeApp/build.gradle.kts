@@ -31,6 +31,7 @@ kotlin {
             implementation(libs.kotlinx.coroutinesSwing)
 
             implementation("uk.co.caprica:vlcj:4.7.0")
+            implementation("org.jetbrains.skija:skija-windows:0.93.6")
 
             // 2025.7.1 约束布局尚未应用在跨平台项目中，故使用此依赖。链接如下：
             // https://github.com/Lavmee/constraintlayout-compose-multiplatform?tab=readme-ov-file
@@ -45,7 +46,7 @@ compose.desktop {
         mainClass = "pers.lolicer.wotascope.MainKt"
 
         nativeDistributions {
-            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
+            targetFormats(TargetFormat.Msi)
             packageName = "pers.lolicer.wotascope"
             packageVersion = "1.0.0"
         }

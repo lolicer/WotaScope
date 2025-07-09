@@ -26,7 +26,7 @@ import pers.lolicer.wotascope.components.videoLayout.PentaLayout
 import pers.lolicer.wotascope.components.videoLayout.QuadLayout
 import pers.lolicer.wotascope.components.videoLayout.SingleLayout
 import pers.lolicer.wotascope.components.videoLayout.TripleLayout
-import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer
+import uk.co.caprica.vlcj.player.base.MediaPlayer
 import kotlin.collections.emptyList
 
 @Composable
@@ -37,7 +37,7 @@ fun App(
 ) {
 
     val paths = remember { mutableStateOf<List<String>>(emptyList()) }
-    val mediaPlayerList = remember { mutableStateOf<List<EmbeddedMediaPlayer>>(emptyList()) }
+    val mediaPlayerList = remember { mutableStateOf<List<MediaPlayer>>(emptyList()) }
 
     MaterialTheme {
         val titleHeight = 30.dp
@@ -60,6 +60,7 @@ fun App(
                             paths = paths.value,
                             onMediaPlayerList = {
                                 mediaPlayerList.value = it
+                                println("mediaPlayerList.value = ${mediaPlayerList.value}")
                                 it.forEach{ mediaPlayer ->
                                     SelectStatusMap.mutableMap.putIfAbsent(mediaPlayer, true)
                                 }

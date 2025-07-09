@@ -20,7 +20,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.painterResource
-import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer
+import uk.co.caprica.vlcj.player.base.MediaPlayer
 import wotascope.composeapp.generated.resources.Res
 import wotascope.composeapp.generated.resources.volume_0
 import wotascope.composeapp.generated.resources.volume_1
@@ -31,7 +31,7 @@ import wotascope.composeapp.generated.resources.volume_2
 @Composable
 fun Volume(
     modifier: Modifier,
-    mediaPlayerList: List<EmbeddedMediaPlayer>
+    mediaPlayerList: List<MediaPlayer>
 ){
     val volumeSize = remember { mutableStateOf(1f) }
 
