@@ -2,7 +2,6 @@ package pers.lolicer.wotascope.components.singleVideoBar
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,13 +17,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.pointerHoverIcon
-import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.unit.dp
 import uk.co.caprica.vlcj.player.base.MediaPlayer
 import uk.co.caprica.vlcj.player.base.MediaPlayerEventAdapter
@@ -39,59 +35,24 @@ import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun SingleVideoController(
-    mediaPlayer: EmbeddedMediaPlayer
+    mediaPlayer: MediaPlayer
 ){
-    // val isVideoReady = remember { mutableStateOf(mediaPlayer.status().isPlayable) }
     ProgressBar(mediaPlayer)
-
-    // DisposableEffect(mediaPlayer){
-    //     val listener = object : MediaPlayerEventAdapter() {
-    //         override fun opening(mediaPlayer: MediaPlayer?) {
-    //             isVideoReady.value = true
-    //         }
-    //     }
-    //     mediaPlayer.events().addMediaPlayerEventListener(listener)
-    //     onDispose { mediaPlayer.events().removeMediaPlayerEventListener(listener) }
-    // }
 }
 
 @OptIn(ExperimentalMaterial3Api::class, InternalResourceApi::class)
 @Composable
 fun ProgressBar(
-    mediaPlayer: EmbeddedMediaPlayer
+    mediaPlayer: MediaPlayer
 ){
     val progress = remember { mutableStateOf(0f) }
     val isDragging = remember { mutableStateOf(false) }
 
-    val focusRequester = remember { FocusRequester() }
-
     Slider(
-        modifier = Modifier.height(4.dp)
-            .focusable()
-            .focusRequester(focusRequester)
-            .onGloballyPositioned{ focusRequester.requestFocus() }
+        modifier = Modifier
+            .height(4.dp)
+            .fillMaxWidth()
             .pointerHoverIcon(PointerIcon.Hand),
-            // .onKeyEvent{keyEvent ->
-            //     when {
-            //         (keyEvent.key == Key.Spacebar && keyEvent.type == KeyEventType.KeyUp) -> {
-            //             ExtensionUtils().changePauseState(mediaPlayer)
-            //             true
-            //         }
-            //         (keyEvent.key == Key.DirectionRight && keyEvent.type == KeyEventType.KeyUp) -> {
-            //             mediaPlayer.controls().nextFrame()
-            //             progress.value = mediaPlayer.status().position()
-            //             true
-            //         }
-            //         (keyEvent.key == Key.DirectionLeft && keyEvent.type == KeyEventType.KeyUp) -> {
-            //             true
-            //         }
-            //         (keyEvent.key == Key.Escape && keyEvent.type == KeyEventType.KeyUp) -> {
-            //             exitProcess(0)
-            //         }
-            //
-            //         else -> false
-            //     }
-            // },
         thumb = { Box{} },
         track = {
             Row(

@@ -14,27 +14,20 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import pers.lolicer.wotascope.components.singleVideoBar.videoPlayerWithoutSwingPanel.VideoPlayer
 import pers.lolicer.wotascope.components.videoStatus.SelectStatusMap
-import uk.co.caprica.vlcj.player.component.EmbeddedMediaPlayerComponent
-import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer
+import uk.co.caprica.vlcj.player.base.MediaPlayer
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SingleVideoPanelItem(
     path: String,
-    onMediaPlayer: (EmbeddedMediaPlayer) -> Unit,
+    onMediaPlayer: (MediaPlayer) -> Unit,
     onSelectedChanged: (Boolean) -> Unit,
     constraint: Modifier
 ){
-    val mediaPlayerComponent = remember { EmbeddedMediaPlayerComponent() }
-    val mediaPlayer = remember { mediaPlayerComponent.mediaPlayer() }
-
-    // 重组会导致 onMediaPlayer(mediaPlayer) 多次调用
-    val returnMediaPlayer = remember { mutableStateOf(false) }
-    if(!returnMediaPlayer.value){
-        onMediaPlayer(mediaPlayer)
-        returnMediaPlayer.value = true
-    }
+    // val mediaPlayerComponent = remember { EmbeddedMediaPlayerComponent() }
+    val mediaPlayer = remember { mutableStateOf<MediaPlayer?>(null) }
 
     val isSelected = remember { mutableStateOf(true) }
 
@@ -57,24 +50,44 @@ fun SingleVideoPanelItem(
         Column (
             modifier = Modifier
                 .background(Color(30, 31, 34))
-                .padding(4.dp, 4.dp, 4.dp, 6.dp)
+                .padding(4.dp, 4.dp, 4.dp, 8.dp)
         ){
-            SingleVideoScreen(mediaPlayerComponent, mediaPlayer, path, isSelected)
-            SingleVideoController(mediaPlayer)
+            // SingleVideoScreen(mediaPlayerComponent, mediaPlayer, path, isSelected)
+            VideoPlayer(
+                modifier = Modifier,
+                mrl = path,
+                onVideoReady = { mp ->
+                    mediaPlayer.value = mp
+                },
+                isSelected = isSelected
+            )
+            if(mediaPlayer.value != null){
+                SingleVideoController(mediaPlayer.value!!)
+            }
         }
 
         LaunchedEffect(isSelected.value){
-            onSelectedChanged(isSelected.value)
+            if(mediaPlayer.value != null){
+                onSelectedChanged(isSelected.value)
 
-            if(!isSelected.value){
-                mediaPlayer.controls().setPause(true)
-            }
+                if(!isSelected.value){
+                    mediaPlayer.value!!.controls().setPause(true)
+                }
 
-            if(SelectStatusMap.mutableMap.containsKey(mediaPlayer)){
-                SelectStatusMap.mutableMap[mediaPlayer] = isSelected.value
+                if(SelectStatusMap.mutableMap.containsKey(mediaPlayer.value)){
+                    SelectStatusMap.mutableMap[mediaPlayer.value!!] = isSelected.value
+                }
+                else{
+                    println("SelectStatusMap.mutableMap:${SelectStatusMap.mutableMap}")
+                    println("But mediaPlayer.value: ${mediaPlayer.value}")
+                    throw Exception("SelectCommandMap ERROR")
+                }
             }
-            else{
-                throw Exception("SelectCommandMap ERROR")
+        }
+        LaunchedEffect(mediaPlayer.value){
+            if(mediaPlayer.value != null){
+                // println("mediaPlayer.value = ${mediaPlayer.value}")
+                onMediaPlayer(mediaPlayer.value!!)
             }
         }
     }

@@ -16,12 +16,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import pers.lolicer.wotascope.components.videoStatus.SelectStatusMap
-import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer
+import uk.co.caprica.vlcj.player.base.MediaPlayer
 
 @Composable
 fun BottomController(
     controllerHeight: Dp,
-    mediaPlayerList: List<EmbeddedMediaPlayer>
+    mediaPlayerList: List<MediaPlayer>
 ){
     Row(
         modifier = Modifier
@@ -46,7 +46,7 @@ fun BottomController(
     }
 }
 
-fun List<EmbeddedMediaPlayer>.isAnyPlaying(): Boolean{
+fun List<MediaPlayer>.isAnyPlaying(): Boolean{
     for(mediaPlayer in this){
         if(SelectStatusMap.mutableMap[mediaPlayer] == true && mediaPlayer.status().isPlaying){
             return true
@@ -55,7 +55,7 @@ fun List<EmbeddedMediaPlayer>.isAnyPlaying(): Boolean{
     return false
 }
 
-fun MutableMap<EmbeddedMediaPlayer, MutableState<Boolean>>.isAllFinished(): Boolean{
+fun MutableMap<MediaPlayer, MutableState<Boolean>>.isAllFinished(): Boolean{
     for(finishStatus in this){
         if(SelectStatusMap.mutableMap[finishStatus.key] == true && !finishStatus.value.value){
             return false

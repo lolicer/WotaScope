@@ -15,3 +15,6 @@ https://github.com/tabler/tabler-icons
     volume_0.svg: tabler:volume-3
     volume_1.svg: tabler:volume-2
     volume_2.svg: tabler:volume
+
+### 不依赖`Swing Panel`的`Compose Multiplatform`播放器灵感来源
+https://github.com/rjuszczyk/ComposeVideoPlayer

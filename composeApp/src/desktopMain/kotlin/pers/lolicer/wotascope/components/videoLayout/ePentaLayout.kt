@@ -1,20 +1,20 @@
 package pers.lolicer.wotascope.components.videoLayout
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester.Companion.createRefs
 import androidx.constraintlayout.compose.ChainStyle
 import androidx.constraintlayout.compose.ConstrainedLayoutReference
 import androidx.constraintlayout.compose.ConstraintLayout
 import pers.lolicer.wotascope.components.singleVideoBar.SingleVideoPanelItem
-import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer
+import uk.co.caprica.vlcj.player.base.MediaPlayer
 
 @Composable
 fun PentaLayout(
     paths: List<String>,
-    onMediaPlayerList: (List<EmbeddedMediaPlayer>) -> Unit
+    onMediaPlayerList: (List<MediaPlayer>) -> Unit
 ){
     if(paths.size != 5) throw Exception("程序错误。")
 
@@ -63,7 +63,7 @@ fun PentaLayout(
         }
         val constraintList = listOf(panel1Constraint, panel2Constraint, panel3Constraint, panel4Constraint, panel5Constraint)
 
-        val mediaPlayerList = mutableListOf<EmbeddedMediaPlayer>()
+        val mediaPlayerList = mutableListOf<MediaPlayer>()
         for(i in 0 until paths.size){
             SingleVideoPanelItem(
                 paths[i],
@@ -74,6 +74,10 @@ fun PentaLayout(
                 constraintList[i].then(Modifier.fillMaxSize(1/3f))
             )
         }
-        onMediaPlayerList(mediaPlayerList)
+        LaunchedEffect(mediaPlayerList.size){
+            if(mediaPlayerList.size == 5){
+                onMediaPlayerList(mediaPlayerList)
+            }
+        }
     }
 }

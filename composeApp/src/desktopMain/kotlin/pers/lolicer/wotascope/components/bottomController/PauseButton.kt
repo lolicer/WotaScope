@@ -23,6 +23,8 @@ import androidx.compose.ui.input.pointer.onPointerEvent
 import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.painterResource
+import pers.lolicer.wotascope.components.bottomController.isAllFinished
+import pers.lolicer.wotascope.components.bottomController.isAnyPlaying
 import pers.lolicer.wotascope.components.videoStatus.SelectStatusMap
 import uk.co.caprica.vlcj.player.base.MediaPlayer
 import uk.co.caprica.vlcj.player.base.MediaPlayerEventAdapter
@@ -72,9 +74,9 @@ import kotlin.collections.get
 @Composable
 fun PauseButton(
     modifier: Modifier,
-    mediaPlayerList: List<EmbeddedMediaPlayer>
+    mediaPlayerList: List<MediaPlayer>
 ){
-    val finishedStatusMap = mutableMapOf<EmbeddedMediaPlayer, MutableState<Boolean>>().apply{
+    val finishedStatusMap = mutableMapOf<MediaPlayer, MutableState<Boolean>>().apply{
         println("PauseButton Recombined.")
         mediaPlayerList.forEach{ mediaPlayer ->
             // 现在每次点击SingleVideoPanel都会让list里面多一条点击的mediaPlayer，没找着为什么，有空再找找。 2025.7.7 17:27
