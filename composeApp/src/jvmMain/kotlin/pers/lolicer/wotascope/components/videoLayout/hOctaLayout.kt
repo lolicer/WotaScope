@@ -10,11 +10,12 @@ import androidx.constraintlayout.compose.ConstrainedLayoutReference
 import androidx.constraintlayout.compose.ConstraintLayout
 import pers.lolicer.wotascope.components.singleVideoBar.SingleVideoPanelItem
 import uk.co.caprica.vlcj.player.base.MediaPlayer
+import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer
 
 @Composable
 fun OctaLayout(
     paths: List<String>,
-    onMediaPlayerList: (List<MediaPlayer>) -> Unit
+    onMediaPlayerList: (List<EmbeddedMediaPlayer>) -> Unit
 ){
     if(paths.size != 8) throw Exception("程序错误。")
 
@@ -83,24 +84,14 @@ fun OctaLayout(
         }
         val constraintList = listOf(panel1Constraint, panel2Constraint, panel3Constraint, panel4Constraint, panel5Constraint, panel6Constraint, panel7Constraint, panel8Constraint)
 
-        val mediaPlayerList = mutableListOf<MediaPlayer>()
-        // val selectedMediaPlayerSet = remember { mutableSetOf<EmbeddedMediaPlayer>() }
+        val mediaPlayerList = mutableListOf<EmbeddedMediaPlayer>()
         for(i in 0 until paths.size){
             SingleVideoPanelItem(
                 paths[i],
                 {mediaPlayer ->
                     mediaPlayerList.add(mediaPlayer)
-                    // selectedMediaPlayerSet.add(mediaPlayer)
                 },
-                { // isSelected ->
-                    // if(isSelected){
-                    //     selectedMediaPlayerSet.add(mediaPlayerList[i])
-                    // }
-                    // else{
-                    //     selectedMediaPlayerSet.remove(mediaPlayerList[i])
-                    // }
-                    // onMediaPlayerList(selectedMediaPlayerSet.toList())
-                },
+                {},
                 constraintList[i].then(Modifier.fillMaxSize(1/3f))
             )
         }

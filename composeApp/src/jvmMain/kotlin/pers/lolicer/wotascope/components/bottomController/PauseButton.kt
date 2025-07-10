@@ -74,10 +74,10 @@ import kotlin.collections.get
 @Composable
 fun PauseButton(
     modifier: Modifier,
-    mediaPlayerList: List<MediaPlayer>
+    mediaPlayerList: List<EmbeddedMediaPlayer>
 ){
     val finishedStatusMap = mutableMapOf<MediaPlayer, MutableState<Boolean>>().apply{
-        println("PauseButton Recombined.")
+        // println("PauseButton Recombined.")
         mediaPlayerList.forEach{ mediaPlayer ->
             // 现在每次点击SingleVideoPanel都会让list里面多一条点击的mediaPlayer，没找着为什么，有空再找找。 2025.7.7 17:27
             // 知道了，因为SingleVideoPanelItem重组导致onMediaPlayer被多次调用，导致Layout中的mediaPlayerList.add(mediaPlayer)被多次调用，已经解决 2025.7.7 17:56

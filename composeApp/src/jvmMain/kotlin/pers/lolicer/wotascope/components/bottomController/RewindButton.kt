@@ -18,6 +18,7 @@ import androidx.compose.ui.input.pointer.onPointerEvent
 import androidx.compose.ui.input.pointer.pointerHoverIcon
 import org.jetbrains.compose.resources.painterResource
 import uk.co.caprica.vlcj.player.base.MediaPlayer
+import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer
 import wotascope.composeapp.generated.resources.Res
 import wotascope.composeapp.generated.resources.media_rewind
 
@@ -26,7 +27,7 @@ import wotascope.composeapp.generated.resources.media_rewind
 @Composable
 fun RewindButton(
     modifier: Modifier,
-    mediaPlayerList: List<MediaPlayer>
+    mediaPlayerList: List<EmbeddedMediaPlayer>
 ){
     var active by remember { mutableStateOf(false) }
 

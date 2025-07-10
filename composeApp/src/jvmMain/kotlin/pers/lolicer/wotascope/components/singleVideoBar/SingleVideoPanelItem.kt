@@ -5,31 +5,44 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.PointerEventType
+import androidx.compose.ui.input.pointer.onPointerEvent
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
+import pers.lolicer.wotascope.components.singleVideoBar.videoPlayerWithoutSwingPanel.SingleVideoFloatWindows
 import pers.lolicer.wotascope.components.singleVideoBar.videoPlayerWithoutSwingPanel.VideoPlayer
 import pers.lolicer.wotascope.components.videoStatus.SelectStatusMap
 import uk.co.caprica.vlcj.player.base.MediaPlayer
+import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalComposeUiApi::class)
 @Composable
 fun SingleVideoPanelItem(
     path: String,
-    onMediaPlayer: (MediaPlayer) -> Unit,
+    onMediaPlayer: (EmbeddedMediaPlayer) -> Unit,
     onSelectedChanged: (Boolean) -> Unit,
     constraint: Modifier
 ){
-    // val mediaPlayerComponent = remember { EmbeddedMediaPlayerComponent() }
-    val mediaPlayer = remember { mutableStateOf<MediaPlayer?>(null) }
+    val mediaPlayer: MutableState<EmbeddedMediaPlayer?> = remember { mutableStateOf(null) }
+    val isReady = remember { mutableStateOf(false) }
 
     val isSelected = remember { mutableStateOf(true) }
+    var active by remember { mutableStateOf(false) }
 
     Box(
         modifier = Modifier
@@ -40,11 +53,9 @@ fun SingleVideoPanelItem(
                 Color(46, 193, 221),
                 shape = RoundedCornerShape(2)
             )
-            // .shadow(
-            //     24.dp,
-            //     ambientColor = Color.White,
-            //     spotColor = Color.White
-            // )
+            .onPointerEvent(PointerEventType.Enter){ active = true }
+            .onPointerEvent(PointerEventType.Move){ active = true }
+            .onPointerEvent(PointerEventType.Exit){ active = false }
             .then(constraint)
     ){
         Column (
@@ -52,15 +63,27 @@ fun SingleVideoPanelItem(
                 .background(Color(30, 31, 34))
                 .padding(4.dp, 4.dp, 4.dp, 8.dp)
         ){
-            // SingleVideoScreen(mediaPlayerComponent, mediaPlayer, path, isSelected)
-            VideoPlayer(
-                modifier = Modifier,
-                mrl = path,
-                onVideoReady = { mp ->
-                    mediaPlayer.value = mp
-                },
-                isSelected = isSelected
-            )
+            var screenSize by remember { mutableStateOf(IntSize.Zero) }
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .onSizeChanged{ screenSize = it }
+            ){
+                if(isReady.value){
+                    SingleVideoFloatWindows(
+                        modifier = Modifier.zIndex(2f),
+                        mediaPlayer = mediaPlayer.value!!,
+                        isHovered = active && isSelected.value,
+                        screenSize
+                    )
+                }
+                VideoPlayer(
+                    modifier = Modifier.zIndex(1f),
+                    mrl = path,
+                    mediaPlayer = mediaPlayer,
+                    isSelected = isSelected
+                )
+            }
             if(mediaPlayer.value != null){
                 SingleVideoController(mediaPlayer.value!!)
             }
@@ -84,10 +107,14 @@ fun SingleVideoPanelItem(
                 }
             }
         }
+        val hasReturned = remember { mutableStateOf(false) }
         LaunchedEffect(mediaPlayer.value){
-            if(mediaPlayer.value != null){
+            if(mediaPlayer.value != null && !hasReturned.value){
                 // println("mediaPlayer.value = ${mediaPlayer.value}")
                 onMediaPlayer(mediaPlayer.value!!)
+                hasReturned.value = true
+
+                isReady.value = true
             }
         }
     }

@@ -20,7 +20,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.painterResource
+import pers.lolicer.wotascope.components.videoStatus.AudioStatus
 import uk.co.caprica.vlcj.player.base.MediaPlayer
+import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer
 import wotascope.composeapp.generated.resources.Res
 import wotascope.composeapp.generated.resources.volume_0
 import wotascope.composeapp.generated.resources.volume_1
@@ -31,13 +33,14 @@ import wotascope.composeapp.generated.resources.volume_2
 @Composable
 fun Volume(
     modifier: Modifier,
-    mediaPlayerList: List<MediaPlayer>
+    mediaPlayerList: List<EmbeddedMediaPlayer>
 ){
     val volumeSize = remember { mutableStateOf(1f) }
 
     for(mediaPlayer in mediaPlayerList){
         print(mediaPlayer.audio().volume().toString() + ' ')
     }
+    println()
 
     Row(
         modifier = Modifier.then(modifier),
@@ -45,7 +48,7 @@ fun Volume(
     ){
         Icon(
             modifier = Modifier.onClick{
-                if(volumeSize.value > 0 + 1e-7){
+                if(volumeSize.value > 0){
                     for(mediaPlayer in mediaPlayerList){
                         mediaPlayer.audio().setVolume(0)
                     }
@@ -71,10 +74,20 @@ fun Volume(
             value = volumeSize.value,
             onValueChange = {
                 volumeSize.value = it
-                for(mediaPlayer in mediaPlayerList){
-                    mediaPlayer.audio().setVolume((volumeSize.value * 100).toInt())
-                }
+                // AudioStatus.globalVolume = (volumeSize.value * 100f).toInt().coerceIn(0..100)
+                // for(mediaPlayer in mediaPlayerList){
+                //     val oldVolume = mediaPlayer.audio().volume()
+                //     if(oldVolume > 0){
+                //         println("oldVolume = $oldVolume")
+                //         val newVolume = (oldVolume.toFloat() * volumeSize.value).toInt()
+                //         println("newVolume = $newVolume")
+                //         mediaPlayer.audio().setVolume(newVolume)
+                //     }
+                //     // mediaPlayer.audio().setVolume((it * AudioStatus.mutableMap[mediaPlayer]!!).toInt())
+                //     // AudioStatus.updatePlayerVolume(mediaPlayer, (volumeSize.value * 100).toInt())
+                // }
             },
+            steps = 100,
             thumb = {Box{}},
             track = {
                 Row(

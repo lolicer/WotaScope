@@ -26,7 +26,9 @@ import pers.lolicer.wotascope.components.videoLayout.PentaLayout
 import pers.lolicer.wotascope.components.videoLayout.QuadLayout
 import pers.lolicer.wotascope.components.videoLayout.SingleLayout
 import pers.lolicer.wotascope.components.videoLayout.TripleLayout
+import pers.lolicer.wotascope.components.videoStatus.AudioStatus
 import uk.co.caprica.vlcj.player.base.MediaPlayer
+import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer
 import kotlin.collections.emptyList
 
 @Composable
@@ -35,9 +37,8 @@ fun App(
     windowState: WindowState,
     windowScope: FrameWindowScope
 ) {
-
     val paths = remember { mutableStateOf<List<String>>(emptyList()) }
-    val mediaPlayerList = remember { mutableStateOf<List<MediaPlayer>>(emptyList()) }
+    val mediaPlayerList = remember { mutableStateOf<List<EmbeddedMediaPlayer>>(emptyList()) }
 
     MaterialTheme {
         val titleHeight = 30.dp
@@ -63,6 +64,9 @@ fun App(
                                 println("mediaPlayerList.value = ${mediaPlayerList.value}")
                                 it.forEach{ mediaPlayer ->
                                     SelectStatusMap.mutableMap.putIfAbsent(mediaPlayer, true)
+                                    // AudioStatus.playerVolumes.putIfAbsent(mediaPlayer, 100)
+                                    // mediaPlayer.audio().setVolume(AudioStatus.globalVolume)
+                                    // AudioStatus.addPlayerSafely(mediaPlayer, 100)
                                 }
                             }
                     )}
@@ -72,6 +76,9 @@ fun App(
                                 mediaPlayerList.value = it
                                 it.forEach{ mediaPlayer ->
                                     SelectStatusMap.mutableMap.putIfAbsent(mediaPlayer, true)
+                                    // AudioStatus.mutableMap.putIfAbsent(mediaPlayer, 100)
+                                    // mediaPlayer.audio().setVolume(AudioStatus.globalVolume)
+                                    // AudioStatus.addPlayerSafely(mediaPlayer, 100)
                                 }
                             }
                     )}
@@ -81,6 +88,10 @@ fun App(
                             mediaPlayerList.value = it
                             it.forEach{ mediaPlayer ->
                                 SelectStatusMap.mutableMap.putIfAbsent(mediaPlayer, true)
+                                println("listL $mediaPlayer")
+                                // AudioStatus.mutableMap.putIfAbsent(mediaPlayer, 100)
+                                // mediaPlayer.audio().setVolume(AudioStatus.globalVolume)
+                                // AudioStatus.addPlayerSafely(mediaPlayer, 100)
                             }
                         }
                     )}
@@ -90,6 +101,9 @@ fun App(
                             mediaPlayerList.value = it
                             it.forEach{ mediaPlayer ->
                                 SelectStatusMap.mutableMap.putIfAbsent(mediaPlayer, true)
+                                // AudioStatus.mutableMap.putIfAbsent(mediaPlayer, 100)
+                                // mediaPlayer.audio().setVolume(AudioStatus.globalVolume)
+                                // AudioStatus.addPlayerSafely(mediaPlayer, 100)
                             }
                         }
                     )}
@@ -99,6 +113,9 @@ fun App(
                             mediaPlayerList.value = it
                             it.forEach{ mediaPlayer ->
                                 SelectStatusMap.mutableMap.putIfAbsent(mediaPlayer, true)
+                                // AudioStatus.mutableMap.putIfAbsent(mediaPlayer, 100)
+                                // mediaPlayer.audio().setVolume(AudioStatus.globalVolume)
+                                // AudioStatus.addPlayerSafely(mediaPlayer, 100)
                             }
                         }
                     )}
@@ -108,6 +125,9 @@ fun App(
                             mediaPlayerList.value = it
                             it.forEach{ mediaPlayer ->
                                 SelectStatusMap.mutableMap.putIfAbsent(mediaPlayer, true)
+                                // AudioStatus.mutableMap.putIfAbsent(mediaPlayer, 100)
+                                // mediaPlayer.audio().setVolume(AudioStatus.globalVolume)
+                                // AudioStatus.addPlayerSafely(mediaPlayer, 100)
                             }
                         }
                     )}
@@ -117,6 +137,9 @@ fun App(
                             mediaPlayerList.value = it
                             it.forEach{ mediaPlayer ->
                                 SelectStatusMap.mutableMap.putIfAbsent(mediaPlayer, true)
+                                // AudioStatus.mutableMap.putIfAbsent(mediaPlayer, 100)
+                                // mediaPlayer.audio().setVolume(AudioStatus.globalVolume)
+                                // AudioStatus.addPlayerSafely(mediaPlayer, 100)
                             }
                         }
                     )}
@@ -126,6 +149,9 @@ fun App(
                             mediaPlayerList.value = it
                             it.forEach{ mediaPlayer ->
                                 SelectStatusMap.mutableMap.putIfAbsent(mediaPlayer, true)
+                                // AudioStatus.mutableMap.putIfAbsent(mediaPlayer, 100)
+                                // mediaPlayer.audio().setVolume(AudioStatus.globalVolume)
+                                // AudioStatus.addPlayerSafely(mediaPlayer, 100)
                             }
                         }
                     )}
@@ -135,6 +161,9 @@ fun App(
                             mediaPlayerList.value = it
                             it.forEach{ mediaPlayer ->
                                 SelectStatusMap.mutableMap.putIfAbsent(mediaPlayer, true)
+                                // AudioStatus.mutableMap.putIfAbsent(mediaPlayer, 100)
+                                // mediaPlayer.audio().setVolume(AudioStatus.globalVolume)
+                                // AudioStatus.addPlayerSafely(mediaPlayer, 100)
                             }
                         }
                     )}

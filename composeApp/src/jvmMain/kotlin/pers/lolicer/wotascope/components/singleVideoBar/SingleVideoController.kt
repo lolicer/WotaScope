@@ -35,7 +35,7 @@ import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun SingleVideoController(
-    mediaPlayer: MediaPlayer
+    mediaPlayer: EmbeddedMediaPlayer
 ){
     ProgressBar(mediaPlayer)
 }
@@ -43,7 +43,7 @@ fun SingleVideoController(
 @OptIn(ExperimentalMaterial3Api::class, InternalResourceApi::class)
 @Composable
 fun ProgressBar(
-    mediaPlayer: MediaPlayer
+    mediaPlayer: EmbeddedMediaPlayer
 ){
     val progress = remember { mutableStateOf(0f) }
     val isDragging = remember { mutableStateOf(false) }
