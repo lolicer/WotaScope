@@ -36,8 +36,8 @@ fun VideoPlayer(
     mediaPlayer: MutableState<EmbeddedMediaPlayer?>,
     isSelected: MutableState<Boolean>
 ) {
-    var imageBitmap by remember(mrl) { mutableStateOf<ImageBitmap?>(null) }
-    var isPlayerReady by remember(mrl) { mutableStateOf(false) }
+    var imageBitmap by remember { mutableStateOf<ImageBitmap?>(null) }
+    var isPlayerReady by remember { mutableStateOf(false) }
 
     Box(
         modifier = Modifier
@@ -63,10 +63,12 @@ fun VideoPlayer(
         }
     }
 
-    mediaPlayer.value = remember(mrl) {
+    mediaPlayer.value = remember {
         var byteArray: ByteArray? = null
         var info: ImageInfo? = null
-        val factory = MediaPlayerFactory()
+
+        val args = arrayOf("--aout=directsound")
+        val factory = MediaPlayerFactory(*args)
         val embeddedMediaPlayer = factory.mediaPlayers().newEmbeddedMediaPlayer()
         val callbackVideoSurface = CallbackVideoSurface(
             object : BufferFormatCallback {

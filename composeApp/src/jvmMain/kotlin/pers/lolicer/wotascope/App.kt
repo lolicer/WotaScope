@@ -64,7 +64,7 @@ fun App(
                                 println("mediaPlayerList.value = ${mediaPlayerList.value}")
                                 it.forEach{ mediaPlayer ->
                                     SelectStatusMap.mutableMap.putIfAbsent(mediaPlayer, true)
-                                    // AudioStatus.playerVolumes.putIfAbsent(mediaPlayer, 100)
+                                    AudioStatus.mutableMap.putIfAbsent(mediaPlayer, 100)
                                     // mediaPlayer.audio().setVolume(AudioStatus.globalVolume)
                                     // AudioStatus.addPlayerSafely(mediaPlayer, 100)
                                 }
@@ -76,7 +76,7 @@ fun App(
                                 mediaPlayerList.value = it
                                 it.forEach{ mediaPlayer ->
                                     SelectStatusMap.mutableMap.putIfAbsent(mediaPlayer, true)
-                                    // AudioStatus.mutableMap.putIfAbsent(mediaPlayer, 100)
+                                    AudioStatus.mutableMap.putIfAbsent(mediaPlayer, 100)
                                     // mediaPlayer.audio().setVolume(AudioStatus.globalVolume)
                                     // AudioStatus.addPlayerSafely(mediaPlayer, 100)
                                 }
@@ -89,7 +89,7 @@ fun App(
                             it.forEach{ mediaPlayer ->
                                 SelectStatusMap.mutableMap.putIfAbsent(mediaPlayer, true)
                                 println("listL $mediaPlayer")
-                                // AudioStatus.mutableMap.putIfAbsent(mediaPlayer, 100)
+                                AudioStatus.mutableMap.putIfAbsent(mediaPlayer, 100)
                                 // mediaPlayer.audio().setVolume(AudioStatus.globalVolume)
                                 // AudioStatus.addPlayerSafely(mediaPlayer, 100)
                             }
@@ -101,7 +101,7 @@ fun App(
                             mediaPlayerList.value = it
                             it.forEach{ mediaPlayer ->
                                 SelectStatusMap.mutableMap.putIfAbsent(mediaPlayer, true)
-                                // AudioStatus.mutableMap.putIfAbsent(mediaPlayer, 100)
+                                AudioStatus.mutableMap.putIfAbsent(mediaPlayer, 100)
                                 // mediaPlayer.audio().setVolume(AudioStatus.globalVolume)
                                 // AudioStatus.addPlayerSafely(mediaPlayer, 100)
                             }
@@ -113,7 +113,7 @@ fun App(
                             mediaPlayerList.value = it
                             it.forEach{ mediaPlayer ->
                                 SelectStatusMap.mutableMap.putIfAbsent(mediaPlayer, true)
-                                // AudioStatus.mutableMap.putIfAbsent(mediaPlayer, 100)
+                                AudioStatus.mutableMap.putIfAbsent(mediaPlayer, 100)
                                 // mediaPlayer.audio().setVolume(AudioStatus.globalVolume)
                                 // AudioStatus.addPlayerSafely(mediaPlayer, 100)
                             }
@@ -125,7 +125,7 @@ fun App(
                             mediaPlayerList.value = it
                             it.forEach{ mediaPlayer ->
                                 SelectStatusMap.mutableMap.putIfAbsent(mediaPlayer, true)
-                                // AudioStatus.mutableMap.putIfAbsent(mediaPlayer, 100)
+                                AudioStatus.mutableMap.putIfAbsent(mediaPlayer, 100)
                                 // mediaPlayer.audio().setVolume(AudioStatus.globalVolume)
                                 // AudioStatus.addPlayerSafely(mediaPlayer, 100)
                             }
@@ -137,7 +137,7 @@ fun App(
                             mediaPlayerList.value = it
                             it.forEach{ mediaPlayer ->
                                 SelectStatusMap.mutableMap.putIfAbsent(mediaPlayer, true)
-                                // AudioStatus.mutableMap.putIfAbsent(mediaPlayer, 100)
+                                AudioStatus.mutableMap.putIfAbsent(mediaPlayer, 100)
                                 // mediaPlayer.audio().setVolume(AudioStatus.globalVolume)
                                 // AudioStatus.addPlayerSafely(mediaPlayer, 100)
                             }
@@ -149,7 +149,7 @@ fun App(
                             mediaPlayerList.value = it
                             it.forEach{ mediaPlayer ->
                                 SelectStatusMap.mutableMap.putIfAbsent(mediaPlayer, true)
-                                // AudioStatus.mutableMap.putIfAbsent(mediaPlayer, 100)
+                                AudioStatus.mutableMap.putIfAbsent(mediaPlayer, 100)
                                 // mediaPlayer.audio().setVolume(AudioStatus.globalVolume)
                                 // AudioStatus.addPlayerSafely(mediaPlayer, 100)
                             }
@@ -161,7 +161,7 @@ fun App(
                             mediaPlayerList.value = it
                             it.forEach{ mediaPlayer ->
                                 SelectStatusMap.mutableMap.putIfAbsent(mediaPlayer, true)
-                                // AudioStatus.mutableMap.putIfAbsent(mediaPlayer, 100)
+                                AudioStatus.mutableMap.putIfAbsent(mediaPlayer, 100)
                                 // mediaPlayer.audio().setVolume(AudioStatus.globalVolume)
                                 // AudioStatus.addPlayerSafely(mediaPlayer, 100)
                             }
