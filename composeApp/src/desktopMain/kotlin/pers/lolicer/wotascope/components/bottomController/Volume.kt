@@ -35,12 +35,13 @@ fun Volume(
     modifier: Modifier,
     mediaPlayerList: List<EmbeddedMediaPlayer>
 ){
-    val volumeSize = remember { mutableStateOf(1f) }
+    val isAllMute = remember { mutableStateOf(false) }
+    val progress = remember { mutableStateOf(AudioStatus.globalVolumeProp) }
 
-    for(mediaPlayer in mediaPlayerList){
-        print(mediaPlayer.audio().volume().toString() + ' ')
-    }
-    println()
+    // for(mediaPlayer in mediaPlayerList){
+    //     print(mediaPlayer.audio().volume().toString() + ' ')
+    // }
+    // println()
 
     Row(
         modifier = Modifier.then(modifier),
@@ -48,19 +49,25 @@ fun Volume(
     ){
         Icon(
             modifier = Modifier.onClick{
-                if(volumeSize.value > 0){
-                    for(mediaPlayer in mediaPlayerList){
-                        mediaPlayer.audio().setVolume(0)
+                if(mediaPlayerList.isAllMute()){
+                    mediaPlayerList.forEach {
+                        it.audio().isMute = false
+                        isAllMute.value = false
                     }
-                    volumeSize.value = 0f
+                }
+                else{
+                    mediaPlayerList.forEach {
+                        it.audio().isMute = true
+                        isAllMute.value = true
+                    }
                 }
             },
             painter =
                 painterResource(resource =
-                    if(volumeSize.value <= 0 + 1e-7)
+                    if(isAllMute.value)
                         Res.drawable.volume_0
                     else
-                        if(volumeSize.value <= 0.66)
+                        if(AudioStatus.globalVolumeProp <= 0.66)
                             Res.drawable.volume_1
                         else
                             Res.drawable.volume_2
@@ -71,23 +78,15 @@ fun Volume(
 
         Slider(
             modifier = Modifier.height(4.dp),
-            value = volumeSize.value,
+            value = progress.value,
             onValueChange = {
-                volumeSize.value = it
-                // AudioStatus.globalVolume = (volumeSize.value * 100f).toInt().coerceIn(0..100)
-                // for(mediaPlayer in mediaPlayerList){
-                //     val oldVolume = mediaPlayer.audio().volume()
-                //     if(oldVolume > 0){
-                //         println("oldVolume = $oldVolume")
-                //         val newVolume = (oldVolume.toFloat() * volumeSize.value).toInt()
-                //         println("newVolume = $newVolume")
-                //         mediaPlayer.audio().setVolume(newVolume)
-                //     }
-                //     // mediaPlayer.audio().setVolume((it * AudioStatus.mutableMap[mediaPlayer]!!).toInt())
-                //     // AudioStatus.updatePlayerVolume(mediaPlayer, (volumeSize.value * 100).toInt())
-                // }
+                progress.value = it
+                AudioStatus.globalVolumeProp = it
+                for(mediaPlayer in mediaPlayerList){
+                    val oldVolume = AudioStatus.mutableMap[mediaPlayer]!!
+                    mediaPlayer.audio().setVolume((oldVolume * it).toInt())
+                }
             },
-            steps = 100,
             thumb = {Box{}},
             track = {
                 Row(
@@ -95,10 +94,17 @@ fun Volume(
                         .clip(shape = RectangleShape)
                         .height(4.dp)
                 ){
-                    Box(modifier = Modifier.fillMaxWidth(volumeSize.value).height(4.dp).background(color = Color(	0, 191, 255)))
+                    Box(modifier = Modifier.fillMaxWidth(progress.value).height(4.dp).background(color = Color(	0, 191, 255)))
                     Box(modifier = Modifier.fillMaxWidth().height(4.dp).background(color = Color(212, 212, 212)))
                 }
             }
         )
     }
+}
+
+fun List<EmbeddedMediaPlayer>.isAllMute(): Boolean {
+    this.forEach {
+        if(!it.audio().isMute) return false
+    }
+    return true
 }

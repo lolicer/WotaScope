@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import pers.lolicer.wotascope.components.singleVideoBar.VerticalSlider
+import pers.lolicer.wotascope.components.videoStatus.AudioStatus
 import uk.co.caprica.vlcj.player.base.MediaPlayer
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer
 
@@ -64,8 +65,10 @@ fun SingleVideoFloatWindows(
                 value = volume.value / 100f,
                 onValueChange = { newProgress ->
                     volume.value = (newProgress * 100f).toInt()
-                    mediaPlayer.audio().setVolume(volume.value)
-                    println("volume: ${volume.value} $mediaPlayer")
+                    AudioStatus.mutableMap[mediaPlayer] = volume.value
+                    // println("(newProgress * 100f).toInt(): ${(newProgress * 100f).toInt()}")
+                    mediaPlayer.audio().setVolume((volume.value * AudioStatus.globalVolumeProp).toInt())
+                    // println("volume: ${volume.value} $mediaPlayer")
                 },
                 sliderHeight = (columnSize.height - 20).dp,
                 trackWidth = 4.dp
@@ -90,7 +93,7 @@ fun SingleVideoFloatWindows(
         }
     }
 
-    LaunchedEffect(Unit){
+    LaunchedEffect(mediaPlayer.audio().volume()){
         val newVolume = mediaPlayer.audio().volume()
         volume.value = newVolume.coerceIn(0..100)
     }
