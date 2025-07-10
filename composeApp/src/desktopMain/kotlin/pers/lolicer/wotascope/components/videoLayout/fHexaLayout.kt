@@ -10,11 +10,12 @@ import androidx.constraintlayout.compose.ConstrainedLayoutReference
 import androidx.constraintlayout.compose.ConstraintLayout
 import pers.lolicer.wotascope.components.singleVideoBar.SingleVideoPanelItem
 import uk.co.caprica.vlcj.player.base.MediaPlayer
+import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer
 
 @Composable
 fun HexaLayout(
     paths: List<String>,
-    onMediaPlayerList: (List<MediaPlayer>) -> Unit
+    onMediaPlayerList: (List<EmbeddedMediaPlayer>) -> Unit
 ){
     if(paths.size != 6) throw Exception("程序错误。")
 
@@ -70,7 +71,7 @@ fun HexaLayout(
         }
         val constraintList = listOf(panel1Constraint, panel2Constraint, panel3Constraint, panel4Constraint, panel5Constraint, panel6Constraint)
 
-        val mediaPlayerList = mutableListOf<MediaPlayer>()
+        val mediaPlayerList = mutableListOf<EmbeddedMediaPlayer>()
         for(i in 0 until paths.size){
             SingleVideoPanelItem(
                 paths[i],

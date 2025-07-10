@@ -17,13 +17,12 @@ import androidx.compose.foundation.onClick
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asComposeImageBitmap
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.platform.LocalWindowInfo
 import org.jetbrains.skia.Bitmap
 import org.jetbrains.skia.ColorAlphaType
 import org.jetbrains.skia.ImageInfo
 import pers.lolicer.wotascope.components.videoStatus.SelectStatusMap
 import uk.co.caprica.vlcj.player.base.MediaPlayer
+import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer
 import uk.co.caprica.vlcj.player.embedded.videosurface.CallbackVideoSurface
 import uk.co.caprica.vlcj.player.embedded.videosurface.VideoSurfaceAdapters
 import uk.co.caprica.vlcj.player.embedded.videosurface.callback.BufferFormat
@@ -34,7 +33,7 @@ import uk.co.caprica.vlcj.player.embedded.videosurface.callback.RenderCallback
 fun VideoPlayer(
     modifier: Modifier = Modifier,
     mrl: String,
-    onVideoReady: (mediaPlayer: MediaPlayer) -> Unit,
+    mediaPlayer: MutableState<EmbeddedMediaPlayer?>,
     isSelected: MutableState<Boolean>
 ) {
     var imageBitmap by remember(mrl) { mutableStateOf<ImageBitmap?>(null) }
@@ -64,7 +63,7 @@ fun VideoPlayer(
         }
     }
 
-    val mediaPlayer = remember(mrl) {
+    mediaPlayer.value = remember(mrl) {
         var byteArray: ByteArray? = null
         var info: ImageInfo? = null
         val factory = MediaPlayerFactory()
@@ -111,10 +110,9 @@ fun VideoPlayer(
     }
 
     LaunchedEffect(Unit){
-        mediaPlayer.media().startPaused(mrl)
-        onVideoReady(mediaPlayer)
+        mediaPlayer.value!!.media().startPaused(mrl)
         isPlayerReady = true
-        SelectStatusMap.mutableMap.putIfAbsent(mediaPlayer, true)
+        SelectStatusMap.mutableMap.putIfAbsent(mediaPlayer.value!!, true)
     }
 
     DisposableEffect(mediaPlayer) {
@@ -122,10 +120,10 @@ fun VideoPlayer(
             override fun mediaPlayerReady(mediaPlayer: MediaPlayer) {
             }
         }
-        mediaPlayer.events().addMediaPlayerEventListener(listener)
+        mediaPlayer.value!!.events().addMediaPlayerEventListener(listener)
         onDispose {
-            mediaPlayer.events().removeMediaPlayerEventListener(listener)
-            mediaPlayer::release
+            mediaPlayer.value!!.events().removeMediaPlayerEventListener(listener)
+            mediaPlayer.value!!.release()
         }
     }
 }

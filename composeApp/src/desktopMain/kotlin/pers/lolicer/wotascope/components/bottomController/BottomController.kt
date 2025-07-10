@@ -17,11 +17,12 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import pers.lolicer.wotascope.components.videoStatus.SelectStatusMap
 import uk.co.caprica.vlcj.player.base.MediaPlayer
+import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer
 
 @Composable
 fun BottomController(
     controllerHeight: Dp,
-    mediaPlayerList: List<MediaPlayer>
+    mediaPlayerList: List<EmbeddedMediaPlayer>
 ){
     Row(
         modifier = Modifier
