@@ -43,7 +43,8 @@ fun BottomController(
             FastForwardButton(Modifier.size(controllerHeight), mediaPlayerList)
             SkipForwardButton(Modifier.size(controllerHeight), mediaPlayerList)
         }
-        Spacer(Modifier.width((controllerHeight.value * 3.5).dp))
+        SpeedButton(Modifier.size(controllerHeight))
+        Spacer(Modifier.width((controllerHeight.value * 0.5).dp))
     }
 }
 

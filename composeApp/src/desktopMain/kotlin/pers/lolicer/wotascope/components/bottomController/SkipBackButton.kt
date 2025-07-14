@@ -48,9 +48,7 @@ fun SkipBackButton(
                 .onClick{
                     SelectStatusMap.mutableMap.forEach { elem ->
                         if(elem.value){
-                            elem.key.controls().setPause(false)
                             elem.key.controls().skipTime(-1000 * 5)
-                            elem.key.controls().setPause(true)
                         }
                     }
                 },
