@@ -1,7 +1,9 @@
 package pers.lolicer.wotascope.components.bottomController
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.onClick
 import androidx.compose.material.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -17,13 +19,14 @@ import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.onPointerEvent
 import androidx.compose.ui.input.pointer.pointerHoverIcon
 import org.jetbrains.compose.resources.painterResource
+import pers.lolicer.wotascope.components.videoStatus.SelectStatusMap
 import uk.co.caprica.vlcj.player.base.MediaPlayer
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer
 import wotascope.composeapp.generated.resources.Res
 import wotascope.composeapp.generated.resources.media_fastforward
 
 
-@OptIn(ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalComposeUiApi::class, ExperimentalFoundationApi::class)
 @Composable
 fun FastForwardButton(
     modifier: Modifier,
@@ -40,7 +43,15 @@ fun FastForwardButton(
             modifier = Modifier
                 .pointerHoverIcon(PointerIcon.Hand)
                 .onPointerEvent(PointerEventType.Enter) { active = true }
-                .onPointerEvent(PointerEventType.Exit) { active = false },
+                .onPointerEvent(PointerEventType.Exit) { active = false }
+                .onClick{
+                    SelectStatusMap.mutableMap.forEach { elem ->
+                        if(elem.value){
+                            elem.key.controls().skipTime(1000/30)
+                            elem.key.controls().setPause(true)
+                        }
+                    }
+                },
             painter = painterResource(Res.drawable.media_fastforward),
             contentDescription = "前进一帧",
             tint = Color.White

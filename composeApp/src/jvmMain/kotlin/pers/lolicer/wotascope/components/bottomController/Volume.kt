@@ -18,6 +18,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.input.pointer.PointerButtons
+import androidx.compose.ui.input.pointer.PointerIcon
+import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.painterResource
 import pers.lolicer.wotascope.components.videoStatus.AudioStatus
@@ -77,7 +80,9 @@ fun Volume(
         )
 
         Slider(
-            modifier = Modifier.height(4.dp),
+            modifier = Modifier
+                .height(4.dp)
+                .pointerHoverIcon(PointerIcon.Hand),
             value = progress.value,
             onValueChange = {
                 progress.value = it
