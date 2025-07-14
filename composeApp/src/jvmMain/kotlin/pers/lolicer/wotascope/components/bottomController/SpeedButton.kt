@@ -32,14 +32,14 @@ fun SpeedButton(
     val scope = rememberCoroutineScope()
     var active by remember { mutableStateOf(false) }
 
-    val idx = remember { mutableStateOf(3) }
+    val idx = remember { mutableStateOf(2) }
     val speedMap = mapOf(
-        Pair(0, Pair("0.25×", 0.25f)),
-        Pair(1, Pair("0.5×", 0.5f)),
-        Pair(2, Pair("0.75×", 0.75f)),
-        Pair(3, Pair("1×", 1f)),
-        Pair(4, Pair("1.5×", 1.5f)),
-        Pair(5, Pair("2×", 2f))
+        Pair(0, Pair("2×", 2f)),
+        Pair(1, Pair("1.5×", 1.5f)),
+        Pair(2, Pair("1×", 1f)),
+        Pair(3, Pair("0.75×", 0.75f)),
+        Pair(4, Pair("0.5×", 0.5f)),
+        Pair(5, Pair("0.25×", 0.25f))
     )
 
     Box(
@@ -71,12 +71,12 @@ fun SpeedButton(
                                         elem.key.controls().setRate(speedMap[rate]!!.second)
                                     }
                                 }
+                                idx.value = rate
                             }
                             else{
                                 println("Can ont play this video.")
                             }
                         }
-                        idx.value = rate
                     }
                 },
             text = speedMap[idx.value]!!.first,

@@ -13,8 +13,10 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Slider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -32,6 +34,7 @@ import wotascope.composeapp.generated.resources.media_pause
 import wotascope.composeapp.generated.resources.media_play
 import org.jetbrains.compose.resources.InternalResourceApi
 import org.jetbrains.compose.resources.painterResource
+import pers.lolicer.wotascope.components.videoStatus.ProgressStatus
 
 @Composable
 fun SingleVideoController(
@@ -45,7 +48,7 @@ fun SingleVideoController(
 fun ProgressBar(
     mediaPlayer: EmbeddedMediaPlayer
 ){
-    val progress = remember { mutableStateOf(0f) }
+    val progress = remember { mutableStateOf(mediaPlayer.status().position()) }
     val isDragging = remember { mutableStateOf(false) }
 
     Slider(
@@ -87,16 +90,20 @@ fun ProgressBar(
                 }
             }
 
-            // override fun finished(mediaPlayer: MediaPlayer) {
-            //     coroutineScope.launch(Dispatchers.Main){
-            //         mediaPlayer.controls().play()
-            //         delay(100)
-            //         mediaPlayer.controls().setPause(true)
-            //     }
-            // }
+            override fun finished(mediaPlayer: MediaPlayer) {
+                progress.value = 1f
+            }
         }
         mediaPlayer.events().addMediaPlayerEventListener(listener)
         onDispose { mediaPlayer.events().removeMediaPlayerEventListener(listener) }
+    }
+
+    LaunchedEffect(Unit){
+        snapshotFlow {ProgressStatus.value.value}
+            .collect {
+                println("cil")
+                progress.value = mediaPlayer.status().position()
+            }
     }
 }
 
