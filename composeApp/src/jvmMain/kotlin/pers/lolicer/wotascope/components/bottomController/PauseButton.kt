@@ -77,14 +77,10 @@ fun PauseButton(
     mediaPlayerList: List<EmbeddedMediaPlayer>
 ){
     val finishedStatusMap = mutableMapOf<MediaPlayer, MutableState<Boolean>>().apply{
-        // println("PauseButton Recombined.")
         mediaPlayerList.forEach{ mediaPlayer ->
-            // 现在每次点击SingleVideoPanel都会让list里面多一条点击的mediaPlayer，没找着为什么，有空再找找。 2025.7.7 17:27
-            // 知道了，因为SingleVideoPanelItem重组导致onMediaPlayer被多次调用，导致Layout中的mediaPlayerList.add(mediaPlayer)被多次调用，已经解决 2025.7.7 17:56
             this.putIfAbsent(mediaPlayer, remember{mutableStateOf(false)})
         }
     }
-    // println("mapSize: ${finishedStatusMap.values}")
     val isAnyVideoPlaying = remember { mutableStateOf(false) }
 
     // 这段代码在每次界面重组时运行，防止“添加视频引发的页面重组”导致的isAnyVideoPlaying未更新为false的问题。

@@ -27,6 +27,7 @@ import uk.co.caprica.vlcj.player.embedded.videosurface.CallbackVideoSurface
 import uk.co.caprica.vlcj.player.embedded.videosurface.VideoSurfaceAdapters
 import uk.co.caprica.vlcj.player.embedded.videosurface.callback.BufferFormat
 import uk.co.caprica.vlcj.player.embedded.videosurface.callback.RenderCallback
+import kotlin.math.abs
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -89,10 +90,11 @@ fun VideoPlayer(
                     nativeBuffers: Array<out ByteBuffer>,
                     bufferFormat: BufferFormat?
                 ) {
-                    if (!mediaPlayer.status().isPlaying && pos == mediaPlayer.status().position()) {
+                    val newPos = mediaPlayer.status().position()
+                    if (!mediaPlayer.status().isPlaying && abs(newPos - pos) < 0.0001f) {
                         return
                     }
-                    pos = mediaPlayer.status().position()
+                    pos = newPos
 
                     val byteBuffer = nativeBuffers[0]
                     byteBuffer.get(byteArray)
