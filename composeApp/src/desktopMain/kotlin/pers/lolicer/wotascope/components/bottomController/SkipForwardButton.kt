@@ -19,6 +19,8 @@ import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.onPointerEvent
 import androidx.compose.ui.input.pointer.pointerHoverIcon
 import org.jetbrains.compose.resources.painterResource
+import pers.lolicer.wotascope.components.videoStatus.FinishStatusMap
+import pers.lolicer.wotascope.components.videoStatus.ProgressStatus
 import pers.lolicer.wotascope.components.videoStatus.SelectStatusMap
 import uk.co.caprica.vlcj.player.base.MediaPlayer
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer
@@ -45,9 +47,12 @@ fun SkipForwardButton(
                 .onPointerEvent(PointerEventType.Enter) { active = true }
                 .onPointerEvent(PointerEventType.Exit) { active = false }
                 .onClick{
+                    ProgressStatus.value.value = !ProgressStatus.value.value
                     SelectStatusMap.mutableMap.forEach { elem ->
                         if(elem.value){
-                            elem.key.controls().skipTime(1000 * 10)
+                            if(FinishStatusMap.mutableMap[elem.key] == false){
+                                elem.key.controls().skipTime(1000 * 10)
+                            }
                         }
                     }
                 },

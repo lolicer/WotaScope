@@ -12,6 +12,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -22,10 +23,12 @@ import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.onPointerEvent
 import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.painterResource
-import pers.lolicer.wotascope.components.bottomController.isAllFinished
-import pers.lolicer.wotascope.components.bottomController.isAnyPlaying
+import pers.lolicer.wotascope.components.videoStatus.FinishStatusMap
 import pers.lolicer.wotascope.components.videoStatus.SelectStatusMap
+import pers.lolicer.wotascope.components.videoStatus.isAllFinished
 import uk.co.caprica.vlcj.player.base.MediaPlayer
 import uk.co.caprica.vlcj.player.base.MediaPlayerEventAdapter
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer
@@ -33,7 +36,6 @@ import wotascope.composeapp.generated.resources.Res
 import wotascope.composeapp.generated.resources.media_pause
 import wotascope.composeapp.generated.resources.media_play
 import kotlin.collections.forEach
-import kotlin.collections.get
 
 
 /**
@@ -74,15 +76,10 @@ import kotlin.collections.get
 @Composable
 fun PauseButton(
     modifier: Modifier,
-    mediaPlayerList: List<EmbeddedMediaPlayer>
+    mediaPlayerList: List<EmbeddedMediaPlayer>,
+    isAnyVideoPlaying: MutableState<Boolean>
 ){
-    val finishedStatusMap = mutableMapOf<MediaPlayer, MutableState<Boolean>>().apply{
-        mediaPlayerList.forEach{ mediaPlayer ->
-            this.putIfAbsent(mediaPlayer, remember{mutableStateOf(false)})
-        }
-    }
-    val isAnyVideoPlaying = remember { mutableStateOf(false) }
-
+    val scope = rememberCoroutineScope()
     // 这段代码在每次界面重组时运行，防止“添加视频引发的页面重组”导致的isAnyVideoPlaying未更新为false的问题。
     // 后续想办法优化一下，每次重组都运行不太好，应该改掉。
     var res = false
@@ -94,21 +91,6 @@ fun PauseButton(
         }
     }
     isAnyVideoPlaying.value = res
-    // println("Check isAnyVideoPlaying")
-
-    /*
-    // val mediaStates = remember(mediaPlayerList) {
-    //     mediaPlayerList.map { mediaPlayer ->
-    //         MediaState(
-    //             mediaPlayer = mediaPlayer,
-    //             isPlaying = false,
-    //             isFinished = false,
-    //             isSelected = true
-    //         )
-    //     }
-    // }
-    // val isAnyVideoPlaying = remember { mutableStateOf(false) }
-*/
 
 
     var active by remember { mutableStateOf(false) }
@@ -135,20 +117,20 @@ fun PauseButton(
                             }
                         }
                         else{
-                            if(finishedStatusMap.isAllFinished()){
+                            if(FinishStatusMap.isAllFinished()){
                                 println("isAllVideoFinished")
                                 for(mediaPlayer in mediaPlayerList){
                                     if(SelectStatusMap.mutableMap[mediaPlayer] == true){
                                         mediaPlayer.controls().play()
                                         mediaPlayer.controls().play()
-                                        finishedStatusMap[mediaPlayer]!!.value = false
+                                        FinishStatusMap.mutableMap[mediaPlayer] = false
                                     }
                                 }
                             }
                             else{
                                 println("None of isAnyVideoPlaying/isAllVideoFinished")
                                 for(mediaPlayer in mediaPlayerList){
-                                    if(SelectStatusMap.mutableMap[mediaPlayer] == true && !mediaPlayer.status().isPlaying && !finishedStatusMap[mediaPlayer]!!.value){
+                                    if(SelectStatusMap.mutableMap[mediaPlayer] == true && !mediaPlayer.status().isPlaying && !FinishStatusMap.mutableMap[mediaPlayer]!!){
                                         mediaPlayer.controls().play()
                                     }
                                 }
@@ -180,28 +162,9 @@ fun PauseButton(
                     }
                     isAnyVideoPlaying.value = res
                 }
-
-                override fun finished(mediaPlayer: MediaPlayer) {
-                    finishedStatusMap[mediaPlayer]!!.value = true
-                    println("$mediaPlayer JieShu Le")
-                    if(finishedStatusMap.isAllFinished()){
-                        isAnyVideoPlaying.value = false
-                    }
-                }
             }
             mediaPlayer.events().addMediaPlayerEventListener(listener)
             onDispose { mediaPlayer.events().removeMediaPlayerEventListener(listener) }
         }
     }
-
-    // LaunchedEffect(finishedVideoNum.value){
-    //     if(finishedVideoNum.value >= mediaPlayerList.size){
-    //         isPlaying.value = false
-    //     }
-    // }
-    // LaunchedEffect(pausedVideoNum.value){
-    //     if(pausedVideoNum.value >= mediaPlayerList.size){
-    //         isPlaying.value = false
-    //     }
-    // }
 }
