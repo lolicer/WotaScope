@@ -28,6 +28,8 @@ import pers.lolicer.wotascope.components.videoLayout.SingleLayout
 import pers.lolicer.wotascope.components.videoLayout.TripleLayout
 import pers.lolicer.wotascope.components.videoStatus.AudioStatus
 import pers.lolicer.wotascope.components.videoStatus.FinishStatusMap
+import pers.lolicer.wotascope.components.videoStatus.MediaPlayerListStatus
+import pers.lolicer.wotascope.components.videoStatus.Status
 import uk.co.caprica.vlcj.player.base.MediaPlayer
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer
 import kotlin.collections.emptyList
@@ -39,7 +41,7 @@ fun App(
     windowScope: FrameWindowScope
 ) {
     val paths = remember { mutableStateOf<List<String>>(emptyList()) }
-    val mediaPlayerList = remember { mutableStateOf<List<EmbeddedMediaPlayer>>(emptyList()) }
+    // val mediaPlayerList = remember { mutableStateOf<List<EmbeddedMediaPlayer>>(emptyList()) }
 
     MaterialTheme {
         val titleHeight = 30.dp
@@ -60,128 +62,155 @@ fun App(
                     0 -> { /* 取消选择 */ }
                     1 -> { SingleLayout(
                             paths = paths.value,
-                            onMediaPlayerList = {
-                                mediaPlayerList.value = it
-                                println("mediaPlayerList.value = ${mediaPlayerList.value}")
-                                it.forEach{ mediaPlayer ->
-                                    SelectStatusMap.mutableMap.putIfAbsent(mediaPlayer, true)
-                                    AudioStatus.mutableMap.putIfAbsent(mediaPlayer, 100)
-                                    FinishStatusMap.mutableMap.putIfAbsent(mediaPlayer, false)
-                                    // mediaPlayer.audio().setVolume(AudioStatus.globalVolume)
-                                    // AudioStatus.addPlayerSafely(mediaPlayer, 100)
-                                }
-                            }
+                            // {
+                            //     mediaPlayerList.value = it
+                            //     println("mediaPlayerList.value = ${mediaPlayerList.value}")
+                            //     it.forEach{ mediaPlayer ->
+                            //         // SelectStatusMap.mutableMap.putIfAbsent(mediaPlayer, true)
+                            //         // AudioStatus.mutableMap.putIfAbsent(mediaPlayer, 100)
+                            //         // FinishStatusMap.mutableMap.putIfAbsent(mediaPlayer, false)
+                            //
+                            //         MediaPlayerListStatus.mutableMap.value.put(
+                            //             mediaPlayer,
+                            //             Status(isSelected = true, isFinished = false, volume = 100)
+                            //         )
+                            //     }
+                            // }
                     )}
                     2 -> { DualLayout(
                             paths = paths.value,
-                            onMediaPlayerList = {
-                                mediaPlayerList.value = it
-                                it.forEach{ mediaPlayer ->
-                                    SelectStatusMap.mutableMap.putIfAbsent(mediaPlayer, true)
-                                    AudioStatus.mutableMap.putIfAbsent(mediaPlayer, 100)
-                                    FinishStatusMap.mutableMap.putIfAbsent(mediaPlayer, false)
-                                    // mediaPlayer.audio().setVolume(AudioStatus.globalVolume)
-                                    // AudioStatus.addPlayerSafely(mediaPlayer, 100)
-                                }
-                            }
+                            // {
+                            //     mediaPlayerList.value = it
+                            //     it.forEach{ mediaPlayer ->
+                            //         // SelectStatusMap.mutableMap.putIfAbsent(mediaPlayer, true)
+                            //         // AudioStatus.mutableMap.putIfAbsent(mediaPlayer, 100)
+                            //         // FinishStatusMap.mutableMap.putIfAbsent(mediaPlayer, false)
+                            //
+                            //         MediaPlayerListStatus.mutableMap.value.put(
+                            //             mediaPlayer,
+                            //             Status(isSelected = true, isFinished = false, volume = 100)
+                            //         )
+                            //     }
+                            // }
                     )}
                     3 -> { TripleLayout(
                         paths.value,
-                        {
-                            mediaPlayerList.value = it
-                            it.forEach{ mediaPlayer ->
-                                SelectStatusMap.mutableMap.putIfAbsent(mediaPlayer, true)
-                                AudioStatus.mutableMap.putIfAbsent(mediaPlayer, 100)
-                                FinishStatusMap.mutableMap.putIfAbsent(mediaPlayer, false)
-                                // mediaPlayer.audio().setVolume(AudioStatus.globalVolume)
-                                // AudioStatus.addPlayerSafely(mediaPlayer, 100)
-                            }
-                        }
+                        // {
+                        //     mediaPlayerList.value = it
+                        //     it.forEach{ mediaPlayer ->
+                        //         // SelectStatusMap.mutableMap.putIfAbsent(mediaPlayer, true)
+                        //         // AudioStatus.mutableMap.putIfAbsent(mediaPlayer, 100)
+                        //         // FinishStatusMap.mutableMap.putIfAbsent(mediaPlayer, false)
+                        //
+                        //         MediaPlayerListStatus.mutableMap.value.put(
+                        //             mediaPlayer,
+                        //             Status(isSelected = true, isFinished = false, volume = 100)
+                        //         )
+                        //     }
+                        // }
                     )}
                     4 -> { QuadLayout(
                         paths.value,
-                        {
-                            mediaPlayerList.value = it
-                            it.forEach{ mediaPlayer ->
-                                SelectStatusMap.mutableMap.putIfAbsent(mediaPlayer, true)
-                                AudioStatus.mutableMap.putIfAbsent(mediaPlayer, 100)
-                                FinishStatusMap.mutableMap.putIfAbsent(mediaPlayer, false)
-                                // mediaPlayer.audio().setVolume(AudioStatus.globalVolume)
-                                // AudioStatus.addPlayerSafely(mediaPlayer, 100)
-                            }
-                        }
+                        // {
+                        //     mediaPlayerList.value = it
+                        //     it.forEach{ mediaPlayer ->
+                        //         // SelectStatusMap.mutableMap.putIfAbsent(mediaPlayer, true)
+                        //         // AudioStatus.mutableMap.putIfAbsent(mediaPlayer, 100)
+                        //         // FinishStatusMap.mutableMap.putIfAbsent(mediaPlayer, false)
+                        //
+                        //         MediaPlayerListStatus.mutableMap.value.put(
+                        //             mediaPlayer,
+                        //             Status(isSelected = true, isFinished = false, volume = 100)
+                        //         )
+                        //     }
+                        // }
                     )}
                     5 -> { PentaLayout(
                         paths.value,
-                        {
-                            mediaPlayerList.value = it
-                            it.forEach{ mediaPlayer ->
-                                SelectStatusMap.mutableMap.putIfAbsent(mediaPlayer, true)
-                                AudioStatus.mutableMap.putIfAbsent(mediaPlayer, 100)
-                                FinishStatusMap.mutableMap.putIfAbsent(mediaPlayer, false)
-                                // mediaPlayer.audio().setVolume(AudioStatus.globalVolume)
-                                // AudioStatus.addPlayerSafely(mediaPlayer, 100)
-                            }
-                        }
+                        // {
+                        //     mediaPlayerList.value = it
+                        //     it.forEach{ mediaPlayer ->
+                        //         // SelectStatusMap.mutableMap.putIfAbsent(mediaPlayer, true)
+                        //         // AudioStatus.mutableMap.putIfAbsent(mediaPlayer, 100)
+                        //         // FinishStatusMap.mutableMap.putIfAbsent(mediaPlayer, false)
+                        //
+                        //         MediaPlayerListStatus.mutableMap.value.put(
+                        //             mediaPlayer,
+                        //             Status(isSelected = true, isFinished = false, volume = 100)
+                        //         )
+                        //     }
+                        // }
                     )}
                     6 -> { HexaLayout(
                         paths.value,
-                        {
-                            mediaPlayerList.value = it
-                            it.forEach{ mediaPlayer ->
-                                SelectStatusMap.mutableMap.putIfAbsent(mediaPlayer, true)
-                                AudioStatus.mutableMap.putIfAbsent(mediaPlayer, 100)
-                                FinishStatusMap.mutableMap.putIfAbsent(mediaPlayer, false)
-                                // mediaPlayer.audio().setVolume(AudioStatus.globalVolume)
-                                // AudioStatus.addPlayerSafely(mediaPlayer, 100)
-                            }
-                        }
+                        // {
+                        //     mediaPlayerList.value = it
+                        //     it.forEach{ mediaPlayer ->
+                        //         // SelectStatusMap.mutableMap.putIfAbsent(mediaPlayer, true)
+                        //         // AudioStatus.mutableMap.putIfAbsent(mediaPlayer, 100)
+                        //         // FinishStatusMap.mutableMap.putIfAbsent(mediaPlayer, false)
+                        //
+                        //         MediaPlayerListStatus.mutableMap.value.put(
+                        //             mediaPlayer,
+                        //             Status(isSelected = true, isFinished = false, volume = 100)
+                        //         )
+                        //     }
+                        // }
                     )}
                     7 -> { HeptalLayout(
                         paths.value,
-                        {
-                            mediaPlayerList.value = it
-                            it.forEach{ mediaPlayer ->
-                                SelectStatusMap.mutableMap.putIfAbsent(mediaPlayer, true)
-                                AudioStatus.mutableMap.putIfAbsent(mediaPlayer, 100)
-                                FinishStatusMap.mutableMap.putIfAbsent(mediaPlayer, false)
-                                // mediaPlayer.audio().setVolume(AudioStatus.globalVolume)
-                                // AudioStatus.addPlayerSafely(mediaPlayer, 100)
-                            }
-                        }
+                        // {
+                        //     mediaPlayerList.value = it
+                        //     it.forEach{ mediaPlayer ->
+                        //         // SelectStatusMap.mutableMap.putIfAbsent(mediaPlayer, true)
+                        //         // AudioStatus.mutableMap.putIfAbsent(mediaPlayer, 100)
+                        //         // FinishStatusMap.mutableMap.putIfAbsent(mediaPlayer, false)
+                        //
+                        //         MediaPlayerListStatus.mutableMap.value.put(
+                        //             mediaPlayer,
+                        //             Status(isSelected = true, isFinished = false, volume = 100)
+                        //         )
+                        //     }
+                        // }
                     )}
                     8 -> { OctaLayout(
                         paths.value,
-                        {
-                            mediaPlayerList.value = it
-                            it.forEach{ mediaPlayer ->
-                                SelectStatusMap.mutableMap.putIfAbsent(mediaPlayer, true)
-                                AudioStatus.mutableMap.putIfAbsent(mediaPlayer, 100)
-                                FinishStatusMap.mutableMap.putIfAbsent(mediaPlayer, false)
-                                // mediaPlayer.audio().setVolume(AudioStatus.globalVolume)
-                                // AudioStatus.addPlayerSafely(mediaPlayer, 100)
-                            }
-                        }
+                        // {
+                        //     mediaPlayerList.value = it
+                        //     it.forEach{ mediaPlayer ->
+                        //         // SelectStatusMap.mutableMap.putIfAbsent(mediaPlayer, true)
+                        //         // AudioStatus.mutableMap.putIfAbsent(mediaPlayer, 100)
+                        //         // FinishStatusMap.mutableMap.putIfAbsent(mediaPlayer, false)
+                        //
+                        //         MediaPlayerListStatus.mutableMap.value.put(
+                        //             mediaPlayer,
+                        //             Status(isSelected = true, isFinished = false, volume = 100)
+                        //         )
+                        //     }
+                        // }
                     )}
                     9 -> { NonaLayout(
                         paths.value,
-                        {
-                            mediaPlayerList.value = it
-                            it.forEach{ mediaPlayer ->
-                                SelectStatusMap.mutableMap.putIfAbsent(mediaPlayer, true)
-                                AudioStatus.mutableMap.putIfAbsent(mediaPlayer, 100)
-                                FinishStatusMap.mutableMap.putIfAbsent(mediaPlayer, false)
-                                // mediaPlayer.audio().setVolume(AudioStatus.globalVolume)
-                                // AudioStatus.addPlayerSafely(mediaPlayer, 100)
-                            }
-                        }
+                        // {
+                        //     mediaPlayerList.value = it
+                        //     it.forEach{ mediaPlayer ->
+                        //         // SelectStatusMap.mutableMap.putIfAbsent(mediaPlayer, true)
+                        //         // AudioStatus.mutableMap.putIfAbsent(mediaPlayer, 100)
+                        //         // FinishStatusMap.mutableMap.putIfAbsent(mediaPlayer, false)
+                        //
+                        //         MediaPlayerListStatus.mutableMap.value.put(
+                        //             mediaPlayer,
+                        //             Status(isSelected = true, isFinished = false, volume = 100)
+                        //         )
+                        //     }
+                        // }
                     )}
 
                     else -> { /* 已经塞不下了 */ }
                 }
             }
 
-            BottomController(controllerHeight, mediaPlayerList.value)
+            BottomController(controllerHeight/* , mediaPlayerList.value */)
         }
     }
 }

@@ -10,7 +10,8 @@ object FinishStatusMap {
 
 fun FinishStatusMap.isAllFinished(): Boolean{
     this.mutableMap.forEach { finishStatus ->
-        if(SelectStatusMap.mutableMap[finishStatus.key] == true && !finishStatus.value){
+        val isSelected = MediaPlayerListStatus.mutableMap.value[finishStatus.key]?.isSelected
+        if(isSelected == true && !finishStatus.value){
             return false
         }
     }

@@ -15,7 +15,7 @@ import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer
 @Composable
 fun PentaLayout(
     paths: List<String>,
-    onMediaPlayerList: (List<EmbeddedMediaPlayer>) -> Unit
+    // onMediaPlayerList: (List<EmbeddedMediaPlayer>) -> Unit
 ){
     if(paths.size != 5) throw Exception("程序错误。")
 
@@ -64,21 +64,21 @@ fun PentaLayout(
         }
         val constraintList = listOf(panel1Constraint, panel2Constraint, panel3Constraint, panel4Constraint, panel5Constraint)
 
-        val mediaPlayerList = mutableListOf<EmbeddedMediaPlayer>()
+        // val mediaPlayerList = mutableListOf<EmbeddedMediaPlayer>()
         for(i in 0 until paths.size){
             SingleVideoPanelItem(
                 paths[i],
-                {mediaPlayer ->
-                    mediaPlayerList.add(mediaPlayer)
-                },
-                {},
+                // {mediaPlayer ->
+                //     mediaPlayerList.add(mediaPlayer)
+                // },
+                // {},
                 constraintList[i].then(Modifier.fillMaxSize(1/3f))
             )
         }
-        LaunchedEffect(mediaPlayerList.size){
-            if(mediaPlayerList.size == 5){
-                onMediaPlayerList(mediaPlayerList)
-            }
-        }
+        // LaunchedEffect(mediaPlayerList.size){
+        //     if(mediaPlayerList.size == 5){
+        //         onMediaPlayerList(mediaPlayerList)
+        //     }
+        // }
     }
 }

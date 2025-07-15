@@ -14,7 +14,7 @@ import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer
 @Composable
 fun TripleLayout(
     paths: List<String>,
-    onMediaPlayerList: (List<EmbeddedMediaPlayer>) -> Unit
+    // onMediaPlayerList: (List<EmbeddedMediaPlayer>) -> Unit
 ){
     if(paths.size != 3) throw Exception("程序错误。")
 
@@ -44,21 +44,21 @@ fun TripleLayout(
         }
         val constraintList = listOf(panel1Constraint, panel2Constraint, panel3Constraint)
 
-        val mediaPlayerList = mutableListOf<EmbeddedMediaPlayer>()
+        // val mediaPlayerList = mutableListOf<EmbeddedMediaPlayer>()
         for(i in 0 until paths.size){
             SingleVideoPanelItem(
                 paths[i],
-                {mediaPlayer ->
-                    mediaPlayerList.add(mediaPlayer)
-                },
-                {},
+                // {mediaPlayer ->
+                //     mediaPlayerList.add(mediaPlayer)
+                // },
+                // {},
                 constraintList[i].then(Modifier.fillMaxSize(0.5f))
             )
         }
-        LaunchedEffect(mediaPlayerList.size){
-            if(mediaPlayerList.size == 3){
-                onMediaPlayerList(mediaPlayerList)
-            }
-        }
+        // LaunchedEffect(mediaPlayerList.size){
+        //     if(mediaPlayerList.size == 3){
+        //         onMediaPlayerList(mediaPlayerList)
+        //     }
+        // }
     }
 }

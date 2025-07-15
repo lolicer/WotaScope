@@ -13,7 +13,7 @@ import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer
 @Composable
 fun SingleLayout(
     paths: List<String>,
-    onMediaPlayerList: (List<EmbeddedMediaPlayer>) -> Unit
+    // onMediaPlayerList: (List<EmbeddedMediaPlayer>) -> Unit
 ){
     if(paths.size != 1) throw Exception("程序错误。")
 
@@ -29,21 +29,21 @@ fun SingleLayout(
         }
         val constraintList = listOf(panel1Constraint)
 
-        val mediaPlayerList = mutableListOf<EmbeddedMediaPlayer>()
+        // val mediaPlayerList = mutableListOf<EmbeddedMediaPlayer>()
         for(i in 0 until paths.size){
             SingleVideoPanelItem(
                 paths[i],
-                {mediaPlayer ->
-                    mediaPlayerList.add(mediaPlayer)
-                },
-                {},
+                // {mediaPlayer ->
+                //     mediaPlayerList.add(mediaPlayer)
+                // },
+                // {},
                 constraintList[i]
             )
         }
-        LaunchedEffect(mediaPlayerList.size){
-            if(mediaPlayerList.size == 1){
-                onMediaPlayerList(mediaPlayerList)
-            }
-        }
+        // LaunchedEffect(mediaPlayerList.size){
+        //     if(mediaPlayerList.size == 1){
+        //         onMediaPlayerList(mediaPlayerList)
+        //     }
+        // }
     }
 }
