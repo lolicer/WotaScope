@@ -5,15 +5,19 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.onClick
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
@@ -28,11 +32,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import org.jetbrains.compose.resources.painterResource
 import pers.lolicer.wotascope.components.singleVideoBar.VerticalSlider
 import pers.lolicer.wotascope.components.videoStatus.AudioStatus
+import pers.lolicer.wotascope.components.videoStatus.RemoveVideoPlayerStatus
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer
+import wotascope.composeapp.generated.resources.Res
+import wotascope.composeapp.generated.resources.media_close
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun SingleVideoFloatWindows(
     modifier: Modifier,
@@ -82,13 +90,22 @@ fun SingleVideoFloatWindows(
         enter = slideInHorizontally { it } + fadeIn(),
         exit = slideOutHorizontally { it } + fadeOut()
     ) {
+        val maxSize = (screenSize.width * 1/20).dp
         Box(
             modifier = Modifier
-                .size((screenSize.width * 1/20).dp)
-                .background(Color(0xFF4CAF50)),
+                .size(maxSize)
+                .onClick{
+                    RemoveVideoPlayerStatus.value.value = mediaPlayer
+                },
             contentAlignment = Alignment.Center
         ) {
-            Text("→", color = Color.White, fontSize = 24.sp)
+            Spacer(modifier = Modifier.size(maxSize / 1.6f).background(color = Color.LightGray))
+            Icon(
+                modifier = Modifier.size(maxSize),
+                painter = painterResource(Res.drawable.media_close),
+                contentDescription = "移除视频",
+                tint = Color.Red
+            )
         }
     }
 

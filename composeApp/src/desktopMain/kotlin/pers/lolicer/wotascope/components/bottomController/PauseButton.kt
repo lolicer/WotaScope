@@ -164,7 +164,9 @@ fun PauseButton(
                 }
             }
             mediaPlayer.events().addMediaPlayerEventListener(listener)
-            onDispose { mediaPlayer.events().removeMediaPlayerEventListener(listener) }
+            onDispose {
+                mediaPlayer.events().removeMediaPlayerEventListener(listener)
+            }
         }
     }
 }
