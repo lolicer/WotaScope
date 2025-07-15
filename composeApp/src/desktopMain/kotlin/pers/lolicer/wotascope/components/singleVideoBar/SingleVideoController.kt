@@ -101,7 +101,6 @@ fun ProgressBar(
     LaunchedEffect(Unit){
         snapshotFlow {ProgressStatus.value.value}
             .collect {
-                println("cil")
                 progress.value = mediaPlayer.status().position()
             }
     }

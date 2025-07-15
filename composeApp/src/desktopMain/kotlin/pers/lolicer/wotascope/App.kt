@@ -28,8 +28,12 @@ import pers.lolicer.wotascope.components.videoLayout.SingleLayout
 import pers.lolicer.wotascope.components.videoLayout.TripleLayout
 import pers.lolicer.wotascope.components.videoStatus.AudioStatus
 import pers.lolicer.wotascope.components.videoStatus.FinishStatusMap
+import pers.lolicer.wotascope.components.videoStatus.ProgressStatus
+import pers.lolicer.wotascope.components.videoStatus.RemoveVideoPlayerStatus
 import uk.co.caprica.vlcj.player.base.MediaPlayer
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer
+import java.io.File
+import java.net.URI
 import kotlin.collections.emptyList
 
 @Composable
@@ -183,5 +187,33 @@ fun App(
 
             BottomController(controllerHeight, mediaPlayerList.value)
         }
+
+        LaunchedEffect(Unit){
+            snapshotFlow {RemoveVideoPlayerStatus.value.value}
+                .collect { newMediaPlayer ->
+                    if(newMediaPlayer != null){
+                        val newPath = newMediaPlayer.media().info().mrl().convert()
+
+                        mediaPlayerList.value = mediaPlayerList.value.filter { mediaPlayer ->
+                            mediaPlayer != newMediaPlayer
+                        }
+                        paths.value = paths.value.filter { path ->
+                            path != newPath
+                        }
+
+                        RemoveVideoPlayerStatus.value.value = null
+                        // try {
+                        //     newMediaPlayer.release()
+                        // }
+                        // catch(e: Exception){
+                        //     println(e)
+                        // }
+                    }
+                }
+        }
     }
+}
+
+fun String.convert(): String{
+    return File(URI(this)).path
 }

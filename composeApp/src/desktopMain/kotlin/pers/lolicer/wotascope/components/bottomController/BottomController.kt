@@ -23,6 +23,7 @@ import pers.lolicer.wotascope.components.videoStatus.isAllFinished
 import uk.co.caprica.vlcj.player.base.MediaPlayer
 import uk.co.caprica.vlcj.player.base.MediaPlayerEventAdapter
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer
+import java.lang.Error
 
 @Composable
 fun BottomController(
@@ -66,6 +67,19 @@ fun BottomController(
                     if(FinishStatusMap.isAllFinished()){
                         isAnyVideoPlaying.value = false
                     }
+                }
+                override fun playing(mediaPlayer: MediaPlayer?) {
+                    isAnyVideoPlaying.value = true
+                }
+
+                override fun paused(mediaPlayer: MediaPlayer?) {
+                    var res = false
+                    mediaPlayerList.forEach { mediaPlayer ->
+                        if(mediaPlayer.status().isPlaying){
+                            res = true
+                        }
+                    }
+                    isAnyVideoPlaying.value = res
                 }
             }
             mediaPlayer.events().addMediaPlayerEventListener(listener)

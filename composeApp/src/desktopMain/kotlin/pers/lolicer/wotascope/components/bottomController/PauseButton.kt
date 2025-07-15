@@ -79,7 +79,6 @@ fun PauseButton(
     mediaPlayerList: List<EmbeddedMediaPlayer>,
     isAnyVideoPlaying: MutableState<Boolean>
 ){
-    val scope = rememberCoroutineScope()
     // 这段代码在每次界面重组时运行，防止“添加视频引发的页面重组”导致的isAnyVideoPlaying未更新为false的问题。
     // 后续想办法优化一下，每次重组都运行不太好，应该改掉。
     var res = false
@@ -144,27 +143,5 @@ fun PauseButton(
             contentDescription = if(isAnyVideoPlaying.value) "暂停" else "播放",
             tint = Color.White
         )
-    }
-
-    for(mediaPlayer in mediaPlayerList){
-        DisposableEffect(mediaPlayer){
-            val listener = object : MediaPlayerEventAdapter() {
-                override fun playing(mediaPlayer: MediaPlayer?) {
-                    isAnyVideoPlaying.value = true
-                }
-
-                override fun paused(mediaPlayer: MediaPlayer?) {
-                    var res = false
-                    mediaPlayerList.forEach { mediaPlayer ->
-                        if(mediaPlayer.status().isPlaying){
-                            res = true
-                        }
-                    }
-                    isAnyVideoPlaying.value = res
-                }
-            }
-            mediaPlayer.events().addMediaPlayerEventListener(listener)
-            onDispose { mediaPlayer.events().removeMediaPlayerEventListener(listener) }
-        }
     }
 }
