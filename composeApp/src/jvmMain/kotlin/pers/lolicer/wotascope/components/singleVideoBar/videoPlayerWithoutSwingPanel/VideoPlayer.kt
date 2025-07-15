@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.asComposeImageBitmap
 import org.jetbrains.skia.Bitmap
 import org.jetbrains.skia.ColorAlphaType
 import org.jetbrains.skia.ImageInfo
+import pers.lolicer.wotascope.components.videoStatus.MediaPlayerListStatus
 import pers.lolicer.wotascope.components.videoStatus.SelectStatusMap
 import uk.co.caprica.vlcj.player.base.MediaPlayer
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer
@@ -116,7 +117,7 @@ fun VideoPlayer(
     LaunchedEffect(Unit){
         mediaPlayer.value!!.media().startPaused(mrl)
         isPlayerReady = true
-        SelectStatusMap.mutableMap.putIfAbsent(mediaPlayer.value!!, true)
+        // SelectStatusMap.mutableMap.putIfAbsent(mediaPlayer.value!!, true)
     }
 
     DisposableEffect(mediaPlayer) {
@@ -124,10 +125,11 @@ fun VideoPlayer(
             override fun mediaPlayerReady(mediaPlayer: MediaPlayer) {
             }
         }
-        mediaPlayer.value!!.events().addMediaPlayerEventListener(listener)
+        mediaPlayer.value?.events()?.addMediaPlayerEventListener(listener)
         onDispose {
-            mediaPlayer.value!!.events().removeMediaPlayerEventListener(listener)
-            mediaPlayer.value!!.release()
+            mediaPlayer.value?.events()?.removeMediaPlayerEventListener(listener)
+            MediaPlayerListStatus.mutableMap.value.remove(mediaPlayer.value)
+            mediaPlayer.value?.release()
         }
     }
 }

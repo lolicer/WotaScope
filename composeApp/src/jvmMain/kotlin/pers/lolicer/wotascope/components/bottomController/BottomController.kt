@@ -10,14 +10,17 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import pers.lolicer.wotascope.components.videoStatus.FinishStatusMap
+import pers.lolicer.wotascope.components.videoStatus.MediaPlayerListStatus
 import pers.lolicer.wotascope.components.videoStatus.SelectStatusMap
 import pers.lolicer.wotascope.components.videoStatus.isAllFinished
 import uk.co.caprica.vlcj.player.base.MediaPlayer
@@ -27,7 +30,7 @@ import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer
 @Composable
 fun BottomController(
     controllerHeight: Dp,
-    mediaPlayerList: List<EmbeddedMediaPlayer>
+    // mediaPlayerList: List<EmbeddedMediaPlayer>
 ){
     val isAnyVideoPlaying = remember { mutableStateOf(false) }
 
@@ -39,16 +42,16 @@ fun BottomController(
         verticalAlignment = Alignment.CenterVertically
     ){
         Spacer(Modifier.width((controllerHeight.value * 0.5).dp))
-        Volume(Modifier.width(controllerHeight * 3), mediaPlayerList)
+        Volume(Modifier.width(controllerHeight * 3), /* mediaPlayerList */)
         Row(
             modifier = Modifier.weight(1f),
             horizontalArrangement = Arrangement.Center
         ){
-            SkipBackButton(Modifier.size(controllerHeight), mediaPlayerList)
-            RewindButton(Modifier.size(controllerHeight), mediaPlayerList)
-            PauseButton(Modifier.size(controllerHeight), mediaPlayerList, isAnyVideoPlaying)
-            FastForwardButton(Modifier.size(controllerHeight), mediaPlayerList)
-            SkipForwardButton(Modifier.size(controllerHeight), mediaPlayerList)
+            SkipBackButton(Modifier.size(controllerHeight), /* mediaPlayerList */)
+            RewindButton(Modifier.size(controllerHeight), /* mediaPlayerList */)
+            PauseButton(Modifier.size(controllerHeight), /* mediaPlayerList ,*/ isAnyVideoPlaying)
+            FastForwardButton(Modifier.size(controllerHeight), /* mediaPlayerList */)
+            SkipForwardButton(Modifier.size(controllerHeight), /* mediaPlayerList */)
         }
 
         Spacer(Modifier.width(controllerHeight * 2))
@@ -56,14 +59,26 @@ fun BottomController(
         Spacer(Modifier.width((controllerHeight.value * 0.5).dp))
     }
 
-    for(mediaPlayer in mediaPlayerList){
+    val map = remember { mutableStateOf(MediaPlayerListStatus.mutableMap.value) }
+    LaunchedEffect(Unit) {
+        snapshotFlow { MediaPlayerListStatus.mutableMap.value } // 转为不可变 Map
+            .collect { newMap ->
+                println("test")
+                map.value = newMap
+            }
+    }
+
+    map.value.forEach{ elem ->
+        val mediaPlayer = elem.key
+        println("tian jian funi")
         DisposableEffect(mediaPlayer){
             val listener = object : MediaPlayerEventAdapter() {
                 override fun finished(mediaPlayer: MediaPlayer) {
-                    FinishStatusMap.mutableMap[mediaPlayer as EmbeddedMediaPlayer] = true
+                    // FinishStatusMap.mutableMap[mediaPlayer as EmbeddedMediaPlayer] = true
+                    MediaPlayerListStatus.mutableMap.value[mediaPlayer]?.isFinished = true
                     println("$mediaPlayer JieShu Le")
 
-                    if(FinishStatusMap.isAllFinished()){
+                    if(MediaPlayerListStatus.isAllFinished()){
                         isAnyVideoPlaying.value = false
                     }
                 }
@@ -74,11 +89,12 @@ fun BottomController(
     }
 }
 
-fun List<EmbeddedMediaPlayer>.isAnyPlaying(): Boolean{
-    for(mediaPlayer in this){
-        if(SelectStatusMap.mutableMap[mediaPlayer] == true && mediaPlayer.status().isPlaying){
-            return true
-        }
-    }
-    return false
-}
+// fun List<EmbeddedMediaPlayer>.isAnyPlaying(): Boolean{
+//     for(mediaPlayer in this){
+//         val isSelected = MediaPlayerListStatus.mutableMap.value[mediaPlayer]?.isSelected
+//         if(isSelected == true && mediaPlayer.status().isPlaying){
+//             return true
+//         }
+//     }
+//     return false
+// }

@@ -27,7 +27,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import pers.lolicer.wotascope.components.singleVideoBar.videoPlayerWithoutSwingPanel.SingleVideoFloatWindows
 import pers.lolicer.wotascope.components.singleVideoBar.videoPlayerWithoutSwingPanel.VideoPlayer
+import pers.lolicer.wotascope.components.videoStatus.MediaPlayerListStatus
 import pers.lolicer.wotascope.components.videoStatus.SelectStatusMap
+import pers.lolicer.wotascope.components.videoStatus.Status
 import uk.co.caprica.vlcj.player.base.MediaPlayer
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer
 
@@ -35,8 +37,8 @@ import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer
 @Composable
 fun SingleVideoPanelItem(
     path: String,
-    onMediaPlayer: (EmbeddedMediaPlayer) -> Unit,
-    onSelectedChanged: (Boolean) -> Unit,
+    // onMediaPlayer: (EmbeddedMediaPlayer) -> Unit,
+    // onSelectedChanged: (Boolean) -> Unit,
     constraint: Modifier
 ){
     val mediaPlayer: MutableState<EmbeddedMediaPlayer?> = remember { mutableStateOf(null) }
@@ -92,19 +94,19 @@ fun SingleVideoPanelItem(
 
         LaunchedEffect(isSelected.value){
             if(mediaPlayer.value != null){
-                onSelectedChanged(isSelected.value)
+                // onSelectedChanged(isSelected.value)
 
                 if(!isSelected.value){
                     mediaPlayer.value!!.controls().setPause(true)
                 }
-
-                if(SelectStatusMap.mutableMap.containsKey(mediaPlayer.value)){
-                    SelectStatusMap.mutableMap[mediaPlayer.value!!] = isSelected.value
+                if(MediaPlayerListStatus.mutableMap.value.containsKey(mediaPlayer.value)){
+                    // SelectStatusMap.mutableMap[mediaPlayer.value!!] = isSelected.value
+                    MediaPlayerListStatus.mutableMap.value[mediaPlayer.value]?.let {it.isSelected = isSelected.value}
                 }
                 else{
-                    println("SelectStatusMap.mutableMap:${SelectStatusMap.mutableMap}")
-                    println("But mediaPlayer.value: ${mediaPlayer.value}")
-                    throw Exception("SelectCommandMap ERROR")
+                    // println("SelectStatusMap.mutableMap:${SelectStatusMap.mutableMap}")
+                    // println("But mediaPlayer.value: ${mediaPlayer.value}")
+                    // throw Exception("SelectCommandMap ERROR")
                 }
             }
         }
@@ -112,7 +114,8 @@ fun SingleVideoPanelItem(
         LaunchedEffect(mediaPlayer.value){
             if(mediaPlayer.value != null && !hasReturned.value){
                 // println("mediaPlayer.value = ${mediaPlayer.value}")
-                onMediaPlayer(mediaPlayer.value!!)
+                // onMediaPlayer(mediaPlayer.value!!)
+                MediaPlayerListStatus.mutableMap.value.putIfAbsent(mediaPlayer.value!!, Status(isSelected = true, isFinished = false, volume = 100))
                 hasReturned.value = true
 
                 isReady.value = true

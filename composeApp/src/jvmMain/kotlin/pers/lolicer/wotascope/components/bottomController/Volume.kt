@@ -24,6 +24,8 @@ import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.painterResource
 import pers.lolicer.wotascope.components.videoStatus.AudioStatus
+import pers.lolicer.wotascope.components.videoStatus.MediaPlayerListStatus
+import pers.lolicer.wotascope.components.videoStatus.isAllMute
 import uk.co.caprica.vlcj.player.base.MediaPlayer
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer
 import wotascope.composeapp.generated.resources.Res
@@ -36,10 +38,11 @@ import wotascope.composeapp.generated.resources.volume_2
 @Composable
 fun Volume(
     modifier: Modifier,
-    mediaPlayerList: List<EmbeddedMediaPlayer>
+    // mediaPlayerList: List<EmbeddedMediaPlayer>
 ){
     val isAllMute = remember { mutableStateOf(false) }
-    val progress = remember { mutableStateOf(AudioStatus.globalVolumeProp) }
+    // val progress = remember { mutableStateOf(AudioStatus.globalVolumeProp) }
+    val progress = remember { mutableStateOf(MediaPlayerListStatus.globalVolumeProp) }
 
     // for(mediaPlayer in mediaPlayerList){
     //     print(mediaPlayer.audio().volume().toString() + ' ')
@@ -52,15 +55,15 @@ fun Volume(
     ){
         Icon(
             modifier = Modifier.onClick{
-                if(mediaPlayerList.isAllMute()){
-                    mediaPlayerList.forEach {
-                        it.audio().isMute = false
+                if(MediaPlayerListStatus.isAllMute()){
+                    MediaPlayerListStatus.mutableMap.value.forEach { elem ->
+                        elem.key.audio().isMute = false
                         isAllMute.value = false
                     }
                 }
                 else{
-                    mediaPlayerList.forEach {
-                        it.audio().isMute = true
+                    MediaPlayerListStatus.mutableMap.value.forEach { elem ->
+                        elem.key.audio().isMute = true
                         isAllMute.value = true
                     }
                 }
@@ -70,7 +73,7 @@ fun Volume(
                     if(isAllMute.value)
                         Res.drawable.volume_0
                     else
-                        if(AudioStatus.globalVolumeProp <= 0.66)
+                        if(MediaPlayerListStatus.globalVolumeProp <= 0.66)
                             Res.drawable.volume_1
                         else
                             Res.drawable.volume_2
@@ -86,9 +89,11 @@ fun Volume(
             value = progress.value,
             onValueChange = {
                 progress.value = it
-                AudioStatus.globalVolumeProp = it
-                for(mediaPlayer in mediaPlayerList){
-                    val oldVolume = AudioStatus.mutableMap[mediaPlayer]!!
+                MediaPlayerListStatus.globalVolumeProp = it
+                for(elem in MediaPlayerListStatus.mutableMap.value){
+                    val mediaPlayer = elem.key
+                    // val oldVolume = AudioStatus.mutableMap[mediaPlayer]!!
+                    val oldVolume = MediaPlayerListStatus.mutableMap.value[mediaPlayer]?.volume!!
                     mediaPlayer.audio().setVolume((oldVolume * it).toInt())
                 }
             },
@@ -107,9 +112,9 @@ fun Volume(
     }
 }
 
-fun List<EmbeddedMediaPlayer>.isAllMute(): Boolean {
-    this.forEach {
-        if(!it.audio().isMute) return false
-    }
-    return true
-}
+// fun List<EmbeddedMediaPlayer>.isAllMute(): Boolean {
+//     this.forEach {
+//         if(!it.audio().isMute) return false
+//     }
+//     return true
+// }

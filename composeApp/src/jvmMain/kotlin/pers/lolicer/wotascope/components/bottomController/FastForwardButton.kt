@@ -20,6 +20,7 @@ import androidx.compose.ui.input.pointer.onPointerEvent
 import androidx.compose.ui.input.pointer.pointerHoverIcon
 import org.jetbrains.compose.resources.painterResource
 import pers.lolicer.wotascope.components.videoStatus.FinishStatusMap
+import pers.lolicer.wotascope.components.videoStatus.MediaPlayerListStatus
 import pers.lolicer.wotascope.components.videoStatus.ProgressStatus
 import pers.lolicer.wotascope.components.videoStatus.SelectStatusMap
 import uk.co.caprica.vlcj.player.base.MediaPlayer
@@ -32,7 +33,7 @@ import wotascope.composeapp.generated.resources.media_fastforward
 @Composable
 fun FastForwardButton(
     modifier: Modifier,
-    mediaPlayerList: List<EmbeddedMediaPlayer>
+    // mediaPlayerList: List<EmbeddedMediaPlayer>
 ){
     var active by remember { mutableStateOf(false) }
 
@@ -48,14 +49,20 @@ fun FastForwardButton(
                 .onPointerEvent(PointerEventType.Exit) { active = false }
                 .onClick{
                     ProgressStatus.value.value = !ProgressStatus.value.value
-                    SelectStatusMap.mutableMap.forEach { elem ->
-                        if(elem.value){
-                            if(FinishStatusMap.mutableMap[elem.key] == false){
-                                elem.key.controls().skipTime(1000/30)
-                                elem.key.controls().setPause(true)
-                            }
+                    MediaPlayerListStatus.mutableMap.value.forEach { elem ->
+                        if(elem.value.isSelected && !elem.value.isFinished){
+                            elem.key.controls().skipTime(1000/30)
+                            elem.key.controls().setPause(true)
                         }
                     }
+                    // SelectStatusMap.mutableMap.forEach { elem ->
+                    //     if(elem.value){
+                    //         if(FinishStatusMap.mutableMap[elem.key] == false){
+                    //             elem.key.controls().skipTime(1000/30)
+                    //             elem.key.controls().setPause(true)
+                    //         }
+                    //     }
+                    // }
                 },
             painter = painterResource(Res.drawable.media_fastforward),
             contentDescription = "前进一帧",

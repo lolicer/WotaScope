@@ -21,6 +21,7 @@ import androidx.compose.ui.input.pointer.onPointerEvent
 import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.text.font.FontWeight
 import kotlinx.coroutines.launch
+import pers.lolicer.wotascope.components.videoStatus.MediaPlayerListStatus
 import pers.lolicer.wotascope.components.videoStatus.SelectStatusMap
 
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalFoundationApi::class)
@@ -52,11 +53,11 @@ fun SpeedButton(
                 .onPointerEvent(PointerEventType.Enter) { active = true }
                 .onPointerEvent(PointerEventType.Exit) { active = false }
                 .onClick{
-                    if(SelectStatusMap.mutableMap.isNotEmpty()){
+                    if(MediaPlayerListStatus.mutableMap.value.isNotEmpty()){
                         var rate = idx.value + 1
                         if(rate == 6) rate = 0
 
-                        SelectStatusMap.mutableMap.forEach {elem ->
+                        MediaPlayerListStatus.mutableMap.value.forEach { elem ->
                             if(elem.key.status().isPlayable){
                                 if(elem.key.status().isPlaying){
                                     elem.key.controls().setPause(true)
