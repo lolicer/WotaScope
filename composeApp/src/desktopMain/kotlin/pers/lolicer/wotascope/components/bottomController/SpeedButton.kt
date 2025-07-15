@@ -4,7 +4,6 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.onClick
-import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -20,7 +19,7 @@ import androidx.compose.ui.input.pointer.PointerEventType
 import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.onPointerEvent
 import androidx.compose.ui.input.pointer.pointerHoverIcon
-import jdk.internal.util.xml.impl.Pair
+import androidx.compose.ui.text.font.FontWeight
 import kotlinx.coroutines.launch
 import pers.lolicer.wotascope.components.videoStatus.SelectStatusMap
 
@@ -80,7 +79,8 @@ fun SpeedButton(
                     }
                 },
             text = speedMap[idx.value]!!.first,
-            color = Color.White
+            color = Color.White,
+            fontWeight = FontWeight.SemiBold
         )
     }
 }
