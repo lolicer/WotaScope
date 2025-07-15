@@ -30,7 +30,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import pers.lolicer.wotascope.components.singleVideoBar.VerticalSlider
 import pers.lolicer.wotascope.components.videoStatus.AudioStatus
-import uk.co.caprica.vlcj.player.base.MediaPlayer
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -78,14 +77,14 @@ fun SingleVideoFloatWindows(
 
     // 右上关闭选项
     AnimatedVisibility(
-        modifier = modifier.offset(x = (screenSize.width * 9/10).dp),
+        modifier = modifier.offset(x = (screenSize.width * 19/20 - 10).dp, y = 10.dp),
         visible = isHovered,
         enter = slideInHorizontally { it } + fadeIn(),
         exit = slideOutHorizontally { it } + fadeOut()
     ) {
         Box(
             modifier = Modifier
-                .size(60.dp)
+                .size((screenSize.width * 1/20).dp)
                 .background(Color(0xFF4CAF50)),
             contentAlignment = Alignment.Center
         ) {
