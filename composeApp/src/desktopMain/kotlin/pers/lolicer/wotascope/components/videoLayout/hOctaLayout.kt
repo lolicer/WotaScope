@@ -8,6 +8,7 @@ import androidx.compose.ui.focus.FocusRequester.Companion.createRefs
 import androidx.constraintlayout.compose.ChainStyle
 import androidx.constraintlayout.compose.ConstrainedLayoutReference
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.ConstraintSet
 import pers.lolicer.wotascope.components.singleVideoBar.SingleVideoPanelItem
 import uk.co.caprica.vlcj.player.base.MediaPlayer
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer
@@ -92,7 +93,8 @@ fun OctaLayout(
                 //     mediaPlayerList.add(mediaPlayer)
                 // },
                 // {},
-                constraintList[i].then(Modifier.fillMaxSize(1/3f))
+                constraintList[i].then(Modifier.fillMaxSize(1/3f)),
+                {}
             )
         }
         // LaunchedEffect(mediaPlayerList.size){
@@ -100,5 +102,64 @@ fun OctaLayout(
         //         onMediaPlayerList(mediaPlayerList)
         //     }
         // }
+    }
+}
+
+fun octaLayout(): ConstraintSet{
+    return ConstraintSet{
+        val (panel1, panel2, panel3, panel4, panel5, panel6, panel7, panel8) = createRefsFor("panel1", "panel2", "panel3", "panel4", "panel5", "panel6", "panel7", "panel8")
+
+        createHorizontalChain(panel1, panel2, panel3, chainStyle = ChainStyle.Spread)
+        createHorizontalChain(panel4, panel5, panel6, chainStyle = ChainStyle.Spread)
+        createHorizontalChain(panel7, panel8, chainStyle = ChainStyle.Packed)
+
+        constrain(panel1){
+            // start.linkTo(parent.start)
+            // end.linkTo(panel2.start)
+            top.linkTo(parent.top)
+            bottom.linkTo(panel4.top)
+        }
+        constrain(panel2){
+            // start.linkTo(panel1.end)
+            // end.linkTo(panel3.start)
+            top.linkTo(panel1.top)
+            bottom.linkTo(panel1.bottom)
+        }
+        constrain(panel3){
+            // start.linkTo(panel2.end)
+            // end.linkTo(parent.end)
+            top.linkTo(panel1.top)
+            bottom.linkTo(panel1.bottom)
+        }
+        constrain(panel4){
+            // start.linkTo(parent.start)
+            // end.linkTo(panel5.start)
+            top.linkTo(panel1.bottom)
+            bottom.linkTo(panel7.top)
+        }
+        constrain(panel5){
+            // start.linkTo(panel4.end)
+            // end.linkTo(panel6.start)
+            top.linkTo(panel4.top)
+            bottom.linkTo(panel4.bottom)
+        }
+        constrain(panel6){
+            // start.linkTo(panel5.end)
+            // end.linkTo(parent.end)
+            top.linkTo(panel4.top)
+            bottom.linkTo(panel4.bottom)
+        }
+        constrain(panel7){
+            // start.linkTo(parent.start)
+            // end.linkTo(panel8.start)
+            top.linkTo(panel4.bottom)
+            bottom.linkTo(parent.bottom)
+        }
+        constrain(panel8){
+            // start.linkTo(panel7.end)
+            // end.linkTo(parent.end)
+            top.linkTo(panel7.top)
+            bottom.linkTo(panel7.bottom)
+        }
     }
 }

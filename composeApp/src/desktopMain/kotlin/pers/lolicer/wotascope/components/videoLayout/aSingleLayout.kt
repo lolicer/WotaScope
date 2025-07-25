@@ -2,10 +2,12 @@ package pers.lolicer.wotascope.components.videoLayout
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester.Companion.createRefs
 import androidx.constraintlayout.compose.ConstrainedLayoutReference
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.ConstraintSet
 import pers.lolicer.wotascope.components.singleVideoBar.SingleVideoPanelItem
 import uk.co.caprica.vlcj.player.base.MediaPlayer
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer
@@ -37,7 +39,8 @@ fun SingleLayout(
                 //     mediaPlayerList.add(mediaPlayer)
                 // },
                 // {},
-                constraintList[i]
+                constraintList[i],
+                {}
             )
         }
         // LaunchedEffect(mediaPlayerList.size){
@@ -45,5 +48,19 @@ fun SingleLayout(
         //         onMediaPlayerList(mediaPlayerList)
         //     }
         // }
+    }
+}
+
+fun singleLayout(): ConstraintSet{
+    // val refs = createRefs()
+    // val panel1 = ConstrainedLayoutReference(refs.component1())
+    return ConstraintSet{
+        val panel1 = createRefFor("panel1")
+        constrain(panel1){
+            start.linkTo(parent.start)
+            end.linkTo(parent.end)
+            top.linkTo(parent.top)
+            bottom.linkTo(parent.bottom)
+        }
     }
 }

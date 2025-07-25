@@ -39,7 +39,8 @@ fun SingleVideoPanelItem(
     path: String,
     // onMediaPlayer: (EmbeddedMediaPlayer) -> Unit,
     // onSelectedChanged: (Boolean) -> Unit,
-    constraint: Modifier
+    constraint: Modifier,
+    onRemove: (String) -> Unit
 ){
     val mediaPlayer: MutableState<EmbeddedMediaPlayer?> = remember { mutableStateOf(null) }
     val isReady = remember { mutableStateOf(false) }
@@ -77,7 +78,10 @@ fun SingleVideoPanelItem(
                         modifier = Modifier.zIndex(2f),
                         mediaPlayer = mediaPlayer.value!!,
                         isHovered = active && isSelected.value,
-                        screenSize
+                        screenSize = screenSize,
+                        onRemove = {
+                            onRemove(path)
+                        }
                     )
                 }
                 VideoPlayer(

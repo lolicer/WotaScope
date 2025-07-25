@@ -8,6 +8,7 @@ import androidx.compose.ui.focus.FocusRequester.Companion.createRefs
 import androidx.constraintlayout.compose.ChainStyle
 import androidx.constraintlayout.compose.ConstrainedLayoutReference
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.ConstraintSet
 import pers.lolicer.wotascope.components.singleVideoBar.SingleVideoPanelItem
 import uk.co.caprica.vlcj.player.base.MediaPlayer
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer
@@ -85,7 +86,8 @@ fun HeptalLayout(
                 //     mediaPlayerList.add(mediaPlayer)
                 // },
                 // {},
-                constraintList[i].then(Modifier.fillMaxSize(1/3f))
+                constraintList[i].then(Modifier.fillMaxSize(1/3f)),
+                {}
             )
         }
         // LaunchedEffect(mediaPlayerList.size){
@@ -93,5 +95,44 @@ fun HeptalLayout(
         //         onMediaPlayerList(mediaPlayerList)
         //     }
         // }
+    }
+}
+
+fun heptalLayout(): ConstraintSet{
+    return ConstraintSet{
+        val (panel1, panel2, panel3, panel4, panel5, panel6, panel7) = createRefsFor("panel1", "panel2", "panel3", "panel4", "panel5", "panel6", "panel7")
+
+        createHorizontalChain(panel1, panel2, chainStyle = ChainStyle.Packed)
+        createHorizontalChain(panel3, panel4, panel5, chainStyle = ChainStyle.Spread)
+        createHorizontalChain(panel6, panel7, chainStyle = ChainStyle.Packed)
+
+        constrain(panel1){
+        top.linkTo(parent.top)
+        bottom.linkTo(panel3.top)
+    }
+        constrain(panel2){
+            top.linkTo(panel1.top)
+            bottom.linkTo(panel1.bottom)
+        }
+        constrain(panel3){
+            top.linkTo(panel1.bottom)
+            bottom.linkTo(panel6.top)
+        }
+        constrain(panel4){
+            top.linkTo(panel3.top)
+            bottom.linkTo(panel3.bottom)
+        }
+        constrain(panel5){
+            top.linkTo(panel3.top)
+            bottom.linkTo(panel3.bottom)
+        }
+        constrain(panel6){
+            top.linkTo(panel3.bottom)
+            bottom.linkTo(parent.bottom)
+        }
+        constrain(panel7){
+            top.linkTo(panel6.top)
+            bottom.linkTo(panel6.bottom)
+        }
     }
 }

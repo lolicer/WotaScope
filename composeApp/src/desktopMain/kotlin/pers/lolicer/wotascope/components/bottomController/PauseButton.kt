@@ -37,6 +37,7 @@ import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer
 import wotascope.composeapp.generated.resources.Res
 import wotascope.composeapp.generated.resources.media_pause
 import wotascope.composeapp.generated.resources.media_play
+import java.lang.Error
 import kotlin.collections.forEach
 
 
@@ -166,26 +167,13 @@ fun PauseButton(
         )
     }
 
-    for(elem in MediaPlayerListStatus.mutableMap.value){
-        val mediaPlayer = elem.key
-        DisposableEffect(mediaPlayer) {
-            val listener = object: MediaPlayerEventAdapter() {
-                override fun playing(mediaPlayer: MediaPlayer?) {
-                    isAnyVideoPlaying.value = true
-                }
-
-                override fun paused(mediaPlayer: MediaPlayer?) {
-                    var res = false
-                    MediaPlayerListStatus.mutableMap.value.forEach {elem ->
-                        if(elem.key.status().isPlaying) {
-                            res = true
-                        }
-                    }
-                    isAnyVideoPlaying.value = res
-                }
-            }
-            mediaPlayer.events().addMediaPlayerEventListener(listener)
-            onDispose {mediaPlayer.events().removeMediaPlayerEventListener(listener)}
-        }
-    }
+    // for(elem in MediaPlayerListStatus.mutableMap.value){
+    //     val mediaPlayer = elem.key
+    //     DisposableEffect(mediaPlayer) {
+    //         val listener = object: MediaPlayerEventAdapter() {
+    //         }
+    //         mediaPlayer.events().addMediaPlayerEventListener(listener)
+    //         onDispose {mediaPlayer.events().removeMediaPlayerEventListener(listener)}
+    //     }
+    // }
 }

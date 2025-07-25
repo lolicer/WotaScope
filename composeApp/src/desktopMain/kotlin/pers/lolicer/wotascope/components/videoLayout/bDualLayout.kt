@@ -7,6 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester.Companion.createRefs
 import androidx.constraintlayout.compose.ConstrainedLayoutReference
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.ConstraintSet
 import pers.lolicer.wotascope.components.singleVideoBar.SingleVideoPanelItem
 import uk.co.caprica.vlcj.player.base.MediaPlayer
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer
@@ -47,7 +48,8 @@ fun DualLayout(
                 //     mediaPlayerList.add(mediaPlayer)
                 // },
                 // {},
-                constraintList[i].then(Modifier.fillMaxSize(0.5f))
+                constraintList[i].then(Modifier.fillMaxSize(0.5f)),
+                {}
             )
         }
         // LaunchedEffect(mediaPlayerList.size){
@@ -55,5 +57,25 @@ fun DualLayout(
         //         onMediaPlayerList(mediaPlayerList)
         //     }
         // }
+    }
+}
+
+fun dualLayout(): ConstraintSet{
+    return ConstraintSet{
+        val (panel1, panel2) = createRefsFor("panel1", "panel2")
+        val guideline = createGuidelineFromTop(1 / 4f)
+
+        constrain(panel1) {
+            start.linkTo(parent.start)
+            end.linkTo(panel2.start)
+            top.linkTo(guideline)
+            bottom.linkTo(parent.bottom)
+        }
+        constrain(panel2) {
+            start.linkTo(panel1.end)
+            end.linkTo(parent.end)
+            top.linkTo(panel1.top)
+            bottom.linkTo(panel1.bottom)
+        }
     }
 }
