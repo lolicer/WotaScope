@@ -59,20 +59,34 @@ fun BottomController(
         Spacer(Modifier.width((controllerHeight.value * 0.5).dp))
     }
 
-    val map = remember { mutableStateOf(MediaPlayerListStatus.mutableMap.value) }
-    LaunchedEffect(Unit) {
-        snapshotFlow { MediaPlayerListStatus.mutableMap.value } // 转为不可变 Map
-            .collect { newMap ->
-                println("test")
-                map.value = newMap
-            }
-    }
+    // val map = remember { mutableStateOf(MediaPlayerListStatus.mutableMap.value) }
+    // LaunchedEffect(Unit) {
+    //     snapshotFlow { MediaPlayerListStatus.mutableMap.value } // 转为不可变 Map
+    //         .collect { newMap ->
+    //             println("test")
+    //             map.value = newMap
+    //         }
+    // }
 
-    map.value.forEach{ elem ->
+    MediaPlayerListStatus.mutableMap.value.forEach{ elem ->
         val mediaPlayer = elem.key
-        println("tian jian funi")
+        println("tian jian jianting")
         DisposableEffect(mediaPlayer){
             val listener = object : MediaPlayerEventAdapter() {
+                override fun playing(mediaPlayer: MediaPlayer?) {
+                    isAnyVideoPlaying.value = true
+                }
+
+                override fun paused(mediaPlayer: MediaPlayer?) {
+                    var res = false
+                    MediaPlayerListStatus.mutableMap.value.forEach {elem ->
+                        if(elem.key.status().isPlaying) {
+                            res = true
+                        }
+                    }
+                    isAnyVideoPlaying.value = res
+                }
+
                 override fun finished(mediaPlayer: MediaPlayer) {
                     // FinishStatusMap.mutableMap[mediaPlayer as EmbeddedMediaPlayer] = true
                     MediaPlayerListStatus.mutableMap.value[mediaPlayer]?.isFinished = true
@@ -83,7 +97,9 @@ fun BottomController(
                     }
                 }
             }
-            mediaPlayer.events().addMediaPlayerEventListener(listener)
+            if(mediaPlayer.media().isValid) {
+                mediaPlayer.events().addMediaPlayerEventListener(listener)
+            }
             onDispose { mediaPlayer.events().removeMediaPlayerEventListener(listener) }
         }
     }

@@ -28,7 +28,12 @@
     volume_1.svg: tabler:volume-2
   
     volume_2.svg: tabler:volume
-  
+
+- https://github.com/Tencent/tdesign-icons
+
+    media_close.svg: tdesign:close-circle-filled
+
+
 
 ### 不依赖`Swing Panel`的`Compose Multiplatform`播放器灵感来源
 - https://github.com/rjuszczyk/ComposeVideoPlayer

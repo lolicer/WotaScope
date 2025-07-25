@@ -3,6 +3,8 @@ package pers.lolicer.wotascope.components.singleVideoBar
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer
 import java.awt.FileDialog
 import java.awt.Frame
+import java.io.File
+import java.net.URI
 
 class ExtensionUtils {
     // 控制暂停和开始
@@ -29,5 +31,9 @@ class ExtensionUtils {
             paths.add(file.path)
 
         return paths.toList()
+    }
+
+    fun convertFileUrlToPath(url: String): String {
+        return File(URI.create(url)).path
     }
 }

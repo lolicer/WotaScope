@@ -54,7 +54,8 @@ fun SingleVideoFloatWindows(
     modifier: Modifier,
     mediaPlayer: EmbeddedMediaPlayer,
     isHovered: Boolean,
-    screenSize: IntSize
+    screenSize: IntSize,
+    onRemove: () -> Unit
 ){
     val columnSize = IntSize((screenSize.width * 1/25), (screenSize.height * 3/10))
     // 左下 音量滑块
@@ -109,7 +110,7 @@ fun SingleVideoFloatWindows(
                 .clip(CircleShape)
                 .pointerHoverIcon(PointerIcon.Hand)
                 .onClick{
-                    // MediaPlayerListStatus.mutableMap.value.remove(mediaPlayer)
+                    onRemove()
                 },
             contentAlignment = Alignment.Center
         ) {

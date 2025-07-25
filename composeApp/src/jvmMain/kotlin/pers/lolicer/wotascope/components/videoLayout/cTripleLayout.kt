@@ -7,6 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester.Companion.createRefs
 import androidx.constraintlayout.compose.ConstrainedLayoutReference
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.ConstraintSet
 import pers.lolicer.wotascope.components.singleVideoBar.SingleVideoPanelItem
 import uk.co.caprica.vlcj.player.base.MediaPlayer
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer
@@ -52,7 +53,8 @@ fun TripleLayout(
                 //     mediaPlayerList.add(mediaPlayer)
                 // },
                 // {},
-                constraintList[i].then(Modifier.fillMaxSize(0.5f))
+                constraintList[i].then(Modifier.fillMaxSize(0.5f)),
+                {}
             )
         }
         // LaunchedEffect(mediaPlayerList.size){
@@ -60,5 +62,30 @@ fun TripleLayout(
         //         onMediaPlayerList(mediaPlayerList)
         //     }
         // }
+    }
+}
+
+fun tripleLayout(): ConstraintSet{
+    return ConstraintSet{
+        val (panel1, panel2, panel3) = createRefsFor("panel1", "panel2", "panel3")
+
+        constrain(panel1){
+            start.linkTo(parent.start)
+            end.linkTo(panel2.start)
+            top.linkTo(parent.top)
+            bottom.linkTo(panel3.top)
+        }
+        constrain(panel2){
+            start.linkTo(panel1.end)
+            end.linkTo(parent.end)
+            top.linkTo(parent.top)
+            bottom.linkTo(panel3.top)
+        }
+        constrain(panel3){
+            start.linkTo(parent.start)
+            end.linkTo(parent.end)
+            top.linkTo(panel1.bottom)
+            bottom.linkTo(parent.bottom)
+        }
     }
 }

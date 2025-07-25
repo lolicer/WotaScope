@@ -128,8 +128,12 @@ fun VideoPlayer(
         mediaPlayer.value?.events()?.addMediaPlayerEventListener(listener)
         onDispose {
             mediaPlayer.value?.events()?.removeMediaPlayerEventListener(listener)
-            MediaPlayerListStatus.mutableMap.value.remove(mediaPlayer.value)
+            // MediaPlayerListStatus.mutableMap.value.remove(mediaPlayer.value)
+            MediaPlayerListStatus.mutableMap.value = MediaPlayerListStatus.mutableMap.value.filter{ elem ->
+                elem.key.media().info().mrl() != mediaPlayer.value?.media()?.info()?.mrl()
+            }.toMutableMap()
             mediaPlayer.value?.release()
+            println("ciallo")
         }
     }
 }
