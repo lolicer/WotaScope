@@ -29,6 +29,7 @@ kotlin {
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutinesSwing)
+            implementation("androidx.datastore:datastore-preferences-core:1.1.7")
 
             implementation("uk.co.caprica:vlcj:4.7.0")
             implementation("org.jetbrains.skija:skija-windows:0.93.6")
@@ -49,6 +50,9 @@ compose.desktop {
             targetFormats(TargetFormat.Msi)
             packageName = "pers.lolicer.wotascope"
             packageVersion = "1.0.0"
+
+            appResourcesRootDir.set(project.layout.projectDirectory.dir("resources"))
+            appResourcesRootDir.set(project.layout.projectDirectory.dir("temp_videos"))
         }
     }
 }
