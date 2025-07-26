@@ -49,7 +49,7 @@ import wotascope.composeapp.generated.resources.title_minimize
 import wotascope.composeapp.generated.resources.title_restore
 import wotascope.composeapp.generated.resources.yjtp
 import org.jetbrains.compose.resources.painterResource
-import pers.lolicer.wotascope.components.singleVideoBar.ExtensionUtils
+import pers.lolicer.wotascope.components.utils.ExtensionUtils
 import java.awt.GraphicsEnvironment
 import kotlin.collections.plus
 import kotlin.system.exitProcess
