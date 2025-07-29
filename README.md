@@ -17,6 +17,12 @@
   
     title_restore.svg: fluent:restore-16-regular
 
+    settings_toggle_on.svg: fluent:toggle-right-16-filled
+    
+    settings_toggle_off.svg: fluent:toggle-left-16-filled
+
+    settings_folder.svg: fluent:folder-24-filled
+
 - https://github.com/tabler/tabler-icons
   
     media_skip_back_5.svg: tabler:rewind-backward-5

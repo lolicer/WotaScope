@@ -7,6 +7,8 @@ import java.io.BufferedReader
 import java.io.File
 import java.io.InputStreamReader
 import java.net.URI
+import javax.swing.JFileChooser
+import javax.swing.filechooser.FileSystemView
 
 class ExtensionUtils {
     // 控制暂停和开始
@@ -34,6 +36,20 @@ class ExtensionUtils {
             paths.add(file.path)
 
         return paths.toList()
+    }
+
+    // 从资源管理器选择文件夹
+    fun selectDir(): String?{
+        val chooser = JFileChooser(FileSystemView.getFileSystemView()).apply {
+            dialogTitle = "请选择文件夹 | Ciallo～(∠・ω< )⌒★"
+            fileSelectionMode = JFileChooser.DIRECTORIES_ONLY
+            isAcceptAllFileFilterUsed = false
+        }
+
+        return when (chooser.showOpenDialog(Frame())) {
+            JFileChooser.APPROVE_OPTION -> chooser.selectedFile?.absolutePath
+            else -> null
+        }
     }
 
     // 转换路径：将从mediaplayer.media.info.mrl获取的路径转为paths中存储的路径

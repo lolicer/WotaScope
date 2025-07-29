@@ -49,6 +49,7 @@ import wotascope.composeapp.generated.resources.title_minimize
 import wotascope.composeapp.generated.resources.title_restore
 import wotascope.composeapp.generated.resources.yjtp
 import org.jetbrains.compose.resources.painterResource
+import pers.lolicer.wotascope.components.titleBar.settingsWindow.SettingsWindow
 import pers.lolicer.wotascope.components.utils.ExtensionUtils
 import java.awt.GraphicsEnvironment
 import kotlin.collections.plus
@@ -69,6 +70,8 @@ fun WindowScope.TitleBar(
         Icon(titleHeight)
         Spacer(modifier = Modifier.width(8.dp))
         AddButton(titleHeight, paths)
+        Spacer(modifier = Modifier.width(8.dp))
+        SettingsButton(titleHeight)
 
         Spacer(modifier = Modifier.weight(1f))
 
@@ -110,6 +113,7 @@ fun AddButton(
         fontSize = 14.sp,
         modifier = Modifier
             .offset(y = 4.dp)
+            .height(titleHeight - 8.dp)
             .pointerHoverIcon(PointerIcon.Hand)
             .onPointerEvent(PointerEventType.Enter) { active = true }
             .onPointerEvent(PointerEventType.Exit) { active = false }
@@ -147,6 +151,61 @@ fun AddButton(
                 }
             }
     )
+}
+
+@Composable
+fun SettingsButton(
+    titleHeight: Dp
+){
+    var active by remember { mutableStateOf(false) }
+    var isPressed by remember { mutableStateOf(false) }
+
+    val showSettingsWindow = remember { mutableStateOf(false) }
+
+    Text(
+        "设置",
+        color = Color.White,
+        fontSize = 14.sp,
+        modifier = Modifier
+            .offset(y = 4.dp)
+            .height(titleHeight - 8.dp)
+            .pointerHoverIcon(PointerIcon.Hand)
+            .onPointerEvent(PointerEventType.Enter) { active = true }
+            .onPointerEvent(PointerEventType.Exit) { active = false }
+            .pointerInput(Unit){
+                awaitPointerEventScope {
+                    while(true){
+                        val event = awaitPointerEvent()
+                        when (event.type) {
+                            PointerEventType.Press -> isPressed = true    // 鼠标按下
+                            PointerEventType.Release -> isPressed = false // 鼠标抬起
+                            else -> {}
+                        }
+                    }
+                }
+            }
+            .onClick{
+                showSettingsWindow.value = true
+            }
+            .drawBehind {
+                val textHeight = size.height
+                val textWidth = size.width
+                val strokeWidth = 1f
+
+                if(active && !isPressed){
+                    drawLine(
+                        color = Color.White,
+                        start = Offset(0f, textHeight - 2),
+                        end = Offset(textWidth, textHeight - 2),
+                        strokeWidth = strokeWidth
+                    )
+                }
+            }
+    )
+
+    if(showSettingsWindow.value){
+        SettingsWindow(showSettingsWindow)
+    }
 }
 
 @Composable
