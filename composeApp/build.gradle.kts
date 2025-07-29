@@ -29,7 +29,6 @@ kotlin {
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutinesSwing)
-            implementation("androidx.datastore:datastore-preferences-core:1.1.7")
 
             implementation("uk.co.caprica:vlcj:4.7.0")
             implementation("org.jetbrains.skija:skija-windows:0.93.6")
@@ -37,6 +36,10 @@ kotlin {
             // 2025.7.1 约束布局尚未应用在跨平台项目中，故使用此依赖。链接如下：
             // https://github.com/Lavmee/constraintlayout-compose-multiplatform?tab=readme-ov-file
             implementation("tech.annexflow.compose:constraintlayout-compose-multiplatform:0.6.0")
+
+            // Kotlin Multiplatform没有DataStore，故使用此依赖作为设置。链接如下：
+            // https://github.com/russhwolf/multiplatform-settings
+            implementation("com.russhwolf:multiplatform-settings:1.3.0")
         }
     }
 }
