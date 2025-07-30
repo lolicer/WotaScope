@@ -29,8 +29,7 @@ import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer
 
 @Composable
 fun BottomController(
-    controllerHeight: Dp,
-    // mediaPlayerList: List<EmbeddedMediaPlayer>
+    controllerHeight: Dp
 ){
     val isAnyVideoPlaying = remember { mutableStateOf(false) }
 
@@ -70,7 +69,7 @@ fun BottomController(
 
     MediaPlayerListStatus.mutableMap.value.forEach{ elem ->
         val mediaPlayer = elem.key
-        println("tian jian jianting")
+        println("tian_jia_JianTing")
         DisposableEffect(mediaPlayer){
             val listener = object : MediaPlayerEventAdapter() {
                 override fun playing(mediaPlayer: MediaPlayer?) {

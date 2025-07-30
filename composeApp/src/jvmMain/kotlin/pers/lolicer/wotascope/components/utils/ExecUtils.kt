@@ -9,7 +9,11 @@ class ExecUtils {
      *
      * @param command 命令
      * @param autoPrint 是否自动打印执行信息
-     * @return 返回码和执行信息
+     * @return Pair格式：
+     * ```
+     *  -first：返回码
+     *  -second：执行信息
+     * ```
      */
     fun execute(
         command: Array<String>,
@@ -70,21 +74,29 @@ class ExecUtils {
      * @param targetDir 目标文件夹，格式：C:\\Users\\admin\\Downloads
      * @param autoPrint 是否自动打印执行信息
      *
-     * @return 返回码和执行信息
+     * @return Pair格式：
+     * ```
+     *  -first：Pair<Int, List<String>>
+     *      -first：返回码
+     *      -second：执行信息
+     *  -second：String
+     *      新视频的路径
+     * ```
      */
     fun convertVideo(
         path: String,
         targetDir: String,
         autoPrint: Boolean = true
-    ): Pair<Int, List<String>>{
+    ): Pair<Pair<Int, List<String>>, String> {
+        val newPath = targetDir + "\\" + System.currentTimeMillis() + '_' + path.substringAfterLast("\\")
         val cmd = arrayOf(
             "ffmpeg",
             "-i", path,
             "-c:v", "libx264",
             "-g", "1",
             "-stats",
-            targetDir + "\\" + System.currentTimeMillis() + path.substringAfterLast("\\")
+            newPath
         )
-        return execute(cmd, autoPrint = autoPrint)
+        return Pair(execute(cmd, autoPrint = autoPrint), newPath)
     }
 }
