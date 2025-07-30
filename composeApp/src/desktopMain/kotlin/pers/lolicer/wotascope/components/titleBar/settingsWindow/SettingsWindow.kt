@@ -41,7 +41,7 @@ fun SettingsWindow(showSettingsWindow: MutableState<Boolean>){
                     color = Color(67, 68, 69),
                     shape = RoundedCornerShape(8.dp)
                 )
-                .pointerInput(Unit) { // 在父级添加点击检测
+                .pointerInput(Unit) {
                     detectTapGestures {
                         focusManager.clearFocus() // 点击任何位置都清除焦点
                     }
