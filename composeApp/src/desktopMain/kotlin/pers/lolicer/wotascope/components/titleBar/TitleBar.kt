@@ -22,6 +22,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -43,6 +44,8 @@ import androidx.compose.ui.window.WindowPosition
 import androidx.compose.ui.window.WindowScope
 import androidx.compose.ui.window.WindowState
 import com.russhwolf.settings.set
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import wotascope.composeapp.generated.resources.Res
 import wotascope.composeapp.generated.resources.title_escape
 import wotascope.composeapp.generated.resources.title_maximize
@@ -51,6 +54,7 @@ import wotascope.composeapp.generated.resources.title_restore
 import wotascope.composeapp.generated.resources.yjtp
 import org.jetbrains.compose.resources.painterResource
 import pers.lolicer.wotascope.components.titleBar.settingsWindow.SettingsWindow
+import pers.lolicer.wotascope.components.utils.ExecUtils
 import pers.lolicer.wotascope.components.utils.ExtensionUtils
 import pers.lolicer.wotascope.settings.SettingsKeys
 import pers.lolicer.wotascope.settings.SettingsManager.settings
@@ -63,7 +67,8 @@ import kotlin.system.exitProcess
 fun WindowScope.TitleBar(
     titleHeight: Dp,
     windowState: WindowState,
-    paths: MutableState<List<String>>
+    paths: MutableState<List<String>>,
+    onMaximizeButtonClick: () -> Unit
 ) = WindowDraggableArea{
     val iconSize = 24.dp
 
@@ -72,14 +77,14 @@ fun WindowScope.TitleBar(
     ){
         Icon(titleHeight)
         Spacer(modifier = Modifier.width(8.dp))
-        AddButton(titleHeight, paths)
+        AddButton(titleHeight, paths, {}, {})
         Spacer(modifier = Modifier.width(8.dp))
         SettingsButton(titleHeight)
 
         Spacer(modifier = Modifier.weight(1f))
 
         MinimizeButton(titleHeight,iconSize , windowState)
-        MaximizeButton(titleHeight,iconSize , windowState)
+        MaximizeButton(titleHeight,iconSize , windowState, onMaximizeButtonClick)
         EscapeButton(titleHeight, iconSize)
     }
 }
@@ -105,8 +110,12 @@ fun Icon(
 @Composable
 fun AddButton(
     titleHeight: Dp,
-    paths: MutableState<List<String>>
+    paths: MutableState<List<String>>,
+    onEncodeStart: () -> Unit,
+    onEncodeFinish: () -> Unit
 ){
+    val scope = rememberCoroutineScope()
+
     var active by remember { mutableStateOf(false) }
     var isPressed by remember { mutableStateOf(false) }
 
@@ -134,11 +143,32 @@ fun AddButton(
             }
             .onClick{
                 val selectFile = ExtensionUtils().selectFile()
+                val newPaths = mutableListOf<String>()
                 if(selectFile != null) {
-                    if(paths.value.size + selectFile.size <= 9)
-                        paths.value = paths.value + selectFile
+                    scope.launch(Dispatchers.IO){
+                        selectFile.forEach{
+                            var path = it
+                            val preEncoding = settings.getBooleanOrNull(SettingsKeys.PRE_ENCODING)!!
+                            if(preEncoding){
+                                if(!ExecUtils().hasAllKeyFrames(path, false)) {
+                                    path = ExecUtils().convertVideo(
+                                        path = path,
+                                        targetDir = settings.getStringOrNull(SettingsKeys.ENCODED_VIDEO_DIR)!!,
+                                        autoPrint = true
+                                    ).second
+                                }
+                            }
+                            newPaths.add(path)
+
+                        }
+
+                        if(paths.value.size + newPaths.size <= 9) {
+                            paths.value = paths.value + newPaths
+                        }
+                    }
                 }
             }
+            .background(color = if(active) Color(56, 58, 61) else Color.Transparent)
             .drawBehind {
                 val textHeight = size.height
                 val textWidth = size.width
@@ -190,6 +220,7 @@ fun SettingsButton(
             .onClick{
                 showSettingsWindow.value = true
             }
+            .background(color = if(active) Color(56, 58, 61) else Color.Transparent)
             .drawBehind {
                 val textHeight = size.height
                 val textWidth = size.width
@@ -255,7 +286,8 @@ fun MinimizeButton(
 fun MaximizeButton(
     titleHeight: Dp,
     iconSize: Dp,
-    windowState: WindowState
+    windowState: WindowState,
+    onClick: () ->Unit
 ){
     var active by remember { mutableStateOf(false) }
     var isPressed by remember { mutableStateOf(false) }
@@ -311,6 +343,8 @@ fun MaximizeButton(
                     }
 
                     isMaximized.value = !isMaximized.value
+
+                    onClick()
                 }
                 .onPointerEvent(PointerEventType.Enter) { active = true }
                 .onPointerEvent(PointerEventType.Exit) { active = false }

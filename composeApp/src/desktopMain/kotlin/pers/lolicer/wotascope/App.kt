@@ -18,6 +18,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.FrameWindowScope
+import androidx.compose.ui.window.WindowPlacement
 import androidx.compose.ui.window.WindowState
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintSet
@@ -58,20 +59,24 @@ fun App(
     val paths = remember { mutableStateOf<List<String>>(emptyList()) }
     // val mediaPlayerList = remember { mutableStateOf<List<EmbeddedMediaPlayer>>(emptyList()) }
 
+    var isMaximized by remember { mutableStateOf(windowState.placement == WindowPlacement.Maximized) }
+
     MaterialTheme {
         val titleHeight = 30.dp
         val controllerHeight = 50.dp
 
         Column(
-            modifier = Modifier
-                .clip(RoundedCornerShape(8.dp))
-                .border(
-                    width = 1.dp,
-                    color = Color(67, 68, 69),
-                    shape = RoundedCornerShape(8.dp)
-                )
+            modifier = if(!isMaximized) {
+                Modifier
+                    .clip(RoundedCornerShape(8.dp))
+                    .border(
+                        width = 1.dp,
+                        color = Color(67, 68, 69),
+                        shape = RoundedCornerShape(8.dp)
+                    )
+            } else Modifier
         ){
-            windowScope.TitleBar(titleHeight, windowState, paths)
+            windowScope.TitleBar(titleHeight, windowState, paths, { isMaximized = (windowState.placement == WindowPlacement.Maximized) })
 
             Box(
                 Modifier
