@@ -42,6 +42,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.WindowPosition
 import androidx.compose.ui.window.WindowScope
 import androidx.compose.ui.window.WindowState
+import com.russhwolf.settings.set
 import wotascope.composeapp.generated.resources.Res
 import wotascope.composeapp.generated.resources.title_escape
 import wotascope.composeapp.generated.resources.title_maximize
@@ -51,6 +52,8 @@ import wotascope.composeapp.generated.resources.yjtp
 import org.jetbrains.compose.resources.painterResource
 import pers.lolicer.wotascope.components.titleBar.settingsWindow.SettingsWindow
 import pers.lolicer.wotascope.components.utils.ExtensionUtils
+import pers.lolicer.wotascope.settings.SettingsKeys
+import pers.lolicer.wotascope.settings.SettingsManager.settings
 import java.awt.GraphicsEnvironment
 import kotlin.collections.plus
 import kotlin.system.exitProcess
@@ -282,6 +285,9 @@ fun MaximizeButton(
         else{
             previousWidth.value = width
             previousHeight.value = height
+
+            settings[SettingsKeys.MAIN_WINDOW_WIDTH] = width.value.toInt()
+            settings[SettingsKeys.MAIN_WINDOW_HEIGHT] = height.value.toInt()
         }
     }
 

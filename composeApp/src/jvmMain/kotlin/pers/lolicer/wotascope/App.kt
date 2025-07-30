@@ -5,12 +5,15 @@ import androidx.compose.runtime.*
 //import org.jetbrains.compose.ui.tooling.preview.Preview
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.unit.dp
@@ -60,7 +63,13 @@ fun App(
         val controllerHeight = 50.dp
 
         Column(
-            Modifier.background(Color.White)
+            modifier = Modifier
+                .clip(RoundedCornerShape(8.dp))
+                .border(
+                    width = 1.dp,
+                    color = Color(67, 68, 69),
+                    shape = RoundedCornerShape(8.dp)
+                )
         ){
             windowScope.TitleBar(titleHeight, windowState, paths)
 
