@@ -1,4 +1,4 @@
-package pers.lolicer.wotascope.components.bottomController
+package pers.lolicer.wotascope.components.bottomController.components
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -18,20 +18,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.input.pointer.PointerButtons
 import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.painterResource
-import pers.lolicer.wotascope.components.videoStatus.AudioStatus
 import pers.lolicer.wotascope.components.videoStatus.MediaPlayerListStatus
 import pers.lolicer.wotascope.components.videoStatus.isAllMute
-import uk.co.caprica.vlcj.player.base.MediaPlayer
-import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer
 import wotascope.composeapp.generated.resources.Res
 import wotascope.composeapp.generated.resources.volume_0
 import wotascope.composeapp.generated.resources.volume_1
 import wotascope.composeapp.generated.resources.volume_2
+import kotlin.collections.iterator
 
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
