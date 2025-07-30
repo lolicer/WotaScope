@@ -10,22 +10,24 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import pers.lolicer.wotascope.components.videoStatus.FinishStatusMap
+import pers.lolicer.wotascope.components.bottomController.components.FastForwardButton
+import pers.lolicer.wotascope.components.bottomController.components.PauseButton
+import pers.lolicer.wotascope.components.bottomController.components.RewindButton
+import pers.lolicer.wotascope.components.bottomController.components.SkipBackButton
+import pers.lolicer.wotascope.components.bottomController.components.SkipForwardButton
+import pers.lolicer.wotascope.components.bottomController.components.SpeedButton
+import pers.lolicer.wotascope.components.bottomController.components.Volume
 import pers.lolicer.wotascope.components.videoStatus.MediaPlayerListStatus
-import pers.lolicer.wotascope.components.videoStatus.SelectStatusMap
 import pers.lolicer.wotascope.components.videoStatus.isAllFinished
 import uk.co.caprica.vlcj.player.base.MediaPlayer
 import uk.co.caprica.vlcj.player.base.MediaPlayerEventAdapter
-import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer
 
 @Composable
 fun BottomController(

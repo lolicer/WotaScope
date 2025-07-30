@@ -1,4 +1,4 @@
-package pers.lolicer.wotascope.components.bottomController
+package pers.lolicer.wotascope.components.bottomController.components
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -19,19 +19,15 @@ import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.onPointerEvent
 import androidx.compose.ui.input.pointer.pointerHoverIcon
 import org.jetbrains.compose.resources.painterResource
-import pers.lolicer.wotascope.components.videoStatus.FinishStatusMap
 import pers.lolicer.wotascope.components.videoStatus.MediaPlayerListStatus
 import pers.lolicer.wotascope.components.videoStatus.ProgressStatus
-import pers.lolicer.wotascope.components.videoStatus.SelectStatusMap
-import uk.co.caprica.vlcj.player.base.MediaPlayer
-import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer
 import wotascope.composeapp.generated.resources.Res
-import wotascope.composeapp.generated.resources.media_fastforward
+import wotascope.composeapp.generated.resources.media_skip_back_5
 
 
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalFoundationApi::class)
 @Composable
-fun FastForwardButton(
+fun SkipBackButton(
     modifier: Modifier,
     // mediaPlayerList: List<EmbeddedMediaPlayer>
 ){
@@ -51,21 +47,19 @@ fun FastForwardButton(
                     ProgressStatus.value.value = !ProgressStatus.value.value
                     MediaPlayerListStatus.mutableMap.value.forEach { elem ->
                         if(elem.value.isSelected && !elem.value.isFinished){
-                            elem.key.controls().skipTime(1000/30)
-                            elem.key.controls().setPause(true)
+                            elem.key.controls().skipTime(-1000 * 5)
                         }
                     }
                     // SelectStatusMap.mutableMap.forEach { elem ->
                     //     if(elem.value){
                     //         if(FinishStatusMap.mutableMap[elem.key] == false){
-                    //             elem.key.controls().skipTime(1000/30)
-                    //             elem.key.controls().setPause(true)
+                    //             elem.key.controls().skipTime(-1000 * 5)
                     //         }
                     //     }
                     // }
                 },
-            painter = painterResource(Res.drawable.media_fastforward),
-            contentDescription = "前进一帧",
+            painter = painterResource(Res.drawable.media_skip_back_5),
+            contentDescription = "快退五秒",
             tint = Color.White
         )
     }

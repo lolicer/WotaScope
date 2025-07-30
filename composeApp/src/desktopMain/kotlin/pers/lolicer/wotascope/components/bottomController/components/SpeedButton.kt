@@ -1,4 +1,4 @@
-package pers.lolicer.wotascope.components.bottomController
+package pers.lolicer.wotascope.components.bottomController.components
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -22,7 +22,6 @@ import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.text.font.FontWeight
 import kotlinx.coroutines.launch
 import pers.lolicer.wotascope.components.videoStatus.MediaPlayerListStatus
-import pers.lolicer.wotascope.components.videoStatus.SelectStatusMap
 
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalFoundationApi::class)
 @Composable

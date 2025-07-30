@@ -1,4 +1,4 @@
-package pers.lolicer.wotascope.components.bottomController
+package pers.lolicer.wotascope.components.bottomController.components
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -18,21 +18,16 @@ import androidx.compose.ui.input.pointer.PointerEventType
 import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.onPointerEvent
 import androidx.compose.ui.input.pointer.pointerHoverIcon
-import kotlinx.coroutines.delay
 import org.jetbrains.compose.resources.painterResource
-import pers.lolicer.wotascope.components.videoStatus.FinishStatusMap
 import pers.lolicer.wotascope.components.videoStatus.MediaPlayerListStatus
 import pers.lolicer.wotascope.components.videoStatus.ProgressStatus
-import pers.lolicer.wotascope.components.videoStatus.SelectStatusMap
-import uk.co.caprica.vlcj.player.base.MediaPlayer
-import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer
 import wotascope.composeapp.generated.resources.Res
-import wotascope.composeapp.generated.resources.media_skip_back_5
+import wotascope.composeapp.generated.resources.media_rewind
 
 
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalFoundationApi::class)
 @Composable
-fun SkipBackButton(
+fun RewindButton(
     modifier: Modifier,
     // mediaPlayerList: List<EmbeddedMediaPlayer>
 ){
@@ -52,19 +47,21 @@ fun SkipBackButton(
                     ProgressStatus.value.value = !ProgressStatus.value.value
                     MediaPlayerListStatus.mutableMap.value.forEach { elem ->
                         if(elem.value.isSelected && !elem.value.isFinished){
-                            elem.key.controls().skipTime(-1000 * 5)
+                            elem.key.controls().skipTime(-1000/30)
+                            elem.key.controls().setPause(true)
                         }
                     }
                     // SelectStatusMap.mutableMap.forEach { elem ->
                     //     if(elem.value){
                     //         if(FinishStatusMap.mutableMap[elem.key] == false){
-                    //             elem.key.controls().skipTime(-1000 * 5)
+                    //             elem.key.controls().skipTime(-1000/30)
+                    //             elem.key.controls().setPause(true)
                     //         }
                     //     }
                     // }
                 },
-            painter = painterResource(Res.drawable.media_skip_back_5),
-            contentDescription = "快退五秒",
+            painter = painterResource(Res.drawable.media_rewind),
+            contentDescription = "后退一帧",
             tint = Color.White
         )
     }
