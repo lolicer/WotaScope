@@ -17,10 +17,6 @@ pluginManagement {
 
 dependencyResolutionManagement {
     repositories {
-
-        maven {
-            url = uri("https://packages.jetbrains.team/maven/p/skija/maven")
-        }
         google {
             mavenContent {
                 includeGroupAndSubgroups("androidx")
@@ -29,6 +25,8 @@ dependencyResolutionManagement {
             }
         }
         mavenCentral()
+
+        maven { url = uri("https://packages.jetbrains.team/maven/p/skija/maven") }
     }
 }
 
