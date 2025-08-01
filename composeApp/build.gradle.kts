@@ -29,6 +29,7 @@ kotlin {
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutinesSwing)
+            implementation(libs.androidx.animation.core.desktop)
 
             implementation("uk.co.caprica:vlcj:4.7.0")
             implementation("org.jetbrains.skija:skija-windows:0.93.6")
@@ -60,8 +61,8 @@ compose.desktop {
     }
 }
 
-// compose.resources {
-//     publicResClass = false
-//     packageOfResClass = "pers.lolicer."
-//     generateResClass = auto
-// }
+compose.resources {
+    // publicResClass = false
+    // packageOfResClass = "pers.lolicer."
+    generateResClass = auto
+}

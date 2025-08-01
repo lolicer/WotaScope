@@ -72,6 +72,8 @@ fun AddButton(
                 val selectFile = ExtensionUtils().selectFile()
                 val newPaths = mutableListOf<String>()
                 if(selectFile != null) {
+                    onEncodeStart()
+
                     scope.launch(Dispatchers.IO) {
                         selectFile.forEach {
                             var path = it
@@ -95,6 +97,8 @@ fun AddButton(
                         if(paths.value.size + newPaths.size <= 9) {
                             paths.value = paths.value + newPaths
                         }
+                        
+                        onEncodeFinish()
                     }
                 }
             }
