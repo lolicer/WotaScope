@@ -2,8 +2,6 @@ package pers.lolicer.wotascope
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
-//import org.jetbrains.compose.ui.tooling.preview.Preview
-import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
@@ -15,28 +13,15 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.FrameWindowScope
 import androidx.compose.ui.window.WindowPlacement
 import androidx.compose.ui.window.WindowState
-import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintSet
+import com.sun.jna.NativeLibrary
 import pers.lolicer.wotascope.components.bottomController.BottomController
-import pers.lolicer.wotascope.components.utils.ExtensionUtils
-import pers.lolicer.wotascope.components.singleVideoBar.SingleVideoPanelItem
 import pers.lolicer.wotascope.components.titleBar.TitleBar
-import pers.lolicer.wotascope.components.utils.ExecUtils
-import pers.lolicer.wotascope.components.videoLayout.DualLayout
-import pers.lolicer.wotascope.components.videoLayout.HeptalLayout
-import pers.lolicer.wotascope.components.videoLayout.HexaLayout
 import pers.lolicer.wotascope.components.videoLayout.MainPanel
-import pers.lolicer.wotascope.components.videoLayout.NonaLayout
-import pers.lolicer.wotascope.components.videoLayout.OctaLayout
-import pers.lolicer.wotascope.components.videoLayout.PentaLayout
-import pers.lolicer.wotascope.components.videoLayout.QuadLayout
-import pers.lolicer.wotascope.components.videoLayout.SingleLayout
-import pers.lolicer.wotascope.components.videoLayout.TripleLayout
 import pers.lolicer.wotascope.components.videoLayout.dualLayout
 import pers.lolicer.wotascope.components.videoLayout.heptalLayout
 import pers.lolicer.wotascope.components.videoLayout.hexaLayout
@@ -46,12 +31,10 @@ import pers.lolicer.wotascope.components.videoLayout.pentaLayout
 import pers.lolicer.wotascope.components.videoLayout.quadLayout
 import pers.lolicer.wotascope.components.videoLayout.singleLayout
 import pers.lolicer.wotascope.components.videoLayout.tripleLayout
-import pers.lolicer.wotascope.components.videoStatus.MediaPlayerListStatus
 import java.io.File
 import kotlin.collections.emptyList
 
 @Composable
-@Preview
 fun App(
     windowState: WindowState,
     windowScope: FrameWindowScope
@@ -251,6 +234,23 @@ fun App(
             // )
         }
     }
+
+    // val dllNames = listOf("libiconv-2", "libva", "libva_win32", "libwinpthread-1", "libx264-164", "zlib1")
+    // dllNames.forEach{
+    //     val dllPath = File("resources/ffmpeg/${it}.dll").absolutePath
+    //     println(dllPath)
+    //     System.load(dllPath)
+    // }
+    println(File(System.getProperty("compose.application.resources.dir")).resolve("ffmpeg").absolutePath)
+    // System.setProperty("VLC_PLUGIN_PATH", File(System.getProperty("compose.application.resources.dir")).resolve("VLC").absolutePath + "\\plugins")
+    // System.setProperty("jna.library.path", File(System.getProperty("compose.application.resources.dir")).resolve("VLC").absolutePath)
+    NativeLibrary.addSearchPath("libvlc", File(System.getProperty("compose.application.resources.dir")).resolve("VLC").absolutePath)
+    // System.load(File(System.getProperty("compose.application.resources.dir")).resolve("VLC").absolutePath + "\\libvlccore.dll")
+    // System.load(File(System.getProperty("compose.application.resources.dir")).resolve("VLC").absolutePath + "\\libvlc.dll")
+    // System.load(File(System.getProperty("compose.application.resources.dir")).resolve("VLC").absolutePath + "\\plugins\\misc")
+
+    // println("jna.library.path = ${System.getProperty("jna.library.path")}")
+    // println("VLC_PLUGIN_PATH = ${System.getProperty("VLC_PLUGIN_PATH")}")
 }
 
 fun MutableState<List<String>>.selectLayout(): ConstraintSet?{

@@ -1,4 +1,6 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
+import org.jetbrains.kotlin.gradle.utils.loadPropertyFromResources
+import org.jetbrains.kotlin.konan.properties.loadProperties
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -8,11 +10,9 @@ plugins {
 }
 
 kotlin {
-    jvm("desktop")
+    jvm()
     
     sourceSets {
-        val desktopMain by getting
-        
         commonMain.dependencies {
             implementation(compose.runtime)
             implementation(compose.foundation)
@@ -20,16 +20,15 @@ kotlin {
             implementation(compose.ui)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
-            implementation(libs.androidx.lifecycle.viewmodel)
+            implementation(libs.androidx.lifecycle.viewmodelCompose)
             implementation(libs.androidx.lifecycle.runtimeCompose)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
         }
-        desktopMain.dependencies {
+        jvmMain.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutinesSwing)
-            implementation(libs.androidx.animation.core.desktop)
 
             implementation("uk.co.caprica:vlcj:4.7.0")
             implementation("org.jetbrains.skija:skija-windows:0.93.6")
@@ -48,6 +47,18 @@ kotlin {
 
 compose.desktop {
     application {
+        jvmArgs += listOf(
+            // 必须添加的模块开放参数
+            "--add-opens=java.base/java.nio=ALL-UNNAMED",
+            "--add-opens=java.base/sun.nio.ch=ALL-UNNAMED",
+
+            // 针对Java 16+的额外参数
+            "--add-exports=java.base/sun.nio.ch=ALL-UNNAMED",
+            "--add-exports=java.base/sun.misc=ALL-UNNAMED",
+
+            // 禁用JNA的系统库缓存
+            "-Djna.nosys=false"
+        )
         mainClass = "pers.lolicer.wotascope.MainKt"
 
         nativeDistributions {
@@ -55,14 +66,22 @@ compose.desktop {
             packageName = "pers.lolicer.wotascope"
             packageVersion = "1.0.0"
 
+
+            modules("java.instrument", "java.prefs", "jdk.unsupported")
+            jvmArgs += mutableListOf(
+                "--add-exports", "jdk.unsupported/sun.misc=ALL-UNNAMED"
+            )
+
             appResourcesRootDir.set(project.layout.projectDirectory.dir("resources"))
-            appResourcesRootDir.set(project.layout.projectDirectory.dir("temp_videos"))
+
+            // loadPropertyFromResources("$projectDir\\resources\\windows\\VLC\\plugins", "VLC_PLUGIN_PATH")
+            // loadPropertyFromResources("$projectDir\\resources\\windows\\VLC", "jna.library.path")
         }
     }
 }
 
-compose.resources {
-    // publicResClass = false
-    // packageOfResClass = "pers.lolicer."
-    generateResClass = auto
-}
+// tasks.withType<JavaExec> {
+//     systemProperty("VLC_PLUGIN_PATH", "$projectDir/resources/windows/VLC/plugins")
+//     systemProperty("jna.library.path", "$projectDir/resources/windows/VLC")
+//     // systemProperty("jna.library.path", "$projectDir/src/jvmMain/resources/ffmpeg")
+// }

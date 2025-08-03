@@ -18,7 +18,6 @@ import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import uk.co.caprica.vlcj.player.base.MediaPlayer
 
 @Composable
 fun VerticalSlider(

@@ -11,7 +11,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -28,9 +27,7 @@ import androidx.compose.ui.zIndex
 import pers.lolicer.wotascope.components.singleVideoBar.videoPlayerWithoutSwingPanel.SingleVideoFloatWindows
 import pers.lolicer.wotascope.components.singleVideoBar.videoPlayerWithoutSwingPanel.VideoPlayer
 import pers.lolicer.wotascope.components.videoStatus.MediaPlayerListStatus
-import pers.lolicer.wotascope.components.videoStatus.SelectStatusMap
 import pers.lolicer.wotascope.components.videoStatus.Status
-import uk.co.caprica.vlcj.player.base.MediaPlayer
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalComposeUiApi::class)

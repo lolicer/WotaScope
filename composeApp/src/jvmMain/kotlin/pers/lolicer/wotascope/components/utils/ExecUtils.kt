@@ -1,6 +1,7 @@
 package pers.lolicer.wotascope.components.utils
 
 import java.io.BufferedReader
+import java.io.File
 import java.io.InputStreamReader
 
 class ExecUtils {
@@ -53,8 +54,11 @@ class ExecUtils {
         path: String,
         autoPrint: Boolean = true
     ): Boolean{
+        val ffprobePath = File(System.getProperty("compose.application.resources.dir")).resolve("ffmpeg").absolutePath + "\\ffprobe.exe"
+
         val cmd = arrayOf(
-            "ffprobe",
+            // "ffprobe",
+            ffprobePath,
             "-v", "error",
             "-select_streams", "v:0",
             "-show_entries", "frame=key_frame",
@@ -88,11 +92,15 @@ class ExecUtils {
         targetDir: String,
         autoPrint: Boolean = true
     ): Pair<Pair<Int, List<String>>, String> {
+        val ffmpegPath = File(System.getProperty("compose.application.resources.dir")).resolve("ffmpeg").absolutePath + "\\ffmpeg.exe"
+
         val newPath = targetDir + "\\" + System.currentTimeMillis() + '_' + path.substringAfterLast("\\")
         val cmd = arrayOf(
-            "ffmpeg",
+            // "ffmpeg",
+            ffmpegPath,
             "-i", path,
             "-c:v", "libx264",
+            "-c:a", "copy",
             "-g", "1",
             "-stats",
             newPath

@@ -3,9 +3,7 @@ package pers.lolicer.wotascope.components.utils
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer
 import java.awt.FileDialog
 import java.awt.Frame
-import java.io.BufferedReader
 import java.io.File
-import java.io.InputStreamReader
 import java.net.URI
 import javax.swing.JFileChooser
 import javax.swing.filechooser.FileSystemView
