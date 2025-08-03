@@ -33,8 +33,6 @@ import uk.co.caprica.vlcj.player.base.MediaPlayerEventAdapter
 fun BottomController(
     controllerHeight: Dp
 ){
-    val isAnyVideoPlaying = remember { mutableStateOf(false) }
-
     Row(
         modifier = Modifier
             .height(controllerHeight)
@@ -50,7 +48,7 @@ fun BottomController(
         ){
             SkipBackButton(Modifier.size(controllerHeight), /* mediaPlayerList */)
             RewindButton(Modifier.size(controllerHeight), /* mediaPlayerList */)
-            PauseButton(Modifier.size(controllerHeight), /* mediaPlayerList ,*/ isAnyVideoPlaying)
+            PauseButton(Modifier.size(controllerHeight), /* mediaPlayerList ,*/)
             FastForwardButton(Modifier.size(controllerHeight), /* mediaPlayerList */)
             SkipForwardButton(Modifier.size(controllerHeight), /* mediaPlayerList */)
         }
@@ -68,42 +66,6 @@ fun BottomController(
     //             map.value = newMap
     //         }
     // }
-
-    MediaPlayerListStatus.mutableMap.value.forEach{ elem ->
-        val mediaPlayer = elem.key
-        println("tian_jia_JianTing")
-        DisposableEffect(mediaPlayer){
-            val listener = object : MediaPlayerEventAdapter() {
-                override fun playing(mediaPlayer: MediaPlayer?) {
-                    isAnyVideoPlaying.value = true
-                }
-
-                override fun paused(mediaPlayer: MediaPlayer?) {
-                    var res = false
-                    MediaPlayerListStatus.mutableMap.value.forEach {elem ->
-                        if(elem.key.status().isPlaying) {
-                            res = true
-                        }
-                    }
-                    isAnyVideoPlaying.value = res
-                }
-
-                override fun finished(mediaPlayer: MediaPlayer) {
-                    // FinishStatusMap.mutableMap[mediaPlayer as EmbeddedMediaPlayer] = true
-                    MediaPlayerListStatus.mutableMap.value[mediaPlayer]?.isFinished = true
-                    println("$mediaPlayer JieShu Le")
-
-                    if(MediaPlayerListStatus.isAllFinished()){
-                        isAnyVideoPlaying.value = false
-                    }
-                }
-            }
-            if(mediaPlayer.media().isValid) {
-                mediaPlayer.events().addMediaPlayerEventListener(listener)
-            }
-            onDispose { mediaPlayer.events().removeMediaPlayerEventListener(listener) }
-        }
-    }
 }
 
 // fun List<EmbeddedMediaPlayer>.isAnyPlaying(): Boolean{
