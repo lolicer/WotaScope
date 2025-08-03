@@ -1,4 +1,4 @@
-package pers.lolicer.wotascope.components.utils
+package pers.lolicer.wotascope.utils
 
 import java.io.BufferedReader
 import java.io.File

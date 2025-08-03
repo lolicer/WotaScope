@@ -34,7 +34,7 @@ import wotascope.composeapp.generated.resources.media_pause
 import wotascope.composeapp.generated.resources.media_play
 import org.jetbrains.compose.resources.InternalResourceApi
 import org.jetbrains.compose.resources.painterResource
-import pers.lolicer.wotascope.components.utils.ExtensionUtils
+import pers.lolicer.wotascope.utils.ExtensionUtils
 import pers.lolicer.wotascope.components.videoStatus.ProgressStatus
 
 @Composable

@@ -36,7 +36,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.russhwolf.settings.set
 import org.jetbrains.compose.resources.painterResource
-import pers.lolicer.wotascope.components.utils.ExtensionUtils
+import pers.lolicer.wotascope.utils.ExtensionUtils
 import pers.lolicer.wotascope.settings.SettingsKeys
 import pers.lolicer.wotascope.settings.SettingsManager.settings
 import wotascope.composeapp.generated.resources.Res

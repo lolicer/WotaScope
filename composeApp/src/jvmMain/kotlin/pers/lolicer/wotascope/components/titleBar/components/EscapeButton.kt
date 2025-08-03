@@ -23,6 +23,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.painterResource
+import pers.lolicer.wotascope.utils.FileUtils
 import wotascope.composeapp.generated.resources.Res
 import wotascope.composeapp.generated.resources.title_escape
 import kotlin.system.exitProcess
@@ -44,7 +45,10 @@ fun EscapeButton(
             modifier = Modifier.Companion
                 .size(if(!active || isPressed) (iconSize - 6.dp) else iconSize)
                 .pointerHoverIcon(PointerIcon.Companion.Hand)
-                .onClick {exitProcess(0)}
+                .onClick {
+                    FileUtils().clearTempDirIfExists()
+                    exitProcess(0)
+                }
                 .onPointerEvent(PointerEventType.Companion.Enter) {active = true}
                 .onPointerEvent(PointerEventType.Companion.Exit) {active = false}
                 .pointerInput(Unit) {

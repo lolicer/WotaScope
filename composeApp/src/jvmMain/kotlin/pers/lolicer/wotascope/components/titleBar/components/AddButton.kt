@@ -28,8 +28,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import pers.lolicer.wotascope.components.utils.ExecUtils
-import pers.lolicer.wotascope.components.utils.ExtensionUtils
+import pers.lolicer.wotascope.utils.ExecUtils
+import pers.lolicer.wotascope.utils.ExtensionUtils
 import pers.lolicer.wotascope.settings.SettingsKeys
 import pers.lolicer.wotascope.settings.SettingsManager
 

@@ -21,6 +21,7 @@ import androidx.constraintlayout.compose.ConstraintSet
 import com.sun.jna.NativeLibrary
 import pers.lolicer.wotascope.components.bottomController.BottomController
 import pers.lolicer.wotascope.components.titleBar.TitleBar
+import pers.lolicer.wotascope.utils.FileUtils
 import pers.lolicer.wotascope.components.videoLayout.MainPanel
 import pers.lolicer.wotascope.components.videoLayout.dualLayout
 import pers.lolicer.wotascope.components.videoLayout.heptalLayout
@@ -247,10 +248,11 @@ fun App(
     NativeLibrary.addSearchPath("libvlc", File(System.getProperty("compose.application.resources.dir")).resolve("VLC").absolutePath)
     // System.load(File(System.getProperty("compose.application.resources.dir")).resolve("VLC").absolutePath + "\\libvlccore.dll")
     // System.load(File(System.getProperty("compose.application.resources.dir")).resolve("VLC").absolutePath + "\\libvlc.dll")
-    // System.load(File(System.getProperty("compose.application.resources.dir")).resolve("VLC").absolutePath + "\\plugins\\misc")
 
     // println("jna.library.path = ${System.getProperty("jna.library.path")}")
     // println("VLC_PLUGIN_PATH = ${System.getProperty("VLC_PLUGIN_PATH")}")
+
+    FileUtils().createTempDirIfNotExists()
 }
 
 fun MutableState<List<String>>.selectLayout(): ConstraintSet?{

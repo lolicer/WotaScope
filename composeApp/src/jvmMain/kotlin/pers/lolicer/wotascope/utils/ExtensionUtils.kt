@@ -1,4 +1,4 @@
-package pers.lolicer.wotascope.components.utils
+package pers.lolicer.wotascope.utils
 
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer
 import java.awt.FileDialog
