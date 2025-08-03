@@ -60,7 +60,7 @@ fun App(
                     )
             } else Modifier
         ){
-            windowScope.TitleBar(titleHeight, windowState, paths, { isMaximized = (windowState.placement == WindowPlacement.Maximized) })
+            windowScope.TitleBar(titleHeight, windowState, paths, { isMaximized = !isMaximized })
 
             Box(
                 Modifier
