@@ -43,3 +43,7 @@
 
 ### 不依赖`Swing Panel`的`Compose Multiplatform`播放器灵感来源
 - https://github.com/rjuszczyk/ComposeVideoPlayer
+
+### 当前BUG/后续优化
+- 较短的视频，使用进度条拖到最后，播放结束后有概率卡死
+- 应用图标（不要用哔咔姬了）
