@@ -11,7 +11,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.painterResource
 import wotascope.composeapp.generated.resources.Res
-import wotascope.composeapp.generated.resources.yjtp
+import wotascope.composeapp.generated.resources.wotascope_icon
 
 @Composable
 fun TitleIcon(
@@ -23,9 +23,9 @@ fun TitleIcon(
     ) {
         Icon(
             modifier = Modifier.Companion.size(24.dp),
-            painter = painterResource(Res.drawable.yjtp),
+            painter = painterResource(Res.drawable.wotascope_icon),
             contentDescription = "图标",
-            tint = Color.Companion.Unspecified
+            tint = Color.Companion.White
         )
     }
 
