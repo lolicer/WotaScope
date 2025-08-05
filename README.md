@@ -16,7 +16,7 @@
 
 -   **如何下载**
 
-​	请[在此处](https://github.com/lolicer/WotaScope/releases)获取最新安装包。
+​	请[在此处](https://gitee.com/lolicer/WotaScope/releases)获取最新安装包。
 
 -   **如何使用**
 
@@ -26,9 +26,11 @@
 
 ​	绝大多数视频为了节省空间，并不会把每一帧的画面存储为完整的图像，而是依赖关键帧（I帧）生成前向预测帧（P帧）和双向预测帧（B帧），这使逐帧播放比较麻烦。开启 `自动编码为全关键帧` 选项，会检测视频第一秒是否全为关键帧，并将 `非全关键帧视频` 编码为 `全关键帧视频` ，保证逐帧播放时画面正常。
 
-​	若 `临时视频路径` 为默认路径，即安装目录下的 `temp_videos` 文件夹，编码后的视频将会在程序退出（或下次退出）时删除。
+​	若 `临时视频路径` 为默认路径，即安装目录下的 `temp_videos` 文件夹，编码后的视频将会在程序退出时删除。
 
-![image-20250804225817638](https://github.com/lolicer/WotaScope/blob/master/images/image-20250804225817638.png?raw=true)
+>   ​	如果关闭应用时没有将视频从应用中移除，则视频会在下一次关闭应用时删除。
+
+![image-20250804225817638](https://gitee.com/lolicer/WotaScope/raw/master/images/image-20250804225817638.png)
 
 ​	最多支持同时播放九个本地视频，可通过点击视频画面选中/取消。
 
@@ -36,7 +38,7 @@
 >
 >   ​	默认为选中状态。
 
-![image-20250804231928478](https://github.com/lolicer/WotaScope/blob/master/images/image-20250804231928478.png?raw=true)
+![image-20250804231928478](https://gitee.com/lolicer/WotaScope/raw/master/images/image-20250804231928478.png)
 
 -   **如何卸载**
 
