@@ -41,6 +41,7 @@ import pers.lolicer.wotascope.settings.SettingsKeys
 import pers.lolicer.wotascope.settings.SettingsManager.settings
 import wotascope.composeapp.generated.resources.Res
 import wotascope.composeapp.generated.resources.settings_folder
+import wotascope.composeapp.generated.resources.settings_notice
 import wotascope.composeapp.generated.resources.settings_toggle_off
 import wotascope.composeapp.generated.resources.settings_toggle_on
 
@@ -59,6 +60,7 @@ fun MainSettingPanel(
             .verticalScroll(scrollState)
     ){
         PreEncodingSetting(settingItemHeight)
+        // DescriptionText(mutableStateOf(true), "请注意倒车~请注意倒车~请注意倒车~请注意倒车~请注意倒车~请注意倒车~请注意倒车~请注意倒车~")
 
         Divider(
             modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
@@ -75,6 +77,7 @@ fun PreEncodingSetting(
     height: Dp
 ){
     val focusManager = LocalFocusManager.current
+    val showDescription = remember { mutableStateOf(false) }
 
     Row(
         modifier = Modifier
@@ -84,11 +87,28 @@ fun PreEncodingSetting(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ){
-        Text(
-            text = "自动编码为全关键帧",
-            color = Color.White,
-            fontSize = 14.sp
-        )
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ){
+            Text(
+                text = "自动编码为全关键帧",
+                color = Color.White,
+                fontSize = 14.sp
+            )
+            Icon(
+                modifier = Modifier
+                    .size(height / 3)
+                    .padding(start = 4.dp)
+                    .pointerHoverIcon(PointerIcon.Hand)
+                    .onClick{
+                        showDescription.value = !showDescription.value
+                        focusManager.clearFocus()// 用于处理EncodedVideoDirSetting()中点击BasicTextField之外的任意部分使之失去焦点的逻辑
+                    },
+                painter = painterResource(Res.drawable.settings_notice),
+                contentDescription = "说明",
+                tint = Color.Gray
+            )
+        }
 
         val preEncoding = remember {mutableStateOf(settings.getBooleanOrNull(SettingsKeys.PRE_ENCODING)!!)}
         Icon(
@@ -100,7 +120,7 @@ fun PreEncodingSetting(
                     preEncoding.value = !preEncoding.value
                     println(settings.getBooleanOrNull(SettingsKeys.PRE_ENCODING))
 
-                    focusManager.clearFocus() // 用于处理EncodedVideoDirSetting()中点击BasicTextField之外的任意部分使之失去焦点的逻辑（遥遥领先JetBrains系列IDE！（不是））
+                    focusManager.clearFocus() // 用于处理EncodedVideoDirSetting()中点击BasicTextField之外的任意部分使之失去焦点的逻辑
                 },
             painter = painterResource(
                 if(preEncoding.value)
@@ -112,6 +132,8 @@ fun PreEncodingSetting(
             contentDescription = if(preEncoding.value) "点击以关闭" else "点击以开启"
         )
     }
+
+    DescriptionText(showDescription, "绝大多数视频并不将每一帧存为完整图像，而是依赖关键帧和预测帧生成图像，这使逐帧播放比较麻烦。开启此选项可保证逐帧播放时画面正常。")
 }
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -122,6 +144,8 @@ fun EncodedVideoDirSetting(
     val encodedVideoDir = remember {mutableStateOf(settings.getStringOrNull(SettingsKeys.ENCODED_VIDEO_DIR)!!)}
     val isFocused = remember { mutableStateOf(false) }
 
+    val showDescription = remember { mutableStateOf(false) }
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -130,12 +154,30 @@ fun EncodedVideoDirSetting(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ){
-        Text(
+        Row(
             modifier = Modifier.weight(0.35f),
-            text = "临时视频路径",
-            color = Color.White,
-            fontSize = 14.sp
-        )
+            verticalAlignment = Alignment.CenterVertically
+        ){
+            Text(
+                modifier = Modifier,
+                text = "临时视频路径",
+                color = Color.White,
+                fontSize = 14.sp
+            )
+            Icon(
+                modifier = Modifier
+                    .size(height / 3)
+                    .padding(start = 4.dp)
+                    .pointerHoverIcon(PointerIcon.Hand)
+                    .onClick{
+                        showDescription.value = !showDescription.value
+                        isFocused.value = false
+                    },
+                painter = painterResource(Res.drawable.settings_notice),
+                contentDescription = "说明",
+                tint = Color.Gray
+            )
+        }
 
         BasicTextField(
             modifier = Modifier
@@ -203,4 +245,6 @@ fun EncodedVideoDirSetting(
             }
         )
     }
+
+    DescriptionText(showDescription, "仅当路径为默认（安装目录下的 temp_videos 文件夹）时，编码后的视频才会在程序退出或下次退出时删除。")
 }
