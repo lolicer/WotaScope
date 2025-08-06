@@ -80,21 +80,20 @@ fun PauseButton(
 ){
     val isAnyVideoPlaying = remember { mutableStateOf(false) }
 
-    // 好像不需要了，我也不知道这段代码有什么用，什么时候修好的。（）
-    // // 这段代码在每次界面重组时运行，防止“添加视频引发的页面重组”导致的isAnyVideoPlaying未更新为false的问题。
-    // // 后续想办法优化一下，每次重组都运行不太好，应该改掉。
-    // var res = false
-    // for(elem in MediaPlayerListStatus.mutableMap.value){
-    //     val mediaPlayer = elem.key
-    //     val isSelected = MediaPlayerListStatus.mutableMap.value[mediaPlayer]?.isSelected
-    //     println(MediaPlayerListStatus.mutableMap.value.keys)
-    //     if(isSelected == true && mediaPlayer.status().isPlaying){
-    //         println("isAnyVideoPlaying")
-    //         res = true
-    //         break
-    //     }
-    // }
-    // isAnyVideoPlaying.value = res
+    // 这段代码在每次界面重组时运行，防止“添加视频引发的页面重组”导致的isAnyVideoPlaying未更新为false的问题。
+    // 后续想办法优化一下，每次重组都运行不太好，应该改掉。
+    var res = false
+    for(elem in MediaPlayerListStatus.mutableMap.value){
+        val mediaPlayer = elem.key
+        val isSelected = MediaPlayerListStatus.mutableMap.value[mediaPlayer]?.isSelected
+        println(MediaPlayerListStatus.mutableMap.value.keys)
+        if(isSelected == true && mediaPlayer.status().isPlaying){
+            println("isAnyVideoPlaying")
+            res = true
+            break
+        }
+    }
+    isAnyVideoPlaying.value = res
 
 
     var active by remember { mutableStateOf(false) }
