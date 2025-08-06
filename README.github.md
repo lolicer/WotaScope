@@ -16,7 +16,7 @@
 
 -   **如何下载**
 
-​	请[在此处](https://gitee.com/lolicer/WotaScope/releases)获取最新安装包。
+​	请在[此处](https://gitee.com/lolicer/WotaScope/releases)获取最新安装包。
 
 -   **如何使用**
 
@@ -30,7 +30,7 @@
 
 >   ​	如果关闭应用时没有将视频从应用中移除，则视频会在下一次关闭应用时删除。
 
-![image-20250804225817638](https://gitee.com/lolicer/WotaScope/raw/master/images/image-20250804225817638.png)
+![image-20250804225817638](https://github.com/lolicer/WotaScope/raw/master/images/image-20250804225817638.png)
 
 ​	最多支持同时播放九个本地视频，可通过点击视频画面选中/取消。
 
@@ -38,7 +38,7 @@
 >
 >   ​	默认为选中状态。
 
-![image-20250804231928478](https://gitee.com/lolicer/WotaScope/raw/master/images/image-20250804231928478.png)
+![image-20250804231928478](https://github.com/lolicer/WotaScope/raw/master/images/image-20250804231928478.png)
 
 -   **如何卸载**
 
@@ -48,7 +48,7 @@
 
     -   方法二：直接删除整个安装文件夹。
 
->    	本应用不会在系统盘留下任何垃圾文件/文件夹，但似乎会将设置保留在注册表`HKEY_LOCAL_MACHINE\SOFTWARE\JavaSoft\Prefs`中，具体在哪我也没找到qwq。
+>    		本应用不会在系统盘留下任何垃圾文件/文件夹，但似乎会将设置保留在注册表`HKEY_LOCAL_MACHINE\SOFTWARE\JavaSoft\Prefs`中，具体在哪我也没找到qwq。
 
 
 
@@ -57,37 +57,37 @@
 - https://github.com/microsoft/fluentui-system-icons
 
     `media_fastforward.svg`: `fluent:fast-forward-24-regular`
-  
+
     `media_pause.svg`: `fluent:pause-24-regular`
-  
+
     `media_play.svg`: `fluent:play-24-regular`
-  
+
     `media_rewind.svg`: `fluent:rewind-24-regular`
-  
+
     `title_escape.svg`: `fluent:dismiss-24-regular`
-  
+
     `title_maximize.svg`: `fluent:maximize-24-regular`
-  
+
     `title_minimize.svg`: `fluent:minimize-24-regular`
-  
+
     `title_restore.svg`: `fluent:restore-16-regular`
 
     `settings_toggle_on.svg`: `fluent:toggle-right-16-filled`
-    
+
     `settings_toggle_off.svg`: `fluent:toggle-left-16-filled`
 
     `settings_folder.svg`: `fluent:folder-24-filled`
 
 - https://github.com/tabler/tabler-icons
-  
+
     `media_skip_back_5.svg`: `tabler:rewind-backward-5`
-  
+
     `media_skip_forward_10.svg`: `tabler:rewind-forward-10`
-  
+
     `volume_0.svg`: `tabler:volume-3`
-  
+
     `volume_1.svg`: `tabler:volume-2`
-  
+
     `volume_2.svg`: `tabler:volume`
 
 - https://github.com/Tencent/tdesign-icons
@@ -113,6 +113,7 @@
     >   此BUG只会造成自身卡死，并不会使整个系统卡死。遇到这个问题请按 `蔡徐坤 + Shift + Esc` 打开任务管理器右键关闭程序。
 
 -   针对不同视频BPM不同的问题进一步优化；
+
 -   优化主题色，添加亮色模式。
 
 
