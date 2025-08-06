@@ -63,9 +63,8 @@ compose.desktop {
 
         nativeDistributions {
             targetFormats(TargetFormat.Msi)
-            packageName = "pers.lolicer.wotascope"
+            packageName = "WotaScope"
             packageVersion = "1.0.0"
-
 
             modules("java.instrument", "java.prefs", "jdk.unsupported")
             jvmArgs += mutableListOf(
@@ -73,6 +72,11 @@ compose.desktop {
             )
 
             appResourcesRootDir.set(project.layout.projectDirectory.dir("resources"))
+
+            windows{
+                shortcut = true
+                dirChooser = true
+            }
 
             // loadPropertyFromResources("$projectDir\\resources\\windows\\VLC\\plugins", "VLC_PLUGIN_PATH")
             // loadPropertyFromResources("$projectDir\\resources\\windows\\VLC", "jna.library.path")
