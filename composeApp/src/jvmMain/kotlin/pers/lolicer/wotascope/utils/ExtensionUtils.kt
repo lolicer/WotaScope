@@ -23,10 +23,9 @@ class ExtensionUtils {
     // 从资源管理器选择文件
     fun selectFile(): List<String>? {
 
-        val dialog =
-            FileDialog(Frame(), "请选择最多9个视频文件 | Ciallo～(∠・ω< )⌒★", FileDialog.LOAD)
+        val dialog = FileDialog(Frame(), "请选择最多9个视频文件 | Ciallo～(∠・ω< )⌒★", FileDialog.LOAD)
         dialog.isMultipleMode = true
-        dialog.setFile("*.mp4;*.wav;*.avi;*.mkv;*.flv;*.mov")
+        dialog.setFile("*.mp4;*.avi;*.mkv;*.flv;*.mov;*.wmv")
         dialog.isVisible = true
 
         val paths = mutableListOf<String>()
