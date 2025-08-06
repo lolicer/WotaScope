@@ -16,7 +16,7 @@
 
 -   **如何下载**
 
-​	请在[此处](https://gitee.com/lolicer/WotaScope/releases)获取最新安装包。
+​	请在[此处](https://github.com/lolicer/WotaScope/releases)获取最新安装包。
 
 -   **如何使用**
 
