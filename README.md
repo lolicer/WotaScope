@@ -20,7 +20,7 @@
 
 -   **如何下载**
 
-​	请在[此处](https://github.com/lolicer/WotaScope/releases)获取最新安装包。
+​	请在[此处（github）](https://github.com/lolicer/WotaScope/releases)或[此处（gitee）](https://gitee.com/lolicer/WotaScope/releases)获取最新版本。
 
 -   **如何使用**
 
@@ -56,7 +56,7 @@
 
 
 
-##  四、当前BUG/后续优化
+##  二、当前BUG/后续优化
 
 - 较短的视频，使用进度条拖到最后，播放结束后有概率卡死；
 
@@ -66,13 +66,13 @@
 
 -   添加流媒体支持；
 
--   实现更自由的布局，如裁切/重合视频；
+-   实现更自由的布局，如裁切/重合、镜像视频；
 
 -   优化主题色，添加亮色模式。
 
 
 
-## 二、图标来源
+## 三、图标来源
 
 - https://github.com/microsoft/fluentui-system-icons
 
