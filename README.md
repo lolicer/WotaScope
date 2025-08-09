@@ -2,6 +2,16 @@
 
 ![Platform](https://img.shields.io/badge/Platform-Windows10/11-blue) 
 
+
+
+>   最近了解到 英伟达的图像比较与分析工具`ICAT`，功能非常完善，建议大家优先下载。
+>
+>   https://www.nvidia.cn/geforce/technologies/icat/
+>
+>   本应用也会继续更新，尽力优化体验。
+
+
+
 # WotaScope
 
 ​	可对多个视频进行逐帧对比的应用。
