@@ -8,11 +8,9 @@ import androidx.compose.foundation.onClick
 import androidx.compose.material.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -24,14 +22,19 @@ import androidx.compose.ui.input.pointer.onPointerEvent
 import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.painterResource
-import pers.lolicer.wotascope.components.videoStatus.MediaPlayerListStatus
 import pers.lolicer.wotascope.components.videoStatus.isAllFinished
 import pers.lolicer.wotascope.components.videoStatus.isAnyPlaying
+import pers.lolicer.wotascope.components_new.status.MediaPlayerListStatus
+import pers.lolicer.wotascope.components_new.status.isAllFinished
+import pers.lolicer.wotascope.components_new.status.isAnyPlaying
+import pers.lolicer.wotascope.components_new.status.isFinished
+import pers.lolicer.wotascope.components_new.status.isSelected
 import uk.co.caprica.vlcj.player.base.MediaPlayer
 import uk.co.caprica.vlcj.player.base.MediaPlayerEventAdapter
 import wotascope.composeapp.generated.resources.Res
 import wotascope.composeapp.generated.resources.media_pause
 import wotascope.composeapp.generated.resources.media_play
+import java.net.URLDecoder
 import kotlin.collections.forEach
 import kotlin.collections.get
 import kotlin.collections.iterator
@@ -83,13 +86,21 @@ fun PauseButton(
     // 这段代码在每次界面重组时运行，防止“添加视频引发的页面重组”导致的isAnyVideoPlaying未更新为false的问题。
     // 后续想办法优化一下，每次重组都运行不太好，应该改掉。
     var res = false
-    for(elem in MediaPlayerListStatus.mutableMap.value){
-        val mediaPlayer = elem.key
-        val isSelected = MediaPlayerListStatus.mutableMap.value[mediaPlayer]?.isSelected
-        println(MediaPlayerListStatus.mutableMap.value.keys)
-        if(isSelected == true && mediaPlayer.status().isPlaying){
-            println("isAnyVideoPlaying")
-            res = true
+    // for(elem in MediaPlayerListStatus.mutableMap.value){
+    //     val mediaPlayer = elem.key
+    //     val isSelected = MediaPlayerListStatus.mutableMap.value[mediaPlayer]?.isSelected
+    //     println(MediaPlayerListStatus.mutableMap.value.keys)
+    //     if(isSelected == true && mediaPlayer.status().isPlaying){
+    //         println("isAnyVideoPlaying")
+    //         res = true
+    //         break
+    //     }
+    // }
+    for(elem in MediaPlayerListStatus.list.value){
+        val mediaPlayer = elem.first
+        val isSelected = mediaPlayer.isSelected
+        if(isSelected && mediaPlayer.status().isPlaying){
+            res  =true
             break
         }
     }
@@ -109,46 +120,41 @@ fun PauseButton(
                 .onPointerEvent(PointerEventType.Exit) { active = false }
                 .size(32.dp)
                 .onClick{
-                    if(MediaPlayerListStatus.mutableMap.value.isNotEmpty()){
+                    if(MediaPlayerListStatus.list.value.isNotEmpty()){
                         if(MediaPlayerListStatus.isAnyPlaying()) {
                             println("isAnyVideoPlaying")
-                            for(elem in MediaPlayerListStatus.mutableMap.value) {
-                                val mediaPlayer = elem.key
-                                val isSelected =
-                                    MediaPlayerListStatus.mutableMap.value[mediaPlayer]?.isSelected
-                                if(isSelected == true) {
-                                    // if(mediaPlayer.status().isPlaying) println("$mediaPlayer isPlaying")
+                            for(elem in MediaPlayerListStatus.list.value) {
+                                val mediaPlayer = elem.first
+                                val isSelected = mediaPlayer.isSelected
+                                if(isSelected) {
                                     mediaPlayer.controls().setPause(true)
                                 }
                             }
                         } else {
                             if(MediaPlayerListStatus.isAllFinished()) {
                                 println("isAllVideoFinished")
-                                for(elem in MediaPlayerListStatus.mutableMap.value) {
-                                    val mediaPlayer = elem.key
-                                    val isSelected =
-                                        MediaPlayerListStatus.mutableMap.value[mediaPlayer]?.isSelected
-                                    if(isSelected == true) {
+                                for(elem in MediaPlayerListStatus.list.value) {
+                                    val mediaPlayer = elem.first
+                                    val isSelected = mediaPlayer.isSelected
+                                    if(isSelected) {
                                         mediaPlayer.controls().play()
-                                        mediaPlayer.controls().play()
-                                        // FinishStatusMap.mutableMap[mediaPlayer] = false
-                                        MediaPlayerListStatus.mutableMap.value[mediaPlayer]?.let {
-                                            it.isFinished = false
+                                        MediaPlayerListStatus.list.value = MediaPlayerListStatus.list.value.map{ pair ->
+                                            if(pair.first == mediaPlayer){
+                                                pair.copy(second = pair.second.apply { this.isFinished = true })
+                                            }
+                                            else{
+                                                pair
+                                            }
                                         }
                                     }
                                 }
                             } else {
                                 println("None of isAnyVideoPlaying/isAllVideoFinished")
-                                MediaPlayerListStatus.mutableMap.value.forEach {
-                                    println(it.value.toString())
-                                }
-                                for(elem in MediaPlayerListStatus.mutableMap.value) {
-                                    val mediaPlayer = elem.key
-                                    val isSelected =
-                                        MediaPlayerListStatus.mutableMap.value[mediaPlayer]?.isSelected
-                                    val isFinished =
-                                        MediaPlayerListStatus.mutableMap.value[mediaPlayer]?.isFinished
-                                    if(isSelected == true && !mediaPlayer.status().isPlaying && isFinished == false) {
+                                for(elem in MediaPlayerListStatus.list.value) {
+                                    val mediaPlayer = elem.first
+                                    val isSelected = mediaPlayer.isSelected
+                                    val isFinished = mediaPlayer.isFinished
+                                    if(isSelected && !mediaPlayer.status().isPlaying && !isFinished) {
                                         mediaPlayer.controls().play()
                                     }
                                 }
@@ -163,9 +169,9 @@ fun PauseButton(
             tint = Color.White
         )
 
-        MediaPlayerListStatus.mutableMap.value.forEach{ elem ->
-            val mediaPlayer = elem.key
-            println("tian_jia_JianTing")
+        MediaPlayerListStatus.list.value.forEach{ elem ->
+            val mediaPlayer = elem.first
+            // println("tian_jia_JianTing")
             DisposableEffect(mediaPlayer){
                 val listener = object : MediaPlayerEventAdapter() {
                     override fun playing(mediaPlayer: MediaPlayer?) {
@@ -174,8 +180,8 @@ fun PauseButton(
 
                     override fun paused(mediaPlayer: MediaPlayer?) {
                         var res = false
-                        MediaPlayerListStatus.mutableMap.value.forEach {elem ->
-                            if(elem.key.status().isPlaying) {
+                        MediaPlayerListStatus.list.value.forEach {elem ->
+                            if(elem.first.status().isPlaying) {
                                 res = true
                             }
                         }
@@ -183,9 +189,17 @@ fun PauseButton(
                     }
 
                     override fun finished(mediaPlayer: MediaPlayer) {
-                        // FinishStatusMap.mutableMap[mediaPlayer as EmbeddedMediaPlayer] = true
-                        MediaPlayerListStatus.mutableMap.value[mediaPlayer]?.isFinished = true
-                        println("$mediaPlayer JieShu Le")
+
+                        MediaPlayerListStatus.list.value = MediaPlayerListStatus.list.value.map{ pair ->
+                            if(pair.first == mediaPlayer){
+                                pair.copy(second = pair.second.apply { this.isFinished = true })
+                            }
+                            else{
+                                pair
+                            }
+                        }
+                        val name = mediaPlayer.media().info().mrl().substringAfterLast("/")
+                        println("${URLDecoder.decode(name, "UTF-8")} 结束了。")
 
                         if(MediaPlayerListStatus.isAllFinished()){
                             isAnyVideoPlaying.value = false

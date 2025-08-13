@@ -28,10 +28,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import pers.lolicer.wotascope.components_new.status.MediaPlayerListStatus
+import pers.lolicer.wotascope.components_new.status.Status
 import pers.lolicer.wotascope.utils.ExecUtils
 import pers.lolicer.wotascope.utils.ExtensionUtils
 import pers.lolicer.wotascope.settings.SettingsKeys
 import pers.lolicer.wotascope.settings.SettingsManager
+import uk.co.caprica.vlcj.factory.MediaPlayerFactory
 
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalFoundationApi::class)
 @Composable
@@ -70,16 +73,17 @@ fun AddButton(
             }
             .onClick {
                 val selectFile = ExtensionUtils().selectFile()
-                val newPaths = mutableListOf<String>()
                 if(selectFile != null) {
                     onEncodeStart()
 
                     scope.launch(Dispatchers.IO) {
                         selectFile.forEach {
+                            if(MediaPlayerListStatus.list.value.size >= 9) return@launch
+
                             var path = it
-                            val preEncoding =
+                            val needPreEncoding =
                                 SettingsManager.settings.getBooleanOrNull(SettingsKeys.PRE_ENCODING)!!
-                            if(preEncoding) {
+                            if(needPreEncoding) {
                                 if(!ExecUtils().hasAllKeyFrames(path, false)) {
                                     path = ExecUtils().convertVideo(
                                         path = path,
@@ -90,14 +94,18 @@ fun AddButton(
                                     ).second
                                 }
                             }
-                            newPaths.add(path)
+                            val factory = MediaPlayerFactory()
+                            val mediaPlayer = factory.mediaPlayers().newEmbeddedMediaPlayer()
+                            mediaPlayer.media().prepare(path)
+                            // mediaPlayer.controls().repeat = true
 
+                            MediaPlayerListStatus.list.value =
+                                MediaPlayerListStatus.list.value +
+                                Pair(
+                                    mediaPlayer,
+                                    Status(isSelected = true, isFinished = false, volume = 100)
+                                )
                         }
-
-                        if(paths.value.size + newPaths.size <= 9) {
-                            paths.value = paths.value + newPaths
-                        }
-                        
                         onEncodeFinish()
                     }
                 }
