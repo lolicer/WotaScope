@@ -52,38 +52,14 @@ fun App(
                     .background(Color(30, 31, 34))
                     .height(windowState.size.height - titleHeight - controllerHeight)
             ){
-                // if(paths.value.isNotEmpty()){
-                //     MainPanel(paths = paths)
-                // }
                 MainPanel()
             }
 
             BottomController(controllerHeight/* , mediaPlayerList.value */)
-
-            // val ffmpegFile = File(System.getProperty("user.dir"), "temp_videos").path
-            // println(ffmpegFile)
-            // ExecUtils().convertVideo(
-            //     path = "C:\\Users\\chang\\Downloads\\8saba.mp4",
-            //     targetDir = ffmpegFile
-            // )
         }
     }
-
-    // val dllNames = listOf("libiconv-2", "libva", "libva_win32", "libwinpthread-1", "libx264-164", "zlib1")
-    // dllNames.forEach{
-    //     val dllPath = File("resources/ffmpeg/${it}.dll").absolutePath
-    //     println(dllPath)
-    //     System.load(dllPath)
-    // }
-    println(File(System.getProperty("compose.application.resources.dir")).resolve("ffmpeg").absolutePath)
-    // System.setProperty("VLC_PLUGIN_PATH", File(System.getProperty("compose.application.resources.dir")).resolve("VLC").absolutePath + "\\plugins")
-    // System.setProperty("jna.library.path", File(System.getProperty("compose.application.resources.dir")).resolve("VLC").absolutePath)
+    // println(File(System.getProperty("compose.application.resources.dir")).resolve("ffmpeg").absolutePath)
     NativeLibrary.addSearchPath("libvlc", File(System.getProperty("compose.application.resources.dir")).resolve("VLC").absolutePath)
-    // System.load(File(System.getProperty("compose.application.resources.dir")).resolve("VLC").absolutePath + "\\libvlccore.dll")
-    // System.load(File(System.getProperty("compose.application.resources.dir")).resolve("VLC").absolutePath + "\\libvlc.dll")
-
-    // println("jna.library.path = ${System.getProperty("jna.library.path")}")
-    // println("VLC_PLUGIN_PATH = ${System.getProperty("VLC_PLUGIN_PATH")}")
 
     FileUtils().createTempDirIfNotExists()
 }

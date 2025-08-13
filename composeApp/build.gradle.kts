@@ -1,6 +1,4 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
-import org.jetbrains.kotlin.gradle.utils.loadPropertyFromResources
-import org.jetbrains.kotlin.konan.properties.loadProperties
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -64,7 +62,7 @@ compose.desktop {
         nativeDistributions {
             targetFormats(TargetFormat.Msi)
             packageName = "WotaScope"
-            packageVersion = "1.0.0"
+            packageVersion = "1.0.9"
 
             modules("java.instrument", "java.prefs", "jdk.unsupported")
             jvmArgs += mutableListOf(
@@ -77,15 +75,6 @@ compose.desktop {
                 shortcut = true
                 dirChooser = true
             }
-
-            // loadPropertyFromResources("$projectDir\\resources\\windows\\VLC\\plugins", "VLC_PLUGIN_PATH")
-            // loadPropertyFromResources("$projectDir\\resources\\windows\\VLC", "jna.library.path")
         }
     }
 }
-
-// tasks.withType<JavaExec> {
-//     systemProperty("VLC_PLUGIN_PATH", "$projectDir/resources/windows/VLC/plugins")
-//     systemProperty("jna.library.path", "$projectDir/resources/windows/VLC")
-//     // systemProperty("jna.library.path", "$projectDir/src/jvmMain/resources/ffmpeg")
-// }
