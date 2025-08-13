@@ -1,4 +1,4 @@
-package pers.lolicer.wotascope.components_new.layoutSet
+package pers.lolicer.wotascope.components.layoutSet
 
 import androidx.constraintlayout.compose.ChainStyle
 import androidx.constraintlayout.compose.ConstraintSet
@@ -207,8 +207,6 @@ object LayoutSet {
         createHorizontalChain(panel7, panel8, chainStyle = ChainStyle.Packed)
 
         constrain(panel1){
-            // start.linkTo(parent.start)
-            // end.linkTo(panel2.start)
             top.linkTo(parent.top)
             bottom.linkTo(panel4.top)
         }

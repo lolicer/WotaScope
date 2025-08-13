@@ -1,4 +1,4 @@
-package pers.lolicer.wotascope.components_new
+package pers.lolicer.wotascope
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.key
@@ -8,10 +8,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.layoutId
 import androidx.constraintlayout.compose.ConstraintLayout
-import pers.lolicer.wotascope.components_new.layoutSet.LayoutSet
-import pers.lolicer.wotascope.components_new.singleVideoPanel.SingleVideoPanelItem
-import pers.lolicer.wotascope.components_new.status.MediaPlayerListStatus
-import pers.lolicer.wotascope.components_new.status.selectSize
+import pers.lolicer.wotascope.components.layoutSet.LayoutSet
+import pers.lolicer.wotascope.components.singleVideoPanel.SingleVideoPanelItem
+import pers.lolicer.wotascope.status.MediaPlayerListStatus
+import pers.lolicer.wotascope.status.selectSize
 
 @Composable
 fun MainPanel(){

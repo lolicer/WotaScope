@@ -1,4 +1,4 @@
-package pers.lolicer.wotascope.components.videoStatus
+package pers.lolicer.wotascope.status
 
 enum class EncodingStatus {
     ENCODING, COMPLETED

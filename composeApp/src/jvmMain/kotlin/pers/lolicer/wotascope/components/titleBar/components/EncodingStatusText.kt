@@ -27,7 +27,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import pers.lolicer.wotascope.components.videoStatus.EncodingStatus
+import pers.lolicer.wotascope.status.EncodingStatus
 
 @Composable
 fun EncodingStatusText(

@@ -1,4 +1,4 @@
-package pers.lolicer.wotascope.components.singleVideoBar.videoPlayerWithoutSwingPanel
+package pers.lolicer.wotascope.components.singleVideoPanel
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
@@ -36,20 +36,19 @@ import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import org.jetbrains.compose.resources.painterResource
-import pers.lolicer.wotascope.components.singleVideoBar.VerticalSlider
-import pers.lolicer.wotascope.components.videoStatus.MediaPlayerListStatus
+import pers.lolicer.wotascope.status.MediaPlayerListStatus
+import pers.lolicer.wotascope.status.volume
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer
 import wotascope.composeapp.generated.resources.Res
 import wotascope.composeapp.generated.resources.media_close
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
-fun SingleVideoFloatWindows(
+fun FloatingMenu(
     modifier: Modifier,
     mediaPlayer: EmbeddedMediaPlayer,
     isHovered: Boolean,
-    screenSize: IntSize,
-    onRemove: () -> Unit
+    screenSize: IntSize
 ){
     val columnSize = IntSize((screenSize.width * 1/25), (screenSize.height * 3/10))
     // 左下 音量滑块
@@ -76,11 +75,8 @@ fun SingleVideoFloatWindows(
                 onValueChange = { newProgress ->
                     if(mediaPlayer.status().isPlayable){
                         volume.value = (newProgress * 100f).toInt()
-                        // AudioStatus.mutableMap[mediaPlayer] = volume.value
-                        MediaPlayerListStatus.mutableMap.value[mediaPlayer]?.let {it.volume = volume.value}
-                        // println("(newProgress * 100f).toInt(): ${(newProgress * 100f).toInt()}")
+                        mediaPlayer.volume = volume.value
                         mediaPlayer.audio().setVolume((volume.value * MediaPlayerListStatus.globalVolumeProp).toInt())
-                        // println("volume: ${volume.value} $mediaPlayer")
                     }
                 },
                 sliderHeight = (columnSize.height - 20).dp,
@@ -104,7 +100,8 @@ fun SingleVideoFloatWindows(
                 .clip(CircleShape)
                 .pointerHoverIcon(PointerIcon.Hand)
                 .onClick{
-                    onRemove()
+                    MediaPlayerListStatus.list.value = MediaPlayerListStatus.list.value.filterNot { it.first == mediaPlayer }
+                    // mediaPlayer.release()
                 },
             contentAlignment = Alignment.Center
         ) {

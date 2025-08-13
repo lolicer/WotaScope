@@ -19,10 +19,9 @@ import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.onPointerEvent
 import androidx.compose.ui.input.pointer.pointerHoverIcon
 import org.jetbrains.compose.resources.painterResource
-import pers.lolicer.wotascope.components.videoStatus.ProgressStatus
-import pers.lolicer.wotascope.components_new.status.MediaPlayerListStatus
-import pers.lolicer.wotascope.components_new.status.isFinished
-import pers.lolicer.wotascope.components_new.status.isSelected
+import pers.lolicer.wotascope.status.MediaPlayerListStatus
+import pers.lolicer.wotascope.status.isFinished
+import pers.lolicer.wotascope.status.isSelected
 import wotascope.composeapp.generated.resources.Res
 import wotascope.composeapp.generated.resources.media_skip_forward_10
 
@@ -45,19 +44,11 @@ fun SkipForwardButton(
                 .onPointerEvent(PointerEventType.Enter) { active = true }
                 .onPointerEvent(PointerEventType.Exit) { active = false }
                 .onClick{
-                    ProgressStatus.value.value = !ProgressStatus.value.value
                     MediaPlayerListStatus.list.value.forEach { elem ->
                         if(elem.first.isSelected && !elem.first.isFinished){
                             elem.first.controls().skipTime(1000 * 10)
                         }
                     }
-                    // SelectStatusMap.mutableMap.forEach { elem ->
-                    //     if(elem.value){
-                    //         if(FinishStatusMap.mutableMap[elem.key] == false){
-                    //             elem.key.controls().skipTime(1000 * 10)
-                    //         }
-                    //     }
-                    // }
                 },
             painter = painterResource(Res.drawable.media_skip_forward_10),
             contentDescription = "快进十秒",

@@ -22,13 +22,11 @@ import androidx.compose.ui.input.pointer.onPointerEvent
 import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.painterResource
-import pers.lolicer.wotascope.components.videoStatus.isAllFinished
-import pers.lolicer.wotascope.components.videoStatus.isAnyPlaying
-import pers.lolicer.wotascope.components_new.status.MediaPlayerListStatus
-import pers.lolicer.wotascope.components_new.status.isAllFinished
-import pers.lolicer.wotascope.components_new.status.isAnyPlaying
-import pers.lolicer.wotascope.components_new.status.isFinished
-import pers.lolicer.wotascope.components_new.status.isSelected
+import pers.lolicer.wotascope.status.isAllFinished
+import pers.lolicer.wotascope.status.isAnyPlaying
+import pers.lolicer.wotascope.status.MediaPlayerListStatus
+import pers.lolicer.wotascope.status.isFinished
+import pers.lolicer.wotascope.status.isSelected
 import uk.co.caprica.vlcj.player.base.MediaPlayer
 import uk.co.caprica.vlcj.player.base.MediaPlayerEventAdapter
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer
@@ -37,8 +35,6 @@ import wotascope.composeapp.generated.resources.media_pause
 import wotascope.composeapp.generated.resources.media_play
 import java.net.URLDecoder
 import kotlin.collections.forEach
-import kotlin.collections.get
-import kotlin.collections.iterator
 
 
 /**

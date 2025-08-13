@@ -9,9 +9,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -24,10 +21,6 @@ import pers.lolicer.wotascope.components.bottomController.components.SkipBackBut
 import pers.lolicer.wotascope.components.bottomController.components.SkipForwardButton
 import pers.lolicer.wotascope.components.bottomController.components.SpeedButton
 import pers.lolicer.wotascope.components.bottomController.components.Volume
-import pers.lolicer.wotascope.components.videoStatus.MediaPlayerListStatus
-import pers.lolicer.wotascope.components.videoStatus.isAllFinished
-import uk.co.caprica.vlcj.player.base.MediaPlayer
-import uk.co.caprica.vlcj.player.base.MediaPlayerEventAdapter
 
 @Composable
 fun BottomController(
@@ -57,23 +50,4 @@ fun BottomController(
         SpeedButton(Modifier.size(controllerHeight))
         Spacer(Modifier.width((controllerHeight.value * 0.5).dp))
     }
-
-    // val map = remember { mutableStateOf(MediaPlayerListStatus.mutableMap.value) }
-    // LaunchedEffect(Unit) {
-    //     snapshotFlow { MediaPlayerListStatus.mutableMap.value } // 转为不可变 Map
-    //         .collect { newMap ->
-    //             println("test")
-    //             map.value = newMap
-    //         }
-    // }
 }
-
-// fun List<EmbeddedMediaPlayer>.isAnyPlaying(): Boolean{
-//     for(mediaPlayer in this){
-//         val isSelected = MediaPlayerListStatus.mutableMap.value[mediaPlayer]?.isSelected
-//         if(isSelected == true && mediaPlayer.status().isPlaying){
-//             return true
-//         }
-//     }
-//     return false
-// }

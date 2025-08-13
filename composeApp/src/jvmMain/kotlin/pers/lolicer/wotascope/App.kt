@@ -6,7 +6,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -17,32 +16,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.FrameWindowScope
 import androidx.compose.ui.window.WindowPlacement
 import androidx.compose.ui.window.WindowState
-import androidx.constraintlayout.compose.ConstraintSet
 import com.sun.jna.NativeLibrary
 import pers.lolicer.wotascope.components.bottomController.BottomController
 import pers.lolicer.wotascope.components.titleBar.TitleBar
 import pers.lolicer.wotascope.utils.FileUtils
-import pers.lolicer.wotascope.components.videoLayout.MainPanel
-import pers.lolicer.wotascope.components.videoLayout.dualLayout
-import pers.lolicer.wotascope.components.videoLayout.heptalLayout
-import pers.lolicer.wotascope.components.videoLayout.hexaLayout
-import pers.lolicer.wotascope.components.videoLayout.nonaLayout
-import pers.lolicer.wotascope.components.videoLayout.octaLayout
-import pers.lolicer.wotascope.components.videoLayout.pentaLayout
-import pers.lolicer.wotascope.components.videoLayout.quadLayout
-import pers.lolicer.wotascope.components.videoLayout.singleLayout
-import pers.lolicer.wotascope.components.videoLayout.tripleLayout
 import java.io.File
-import kotlin.collections.emptyList
 
 @Composable
 fun App(
     windowState: WindowState,
     windowScope: FrameWindowScope
 ) {
-    val paths = remember { mutableStateOf<List<String>>(emptyList()) }
-    // val mediaPlayerList = remember { mutableStateOf<List<EmbeddedMediaPlayer>>(emptyList()) }
-
     var isMaximized by remember { mutableStateOf(windowState.placement == WindowPlacement.Maximized) }
 
     MaterialTheme {
@@ -60,7 +44,7 @@ fun App(
                     )
             } else Modifier
         ){
-            windowScope.TitleBar(titleHeight, windowState, paths, { isMaximized = !isMaximized })
+            windowScope.TitleBar(titleHeight, windowState, { isMaximized = !isMaximized })
 
             Box(
                 Modifier
@@ -71,7 +55,7 @@ fun App(
                 // if(paths.value.isNotEmpty()){
                 //     MainPanel(paths = paths)
                 // }
-                pers.lolicer.wotascope.components_new.MainPanel()
+                MainPanel()
             }
 
             BottomController(controllerHeight/* , mediaPlayerList.value */)
@@ -102,30 +86,4 @@ fun App(
     // println("VLC_PLUGIN_PATH = ${System.getProperty("VLC_PLUGIN_PATH")}")
 
     FileUtils().createTempDirIfNotExists()
-}
-
-fun MutableState<List<String>>.selectLayout(): ConstraintSet?{
-    return when(this.value.size){
-        0 -> null
-        1 -> singleLayout()
-        2 -> dualLayout()
-        3 -> tripleLayout()
-        4 -> quadLayout()
-        5 -> pentaLayout()
-        6 -> hexaLayout()
-        7 -> heptalLayout()
-        8 -> octaLayout()
-        9 -> nonaLayout()
-        else -> { throw Exception("程序错误：超出9个视频") }
-    }
-}
-
-fun MutableState<List<String>>.selectSize(): Modifier?{
-    return when(this.value.size){
-        0 -> null
-        1 -> Modifier
-        2, 3, 4 -> Modifier.fillMaxSize(0.5f)
-        5, 6, 7, 8, 9 -> Modifier.fillMaxSize(1/3f)
-        else -> { throw Exception("程序错误：超出9个视频") }
-    }
 }

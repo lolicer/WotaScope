@@ -22,15 +22,13 @@ import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.painterResource
-import pers.lolicer.wotascope.components.videoStatus.isAllMute
-import pers.lolicer.wotascope.components_new.status.MediaPlayerListStatus
-import pers.lolicer.wotascope.components_new.status.isAllMute
-import pers.lolicer.wotascope.components_new.status.volume
+import pers.lolicer.wotascope.status.MediaPlayerListStatus
+import pers.lolicer.wotascope.status.isAllMute
+import pers.lolicer.wotascope.status.volume
 import wotascope.composeapp.generated.resources.Res
 import wotascope.composeapp.generated.resources.volume_0
 import wotascope.composeapp.generated.resources.volume_1
 import wotascope.composeapp.generated.resources.volume_2
-import kotlin.collections.iterator
 
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
@@ -102,10 +100,3 @@ fun Volume(
         )
     }
 }
-
-// fun List<EmbeddedMediaPlayer>.isAllMute(): Boolean {
-//     this.forEach {
-//         if(!it.audio().isMute) return false
-//     }
-//     return true
-// }

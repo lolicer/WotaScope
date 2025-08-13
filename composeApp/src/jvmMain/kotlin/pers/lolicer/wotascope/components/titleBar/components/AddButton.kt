@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.onClick
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -28,8 +27,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import pers.lolicer.wotascope.components_new.status.MediaPlayerListStatus
-import pers.lolicer.wotascope.components_new.status.Status
+import pers.lolicer.wotascope.status.MediaPlayerListStatus
+import pers.lolicer.wotascope.status.Status
 import pers.lolicer.wotascope.utils.ExecUtils
 import pers.lolicer.wotascope.utils.ExtensionUtils
 import pers.lolicer.wotascope.settings.SettingsKeys
@@ -40,7 +39,6 @@ import uk.co.caprica.vlcj.factory.MediaPlayerFactory
 @Composable
 fun AddButton(
     titleHeight: Dp,
-    paths: MutableState<List<String>>,
     onEncodeStart: () -> Unit,
     onEncodeFinish: () -> Unit
 ){

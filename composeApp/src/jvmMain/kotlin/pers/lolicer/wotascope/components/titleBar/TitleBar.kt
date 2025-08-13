@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.window.WindowDraggableArea
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -29,13 +28,12 @@ import pers.lolicer.wotascope.components.titleBar.components.MaximizeButton
 import pers.lolicer.wotascope.components.titleBar.components.MinimizeButton
 import pers.lolicer.wotascope.components.titleBar.components.SettingsButton
 import pers.lolicer.wotascope.components.titleBar.components.TitleIcon
-import pers.lolicer.wotascope.components.videoStatus.EncodingStatus
+import pers.lolicer.wotascope.status.EncodingStatus
 
 @Composable
 fun WindowScope.TitleBar(
     titleHeight: Dp,
     windowState: WindowState,
-    paths: MutableState<List<String>>,
     onMaximizeButtonClick: () -> Unit
 ) = WindowDraggableArea{
     val iconSize = 24.dp
@@ -54,7 +52,7 @@ fun WindowScope.TitleBar(
         Row{
             TitleIcon(titleHeight)
             Spacer(modifier = Modifier.width(8.dp))
-            AddButton(titleHeight, paths, { encodingStatus.value = EncodingStatus.ENCODING }, { encodingStatus.value = EncodingStatus.COMPLETED })
+            AddButton(titleHeight, { encodingStatus.value = EncodingStatus.ENCODING }, { encodingStatus.value = EncodingStatus.COMPLETED })
             Spacer(modifier = Modifier.width(8.dp))
             SettingsButton(titleHeight)
         }

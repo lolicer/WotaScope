@@ -1,4 +1,4 @@
-package pers.lolicer.wotascope.components_new.singleVideoPanel
+package pers.lolicer.wotascope.components.singleVideoPanel
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image

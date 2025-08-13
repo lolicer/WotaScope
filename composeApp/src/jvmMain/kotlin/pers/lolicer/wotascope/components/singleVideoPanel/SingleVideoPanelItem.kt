@@ -1,4 +1,4 @@
-package pers.lolicer.wotascope.components_new.singleVideoPanel
+package pers.lolicer.wotascope.components.singleVideoPanel
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -22,9 +22,7 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
-import pers.lolicer.wotascope.components_new.status.MediaPlayerListStatus
-import pers.lolicer.wotascope.components_new.status.Status
-import pers.lolicer.wotascope.components_new.status.isSelected
+import pers.lolicer.wotascope.status.isSelected
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -82,12 +80,5 @@ fun SingleVideoPanelItem(
             mediaPlayer.controls().setPause(true)
         }
         mediaPlayer.isSelected = isSelected.value
-        // MediaPlayerListStatus.list.value = MediaPlayerListStatus.list.value.map { pair ->
-        //     if (pair.first == mediaPlayer) {
-        //         pair.copy(second = pair.second.apply { this.isSelected = isSelected.value })
-        //     } else {
-        //         pair
-        //     }
-        // }
     }
 }

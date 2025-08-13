@@ -1,4 +1,4 @@
-package pers.lolicer.wotascope.components.singleVideoBar
+package pers.lolicer.wotascope.components.singleVideoPanel
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border

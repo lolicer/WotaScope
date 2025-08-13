@@ -1,4 +1,4 @@
-package pers.lolicer.wotascope.components_new.status
+package pers.lolicer.wotascope.status
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.MutableState
@@ -16,25 +16,22 @@ object MediaPlayerListStatus {
             _globalVolumeProp = value.coerceIn(0f..1f)
         }
 }
-
+/**
+ * 视频的状态。
+ *
+ * @param isSelected 视频是否在被选择
+ * @param isFinished 视频是否已结束
+ * @param volume 视频音量，与全局音量相乘得到输出音量
+ */
 class Status(
     var isSelected: Boolean,
     var isFinished: Boolean,
     var volume: Int
 )
 
-// fun EmbeddedMediaPlayer.isSelected(): Boolean{
-//     return MediaPlayerListStatus.list.value
-//         .first { it.first == this }
-//         .second.isSelected
-// }
-//
-// fun EmbeddedMediaPlayer.isFinished(): Boolean{
-//     return MediaPlayerListStatus.list.value
-//         .first { it.first == this }
-//         .second.isFinished
-// }
-
+/**
+ * 视频的选择状态。
+ */
 var EmbeddedMediaPlayer.isSelected: Boolean
     get() = MediaPlayerListStatus.list.value
         .first { it.first == this }
@@ -45,6 +42,9 @@ var EmbeddedMediaPlayer.isSelected: Boolean
             .second.isSelected = value
     }
 
+/**
+ * 视频的完成状态。
+ */
 var EmbeddedMediaPlayer.isFinished: Boolean
     get() = MediaPlayerListStatus.list.value
         .first { it.first == this }
@@ -55,6 +55,9 @@ var EmbeddedMediaPlayer.isFinished: Boolean
             .second.isFinished = value
     }
 
+/**
+ * 视频的音量，与全局音量相乘得到输出音量。
+ */
 var EmbeddedMediaPlayer.volume: Int
     get() = MediaPlayerListStatus.list.value
         .first { it.first == this }
@@ -65,6 +68,9 @@ var EmbeddedMediaPlayer.volume: Int
             .second.volume = value
     }
 
+/**
+ * 根据视频数量，返回每个视频应占据的宽高。
+ */
 fun MediaPlayerListStatus.selectSize(): Modifier?{
     return when(this.list.value.size){
         0 -> null
@@ -75,6 +81,9 @@ fun MediaPlayerListStatus.selectSize(): Modifier?{
     }
 }
 
+/**
+ * 是否有被选择的视频正在播放。
+ */
 fun MediaPlayerListStatus.isAnyPlaying(): Boolean{
     var res = false
     for(elem in this.list.value){
@@ -86,6 +95,9 @@ fun MediaPlayerListStatus.isAnyPlaying(): Boolean{
     return res
 }
 
+/**
+ * 是否所有被选择的视频都已结束。
+ */
 fun MediaPlayerListStatus.isAllFinished(): Boolean{
     var res = true
     for(elem in this.list.value){
@@ -97,6 +109,9 @@ fun MediaPlayerListStatus.isAllFinished(): Boolean{
     return res
 }
 
+/**
+ * 是否所有被选择的视频都已静音。
+ */
 fun MediaPlayerListStatus.isAllMute(): Boolean{
     this.list.value.forEach { elem ->
         if(!elem.first.audio().isMute){
