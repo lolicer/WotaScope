@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import pers.lolicer.wotascope.components_new.status.MediaPlayerListStatus
 import pers.lolicer.wotascope.components_new.status.Status
+import pers.lolicer.wotascope.components_new.status.isSelected
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -80,13 +81,13 @@ fun SingleVideoPanelItem(
         if(!isSelected.value){
             mediaPlayer.controls().setPause(true)
         }
-
-        MediaPlayerListStatus.list.value = MediaPlayerListStatus.list.value.map { pair ->
-            if (pair.first == mediaPlayer) {
-                pair.copy(second = pair.second.apply { this.isSelected = isSelected.value })
-            } else {
-                pair
-            }
-        }
+        mediaPlayer.isSelected = isSelected.value
+        // MediaPlayerListStatus.list.value = MediaPlayerListStatus.list.value.map { pair ->
+        //     if (pair.first == mediaPlayer) {
+        //         pair.copy(second = pair.second.apply { this.isSelected = isSelected.value })
+        //     } else {
+        //         pair
+        //     }
+        // }
     }
 }

@@ -21,7 +21,7 @@ import androidx.compose.ui.input.pointer.onPointerEvent
 import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.text.font.FontWeight
 import kotlinx.coroutines.launch
-import pers.lolicer.wotascope.components.videoStatus.MediaPlayerListStatus
+import pers.lolicer.wotascope.components_new.status.MediaPlayerListStatus
 
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalFoundationApi::class)
 @Composable
@@ -52,22 +52,22 @@ fun SpeedButton(
                 .onPointerEvent(PointerEventType.Enter) { active = true }
                 .onPointerEvent(PointerEventType.Exit) { active = false }
                 .onClick{
-                    if(MediaPlayerListStatus.mutableMap.value.isNotEmpty()){
+                    if(MediaPlayerListStatus.list.value.isNotEmpty()){
                         var rate = idx.value + 1
                         if(rate == 6) rate = 0
 
-                        MediaPlayerListStatus.mutableMap.value.forEach { elem ->
-                            if(elem.key.status().isPlayable){
-                                if(elem.key.status().isPlaying){
-                                    elem.key.controls().setPause(true)
+                        MediaPlayerListStatus.list.value.forEach { elem ->
+                            if(elem.first.status().isPlayable){
+                                if(elem.first.status().isPlaying){
+                                    elem.first.controls().setPause(true)
                                     scope.launch {
-                                        elem.key.controls().setRate(speedMap[rate]!!.second)
-                                        elem.key.controls().setPause(false)
+                                        elem.first.controls().setRate(speedMap[rate]!!.second)
+                                        elem.first.controls().setPause(false)
                                     }
                                 }
                                 else{
                                     scope.launch {
-                                        elem.key.controls().setRate(speedMap[rate]!!.second)
+                                        elem.first.controls().setRate(speedMap[rate]!!.second)
                                     }
                                 }
                                 idx.value = rate

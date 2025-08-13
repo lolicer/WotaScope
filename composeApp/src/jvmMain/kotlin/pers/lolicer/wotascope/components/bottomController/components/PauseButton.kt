@@ -31,6 +31,7 @@ import pers.lolicer.wotascope.components_new.status.isFinished
 import pers.lolicer.wotascope.components_new.status.isSelected
 import uk.co.caprica.vlcj.player.base.MediaPlayer
 import uk.co.caprica.vlcj.player.base.MediaPlayerEventAdapter
+import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer
 import wotascope.composeapp.generated.resources.Res
 import wotascope.composeapp.generated.resources.media_pause
 import wotascope.composeapp.generated.resources.media_play
@@ -138,14 +139,7 @@ fun PauseButton(
                                     val isSelected = mediaPlayer.isSelected
                                     if(isSelected) {
                                         mediaPlayer.controls().play()
-                                        MediaPlayerListStatus.list.value = MediaPlayerListStatus.list.value.map{ pair ->
-                                            if(pair.first == mediaPlayer){
-                                                pair.copy(second = pair.second.apply { this.isFinished = true })
-                                            }
-                                            else{
-                                                pair
-                                            }
-                                        }
+                                        mediaPlayer.isFinished = false
                                     }
                                 }
                             } else {
@@ -154,6 +148,7 @@ fun PauseButton(
                                     val mediaPlayer = elem.first
                                     val isSelected = mediaPlayer.isSelected
                                     val isFinished = mediaPlayer.isFinished
+
                                     if(isSelected && !mediaPlayer.status().isPlaying && !isFinished) {
                                         mediaPlayer.controls().play()
                                     }
@@ -189,15 +184,9 @@ fun PauseButton(
                     }
 
                     override fun finished(mediaPlayer: MediaPlayer) {
+                        val embeddedMediaPlayer = mediaPlayer as EmbeddedMediaPlayer
+                        embeddedMediaPlayer.isFinished = true
 
-                        MediaPlayerListStatus.list.value = MediaPlayerListStatus.list.value.map{ pair ->
-                            if(pair.first == mediaPlayer){
-                                pair.copy(second = pair.second.apply { this.isFinished = true })
-                            }
-                            else{
-                                pair
-                            }
-                        }
                         val name = mediaPlayer.media().info().mrl().substringAfterLast("/")
                         println("${URLDecoder.decode(name, "UTF-8")} 结束了。")
 

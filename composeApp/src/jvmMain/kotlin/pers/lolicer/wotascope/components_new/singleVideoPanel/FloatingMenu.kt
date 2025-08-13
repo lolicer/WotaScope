@@ -38,6 +38,7 @@ import androidx.compose.ui.zIndex
 import org.jetbrains.compose.resources.painterResource
 import pers.lolicer.wotascope.components.singleVideoBar.VerticalSlider
 import pers.lolicer.wotascope.components_new.status.MediaPlayerListStatus
+import pers.lolicer.wotascope.components_new.status.volume
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer
 import wotascope.composeapp.generated.resources.Res
 import wotascope.composeapp.generated.resources.media_close
@@ -75,13 +76,14 @@ fun FloatingMenu(
                 onValueChange = { newProgress ->
                     if(mediaPlayer.status().isPlayable){
                         volume.value = (newProgress * 100f).toInt()
-                        MediaPlayerListStatus.list.value = MediaPlayerListStatus.list.value.map { pair ->
-                            if (pair.first == mediaPlayer) {
-                                pair.copy(second = pair.second.apply { this.volume = volume.value })
-                            } else {
-                                pair
-                            }
-                        }
+                        mediaPlayer.volume = volume.value
+                        // MediaPlayerListStatus.list.value = MediaPlayerListStatus.list.value.map { pair ->
+                        //     if (pair.first == mediaPlayer) {
+                        //         pair.copy(second = pair.second.apply { this.volume = volume.value })
+                        //     } else {
+                        //         pair
+                        //     }
+                        // }
                         mediaPlayer.audio().setVolume((volume.value * MediaPlayerListStatus.globalVolumeProp).toInt())
                     }
                 },

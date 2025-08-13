@@ -19,8 +19,10 @@ import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.onPointerEvent
 import androidx.compose.ui.input.pointer.pointerHoverIcon
 import org.jetbrains.compose.resources.painterResource
-import pers.lolicer.wotascope.components.videoStatus.MediaPlayerListStatus
 import pers.lolicer.wotascope.components.videoStatus.ProgressStatus
+import pers.lolicer.wotascope.components_new.status.MediaPlayerListStatus
+import pers.lolicer.wotascope.components_new.status.isFinished
+import pers.lolicer.wotascope.components_new.status.isSelected
 import wotascope.composeapp.generated.resources.Res
 import wotascope.composeapp.generated.resources.media_skip_back_5
 
@@ -28,8 +30,7 @@ import wotascope.composeapp.generated.resources.media_skip_back_5
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalFoundationApi::class)
 @Composable
 fun SkipBackButton(
-    modifier: Modifier,
-    // mediaPlayerList: List<EmbeddedMediaPlayer>
+    modifier: Modifier
 ){
     var active by remember { mutableStateOf(false) }
 
@@ -45,18 +46,11 @@ fun SkipBackButton(
                 .onPointerEvent(PointerEventType.Exit) { active = false }
                 .onClick{
                     ProgressStatus.value.value = !ProgressStatus.value.value
-                    MediaPlayerListStatus.mutableMap.value.forEach { elem ->
-                        if(elem.value.isSelected && !elem.value.isFinished){
-                            elem.key.controls().skipTime(-1000 * 5)
+                    MediaPlayerListStatus.list.value.forEach { elem ->
+                        if(elem.first.isSelected && !elem.first.isFinished){
+                            elem.first.controls().skipTime(-1000 * 5)
                         }
                     }
-                    // SelectStatusMap.mutableMap.forEach { elem ->
-                    //     if(elem.value){
-                    //         if(FinishStatusMap.mutableMap[elem.key] == false){
-                    //             elem.key.controls().skipTime(-1000 * 5)
-                    //         }
-                    //     }
-                    // }
                 },
             painter = painterResource(Res.drawable.media_skip_back_5),
             contentDescription = "快退五秒",

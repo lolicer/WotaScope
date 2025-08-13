@@ -55,6 +55,16 @@ var EmbeddedMediaPlayer.isFinished: Boolean
             .second.isFinished = value
     }
 
+var EmbeddedMediaPlayer.volume: Int
+    get() = MediaPlayerListStatus.list.value
+        .first { it.first == this }
+        .second.volume
+    set(value){
+        MediaPlayerListStatus.list.value
+            .first { it.first == this }
+            .second.volume = value
+    }
+
 fun MediaPlayerListStatus.selectSize(): Modifier?{
     return when(this.list.value.size){
         0 -> null
@@ -85,4 +95,13 @@ fun MediaPlayerListStatus.isAllFinished(): Boolean{
         }
     }
     return res
+}
+
+fun MediaPlayerListStatus.isAllMute(): Boolean{
+    this.list.value.forEach { elem ->
+        if(!elem.first.audio().isMute){
+            return false
+        }
+    }
+    return true
 }
