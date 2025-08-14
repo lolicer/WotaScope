@@ -34,20 +34,20 @@ fun BottomController(
         verticalAlignment = Alignment.CenterVertically
     ){
         Spacer(Modifier.width((controllerHeight.value * 0.5).dp))
-        Volume(Modifier.width(controllerHeight * 3), /* mediaPlayerList */)
+        Volume(Modifier.width(controllerHeight * 3))
         Row(
             modifier = Modifier.weight(1f),
             horizontalArrangement = Arrangement.Center
         ){
-            SkipBackButton(Modifier.size(controllerHeight), /* mediaPlayerList */)
-            RewindButton(Modifier.size(controllerHeight), /* mediaPlayerList */)
-            PauseButton(Modifier.size(controllerHeight), /* mediaPlayerList ,*/)
-            FastForwardButton(Modifier.size(controllerHeight), /* mediaPlayerList */)
-            SkipForwardButton(Modifier.size(controllerHeight), /* mediaPlayerList */)
+            SkipBackButton(Modifier.size(controllerHeight))
+            RewindButton(Modifier.size(controllerHeight))
+            PauseButton(Modifier.size(controllerHeight))
+            FastForwardButton(Modifier.size(controllerHeight))
+            SkipForwardButton(Modifier.size(controllerHeight))
         }
 
         Spacer(Modifier.width(controllerHeight * 2))
-        SpeedButton(Modifier.size(controllerHeight))
+        SpeedButton(size = controllerHeight)
         Spacer(Modifier.width((controllerHeight.value * 0.5).dp))
     }
 }

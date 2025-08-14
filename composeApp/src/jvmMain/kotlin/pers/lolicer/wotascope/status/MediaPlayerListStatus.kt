@@ -15,6 +15,8 @@ object MediaPlayerListStatus {
         set(value) {
             _globalVolumeProp = value.coerceIn(0f..1f)
         }
+
+    var speed: Float = 1f
 }
 /**
  * 视频的状态。

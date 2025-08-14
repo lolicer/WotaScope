@@ -118,6 +118,8 @@
 
     `media_skip_forward_10.svg`: `tabler:rewind-forward-10`
 
+    `media_menu.svg`: `tabler:menu-2`
+
     `volume_0.svg`: `tabler:volume-3`
 
     `volume_1.svg`: `tabler:volume-2`

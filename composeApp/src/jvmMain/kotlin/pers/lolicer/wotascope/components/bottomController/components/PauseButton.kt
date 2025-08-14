@@ -135,6 +135,7 @@ fun PauseButton(
                                     val isSelected = mediaPlayer.isSelected
                                     if(isSelected) {
                                         mediaPlayer.controls().play()
+                                        mediaPlayer.controls().setRate(MediaPlayerListStatus.speed)
                                         mediaPlayer.isFinished = false
                                     }
                                 }
@@ -147,6 +148,7 @@ fun PauseButton(
 
                                     if(isSelected && !mediaPlayer.status().isPlaying && !isFinished) {
                                         mediaPlayer.controls().play()
+                                        mediaPlayer.controls().setRate(MediaPlayerListStatus.speed)
                                     }
                                 }
                             }
