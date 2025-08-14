@@ -28,6 +28,8 @@
 
     `.mp4` `.avi` `.mkv` `.flv` `.mov` `.wmv`
 
+    建议格式为`.mp4`和`.mov`，其他格式可能无法编码为全关键帧逐帧播放。
+
 -   **如何下载**
 
 ​	请在[此处（github）](https://github.com/lolicer/WotaScope/releases)或[此处（gitee）](https://gitee.com/lolicer/WotaScope/releases)获取最新版本。
@@ -68,7 +70,11 @@
 
 ##  二、当前BUG/后续优化
 
+-   BUG - 编码状态显示不完全正确；
+
 - 添加快捷键；
+
+- 使用JNI（或其它什么方法）调用Windows原生的文件/文件夹选择器，取代当前的JVM选择器；
 
 - 针对不同视频BPM不同的问题进一步优化；
 
