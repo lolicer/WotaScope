@@ -72,9 +72,9 @@ fun AddButton(
             .onClick {
                 val selectFile = ExtensionUtils().selectFile()
                 if(selectFile != null) {
-                    onEncodeStart()
 
                     scope.launch(Dispatchers.IO) {
+                        var showEncodeFinish = false
                         selectFile.forEach {
                             if(MediaPlayerListStatus.list.value.size >= 9) return@launch
 
@@ -82,6 +82,9 @@ fun AddButton(
                             val needPreEncoding =
                                 SettingsManager.settings.getBooleanOrNull(SettingsKeys.PRE_ENCODING)!!
                             if(needPreEncoding) {
+                                showEncodeFinish = true
+                                onEncodeStart()
+
                                 if(!ExecUtils().hasAllKeyFrames(path, false)) {
                                     path = ExecUtils().convertVideo(
                                         path = path,
@@ -95,7 +98,6 @@ fun AddButton(
                             val factory = MediaPlayerFactory()
                             val mediaPlayer = factory.mediaPlayers().newEmbeddedMediaPlayer()
                             mediaPlayer.media().prepare(path)
-                            // mediaPlayer.controls().repeat = true
 
                             MediaPlayerListStatus.list.value =
                                 MediaPlayerListStatus.list.value +
@@ -104,7 +106,7 @@ fun AddButton(
                                     Status(isSelected = true, isFinished = false, volume = 100)
                                 )
                         }
-                        onEncodeFinish()
+                        if(showEncodeFinish) onEncodeFinish()
                     }
                 }
             }
