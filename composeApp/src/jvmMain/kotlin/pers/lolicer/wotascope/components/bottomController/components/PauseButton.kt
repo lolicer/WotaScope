@@ -27,6 +27,7 @@ import pers.lolicer.wotascope.status.isAnyPlaying
 import pers.lolicer.wotascope.status.MediaPlayerListStatus
 import pers.lolicer.wotascope.status.isFinished
 import pers.lolicer.wotascope.status.isSelected
+import pers.lolicer.wotascope.status.volume
 import uk.co.caprica.vlcj.player.base.MediaPlayer
 import uk.co.caprica.vlcj.player.base.MediaPlayerEventAdapter
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer
@@ -136,6 +137,7 @@ fun PauseButton(
                                     if(isSelected) {
                                         mediaPlayer.controls().play()
                                         mediaPlayer.controls().setRate(MediaPlayerListStatus.speed)
+                                        mediaPlayer.audio().setVolume((mediaPlayer.volume * MediaPlayerListStatus.globalVolumeProp).toInt())
                                         mediaPlayer.isFinished = false
                                     }
                                 }
@@ -149,6 +151,7 @@ fun PauseButton(
                                     if(isSelected && !mediaPlayer.status().isPlaying && !isFinished) {
                                         mediaPlayer.controls().play()
                                         mediaPlayer.controls().setRate(MediaPlayerListStatus.speed)
+                                        mediaPlayer.audio().setVolume((mediaPlayer.volume * MediaPlayerListStatus.globalVolumeProp).toInt())
                                     }
                                 }
                             }
