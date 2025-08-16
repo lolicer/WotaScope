@@ -14,6 +14,7 @@ import androidx.compose.material3.DropdownMenu
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
@@ -28,14 +29,14 @@ import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer
 import wotascope.composeapp.generated.resources.Res
 import wotascope.composeapp.generated.resources.media_menu
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalComposeUiApi::class)
 @Composable
 fun Menu(
     mediaPlayer: EmbeddedMediaPlayer,
     expandedMenu: MutableState<Boolean>,
     height: Dp
 ){
-    Box(){
+    Box{
         val rotationAngle by animateFloatAsState(
             targetValue = if (expandedMenu.value) 90f else 0f,
             animationSpec = tween(durationMillis = 500)
@@ -56,7 +57,8 @@ fun Menu(
         )
 
         DropdownMenu(
-            modifier = Modifier.padding(horizontal = 8.dp),
+            modifier = Modifier
+                .padding(horizontal = 8.dp),
             containerColor = Color(43, 45, 48),
             expanded = expandedMenu.value,
             onDismissRequest = { expandedMenu.value = false }

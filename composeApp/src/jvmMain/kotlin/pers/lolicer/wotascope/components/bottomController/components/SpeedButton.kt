@@ -38,7 +38,7 @@ fun SpeedButton(
     size: Dp
 ){
     var active by remember { mutableStateOf(false) }
-    val expanded = remember { mutableStateOf(false) }
+    var expanded by remember { mutableStateOf(false) }
 
     val speedString = remember { mutableStateOf("1×") }
 
@@ -54,7 +54,7 @@ fun SpeedButton(
         Text(
             modifier = Modifier
                 .onClick{
-                    expanded.value = !expanded.value
+                    expanded = !expanded
                 },
             text = speedString.value,
             color = Color.White,
@@ -64,8 +64,8 @@ fun SpeedButton(
             modifier = Modifier,
             containerColor = Color(43, 45, 48),
             offset = DpOffset(x = -(size / 2), y = 0.dp),
-            expanded = expanded.value,
-            onDismissRequest = {expanded.value = false}
+            expanded = expanded,
+            onDismissRequest = {expanded = false}
         ){
             SpeedOptions.forEach { option ->
                 DropdownMenuItem(
@@ -82,6 +82,7 @@ fun SpeedButton(
                     onClick = {
                         setSpeed(value = option.value)
                         speedString.value = option.displayText
+                        expanded = !expanded
                     }
                 )
                 if(option.value != 0.25f) {
@@ -110,24 +111,7 @@ fun setSpeed(
             println("暂时无法播放此视频，将延迟更改速度。")
         }
     }
-
-    // MediaPlayerListStatus.list.value.forEach { elem ->
-    //     if(elem.first.status().isPlayable) {
-    //         if(elem.first.status().isPlaying) {
-    //             elem.first.controls().setPause(true)
-    //             scope.launch {
-    //                 elem.first.controls().setRate(value)
-    //                 elem.first.controls().setPause(false)
-    //             }
-    //         }
-    //         else {
-    //             scope.launch {
-    //                 elem.first.controls().setRate(value)
-    //             }
-    //         }
-    //     }
-    //     else {
-    //         println("无法播放此视频，将延迟更改速度。")
-    //     }
-    // }
+    if(MediaPlayerListStatus.list.value.isEmpty()){
+        println("暂时无法播放此视频，将延迟更改速度。")
+    }
 }

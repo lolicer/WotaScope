@@ -3,8 +3,6 @@ package pers.lolicer.wotascope.components.singleVideoPanel.floatingMenu
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInHorizontally
-import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -18,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -28,7 +27,7 @@ import pers.lolicer.wotascope.components.singleVideoPanel.floatingMenu.remove.Re
 import pers.lolicer.wotascope.components.singleVideoPanel.floatingMenu.selected.Selected
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
 fun FloatingMenu(
     modifier: Modifier,
@@ -39,10 +38,11 @@ fun FloatingMenu(
     val expandedMenu = remember { mutableStateOf(false) }
 
     AnimatedVisibility(
-        modifier = modifier.offset(x = screenSize.width.dp - (screenSize.width / 40 * 4).dp, y = 10.dp),
+        modifier = modifier
+            .offset(x = screenSize.width.dp - (screenSize.width / 40 * 4).dp, y = 10.dp),
         visible = isHovered || expandedMenu.value,
-        enter = slideInHorizontally { it } + fadeIn(),
-        exit = slideOutHorizontally { it } + fadeOut()
+        enter = fadeIn(),
+        exit = fadeOut()
     ) {
         Row(
             modifier = Modifier

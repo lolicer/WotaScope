@@ -33,7 +33,6 @@ fun SingleVideoPanelItem(
     constraint: Modifier,
 ){
     var active by remember { mutableStateOf(false) }
-    // val isSelected = remember { mutableStateOf(true) }
 
     Box(
         modifier = Modifier
