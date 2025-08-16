@@ -90,10 +90,6 @@
 
 - https://github.com/microsoft/fluentui-system-icons
 
-    `checkbox_checked.svg`: `fluent:checkbox-checked-24-filled`
-
-    `checkbox_unchecked.svg`: `fluent:checkbox-unchecked-24-filled`
-
     `media_fastforward.svg`: `fluent:fast-forward-24-regular`
 
     `media_pause.svg`: `fluent:pause-24-regular`
@@ -116,6 +112,10 @@
 
     `settings_folder.svg`: `fluent:folder-24-filled`
 
+    `menu_checkbox_checked.svg`: `fluent:checkbox-checked-24-filled`
+
+    `menu_checkbox_unchecked.svg`: `fluent:checkbox-unchecked-24-filled`
+
 - https://github.com/tabler/tabler-icons
 
     `media_skip_back_5.svg`: `tabler:rewind-backward-5`
@@ -129,6 +129,8 @@
     `volume_1.svg`: `tabler:volume-2`
 
     `volume_2.svg`: `tabler:volume`
+
+    `menu_reset.svg`: `tabler:refresh`
 
 - https://github.com/Tencent/tdesign-icons
 
