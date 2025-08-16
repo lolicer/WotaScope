@@ -28,7 +28,8 @@ object MediaPlayerListStatus {
 class Status(
     var isSelected: Boolean,
     var isFinished: Boolean,
-    var volume: Int
+    var volume: Int,
+    val isMirrored: MutableState<Boolean> = mutableStateOf(false)
 )
 
 /**
@@ -68,6 +69,19 @@ var EmbeddedMediaPlayer.volume: Int
         MediaPlayerListStatus.list.value
             .first { it.first == this }
             .second.volume = value
+    }
+
+/**
+ * 视频的镜像状态。
+ */
+var EmbeddedMediaPlayer.isMirrored: Boolean
+    get() = MediaPlayerListStatus.list.value
+        .first { it.first == this }
+        .second.isMirrored.value
+    set(value){
+        MediaPlayerListStatus.list.value
+            .first { it.first == this }
+            .second.isMirrored.value = value
     }
 
 /**

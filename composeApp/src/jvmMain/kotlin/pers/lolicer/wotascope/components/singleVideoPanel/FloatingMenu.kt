@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
@@ -20,6 +21,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.onClick
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -38,6 +40,7 @@ import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.painterResource
+import pers.lolicer.wotascope.components.singleVideoPanel.components.MirrorItem
 import pers.lolicer.wotascope.components.singleVideoPanel.components.VolumeItem
 import pers.lolicer.wotascope.status.MediaPlayerListStatus
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer
@@ -97,6 +100,18 @@ fun FloatingMenu(
                     onDismissRequest = { expandedMenu = false }
                 ){
                     VolumeItem(
+                        mediaPlayer = mediaPlayer,
+                        height = (screenSize.width / 40).dp
+                    )
+
+                    Divider(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 4.dp, vertical = 8.dp),
+                        color = Color(188, 190, 196)
+                    )
+
+                    MirrorItem(
                         mediaPlayer = mediaPlayer,
                         height = (screenSize.width / 40).dp
                     )

@@ -10,10 +10,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asComposeImageBitmap
+import androidx.compose.ui.graphics.graphicsLayer
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.skia.Bitmap
 import org.jetbrains.skia.ColorAlphaType
 import org.jetbrains.skia.ImageInfo
+import pers.lolicer.wotascope.status.isMirrored
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer
 import uk.co.caprica.vlcj.player.embedded.videosurface.CallbackVideoSurface
 import uk.co.caprica.vlcj.player.embedded.videosurface.VideoSurfaceAdapters
@@ -57,9 +59,13 @@ fun VideoDisplay(
         }
         else {
             Image(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .graphicsLayer(
+                        scaleX = if(mediaPlayer.isMirrored) -1f else 1f
+                    ),
                 bitmap = videoFrame!!,
-                contentDescription = "Video",
-                modifier = Modifier.fillMaxSize()
+                contentDescription = "Video"
             )
         }
     }
