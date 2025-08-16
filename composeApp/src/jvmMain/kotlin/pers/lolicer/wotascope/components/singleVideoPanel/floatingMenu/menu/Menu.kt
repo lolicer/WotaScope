@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.painterResource
 import pers.lolicer.wotascope.components.singleVideoPanel.floatingMenu.menu.components.MirrorItem
+import pers.lolicer.wotascope.components.singleVideoPanel.floatingMenu.menu.components.VideoResetItem
 import pers.lolicer.wotascope.components.singleVideoPanel.floatingMenu.menu.components.VolumeItem
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer
 import wotascope.composeapp.generated.resources.Res
@@ -76,6 +77,18 @@ fun Menu(
             )
 
             MirrorItem(
+                mediaPlayer = mediaPlayer,
+                height = height
+            )
+
+            Divider(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 4.dp, vertical = 8.dp),
+                color = Color(188, 190, 196)
+            )
+
+            VideoResetItem(
                 mediaPlayer = mediaPlayer,
                 height = height
             )

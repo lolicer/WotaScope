@@ -15,28 +15,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asComposeImageBitmap
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.input.key.Key
-import androidx.compose.ui.input.key.KeyEvent
-import androidx.compose.ui.input.key.KeyEventType
-import androidx.compose.ui.input.key.isCtrlPressed
-import androidx.compose.ui.input.key.key
-import androidx.compose.ui.input.key.onKeyEvent
-import androidx.compose.ui.input.key.onPreviewKeyEvent
-import androidx.compose.ui.input.key.type
 import androidx.compose.ui.input.pointer.PointerEventType
 import androidx.compose.ui.input.pointer.onPointerEvent
 import androidx.compose.ui.unit.IntOffset
-import androidx.compose.ui.zIndex
-import kotlinx.coroutines.delay
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.skia.Bitmap
 import org.jetbrains.skia.ColorAlphaType
 import org.jetbrains.skia.ImageInfo
 import pers.lolicer.wotascope.status.isMirrored
+import pers.lolicer.wotascope.status.offset
+import pers.lolicer.wotascope.status.scale
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer
 import uk.co.caprica.vlcj.player.embedded.videosurface.CallbackVideoSurface
 import uk.co.caprica.vlcj.player.embedded.videosurface.VideoSurfaceAdapters
@@ -57,9 +48,6 @@ fun VideoDisplay(
     var videoFrame by remember { mutableStateOf<ImageBitmap?>(null) }
 
     val focusRequester = remember { FocusRequester() }
-
-    var offset by remember { mutableStateOf(Offset(0f, 0f)) }
-    var scale by remember { mutableStateOf(1f) }
 
     LaunchedEffect(Unit) {
         attachVideoSurface(mediaPlayer) { bitmap ->
@@ -88,14 +76,17 @@ fun VideoDisplay(
                     .focusable()
                     .focusRequester(focusRequester)
                     .graphicsLayer(
-                        scaleX = if(mediaPlayer.isMirrored) (scale * -1) else scale,
-                        scaleY = scale
+                        scaleX = if(mediaPlayer.isMirrored) (mediaPlayer.scale * -1) else mediaPlayer.scale,
+                        scaleY = mediaPlayer.scale
                     )
                     .offset{
-                        IntOffset(offset.x.toInt(), offset.y.toInt())
+                        val x = mediaPlayer.offset.x.toInt()
+                        val y = mediaPlayer.offset.y.toInt()
+
+                        IntOffset(x, y)
                     }
                     .onDrag{
-                        offset += it
+                        mediaPlayer.offset += it
                     }
                     .onClick{
                         focusRequester.requestFocus()
@@ -104,7 +95,7 @@ fun VideoDisplay(
                     .onPointerEvent(PointerEventType.Scroll){
                         if(isHovered){
                             val zoomDelta = it.changes.first().scrollDelta.y
-                            scale = (scale * (1f - zoomDelta * 0.1f)).coerceIn(0.5f, 3f) // 限制缩放范围
+                            mediaPlayer.scale = (mediaPlayer.scale * (1f - zoomDelta * 0.1f)).coerceIn(0.5f, 3f) // 限制缩放范围
                         }
                     },
                 bitmap = videoFrame!!,

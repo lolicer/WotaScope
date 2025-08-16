@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer
 
 object MediaPlayerListStatus {
@@ -21,15 +22,20 @@ object MediaPlayerListStatus {
 /**
  * 视频的状态。
  *
- * @param isSelected 视频是否在被选择
- * @param isFinished 视频是否已结束
- * @param volume 视频音量，与全局音量相乘得到输出音量
+ * @param isSelected    视频是否在被选择
+ * @param isFinished    视频是否已结束
+ * @param volume        视频音量，与全局音量相乘得到输出音量
+ * @param isMirrored    视频镜像状态
+ * @param offset        视频位置（使用偏移量表示）
+ * @param scale         视频缩放大小
  */
 class Status(
     val isSelected: MutableState<Boolean> = mutableStateOf(true),
     var isFinished: Boolean,
     var volume: Int,
-    val isMirrored: MutableState<Boolean> = mutableStateOf(false)
+    val isMirrored: MutableState<Boolean> = mutableStateOf(false),
+    val offset: MutableState<Offset> = mutableStateOf(Offset(0f, 0f)),
+    val scale: MutableState<Float> = mutableStateOf(1f)
 )
 
 /**
@@ -82,6 +88,32 @@ var EmbeddedMediaPlayer.isMirrored: Boolean
         MediaPlayerListStatus.list.value
             .first { it.first == this }
             .second.isMirrored.value = value
+    }
+
+/**
+ * 视频位置。（用偏移量表示）
+ */
+var EmbeddedMediaPlayer.offset: Offset
+    get() = MediaPlayerListStatus.list.value
+        .first {it.first == this}
+        .second.offset.value
+    set(value){
+        MediaPlayerListStatus.list.value
+            .first{ it.first == this}
+            .second.offset.value = value
+    }
+
+/**
+ * 视频的镜像状态。
+ */
+var EmbeddedMediaPlayer.scale: Float
+    get() = MediaPlayerListStatus.list.value
+        .first { it.first == this }
+        .second.scale.value
+    set(value){
+        MediaPlayerListStatus.list.value
+            .first { it.first == this }
+            .second.scale.value = value
     }
 
 /**
