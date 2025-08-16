@@ -67,7 +67,8 @@ fun SingleVideoPanelItem(
                 )
                 VideoDisplay(
                     modifier = Modifier.zIndex(1f),
-                    mediaPlayer = mediaPlayer
+                    mediaPlayer = mediaPlayer,
+                    isHovered = active
                 )
             }
             ProgressBar(mediaPlayer = mediaPlayer)

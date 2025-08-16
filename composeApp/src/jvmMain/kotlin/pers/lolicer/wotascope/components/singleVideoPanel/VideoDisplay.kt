@@ -1,14 +1,37 @@
 package pers.lolicer.wotascope.components.singleVideoPanel
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.focusable
+import androidx.compose.foundation.gestures.onDrag
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.onClick
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asComposeImageBitmap
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.KeyEvent
+import androidx.compose.ui.input.key.KeyEventType
+import androidx.compose.ui.input.key.isCtrlPressed
+import androidx.compose.ui.input.key.key
+import androidx.compose.ui.input.key.onKeyEvent
+import androidx.compose.ui.input.key.onPreviewKeyEvent
+import androidx.compose.ui.input.key.type
+import androidx.compose.ui.input.pointer.PointerEventType
+import androidx.compose.ui.input.pointer.onPointerEvent
+import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.zIndex
+import kotlinx.coroutines.delay
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.skia.Bitmap
 import org.jetbrains.skia.ColorAlphaType
@@ -24,12 +47,19 @@ import wotascope.composeapp.generated.resources.Res
 import wotascope.composeapp.generated.resources.wotascope_icon
 import java.nio.ByteBuffer
 
+@OptIn(ExperimentalFoundationApi::class, ExperimentalComposeUiApi::class)
 @Composable
 fun VideoDisplay(
     modifier: Modifier = Modifier,
-    mediaPlayer: EmbeddedMediaPlayer
+    mediaPlayer: EmbeddedMediaPlayer,
+    isHovered: Boolean
 ) {
     var videoFrame by remember { mutableStateOf<ImageBitmap?>(null) }
+
+    val focusRequester = remember { FocusRequester() }
+
+    var offset by remember { mutableStateOf(Offset(0f, 0f)) }
+    var scale by remember { mutableStateOf(1f) }
 
     LaunchedEffect(Unit) {
         attachVideoSurface(mediaPlayer) { bitmap ->
@@ -40,7 +70,8 @@ fun VideoDisplay(
     Box(
         modifier = Modifier
             .then(modifier)
-            .fillMaxSize(),
+            .fillMaxSize()
+            .clipToBounds(),
         contentAlignment = Alignment.Center
     ) {
         if (videoFrame == null) {
@@ -54,9 +85,28 @@ fun VideoDisplay(
             Image(
                 modifier = Modifier
                     .fillMaxSize()
+                    .focusable()
+                    .focusRequester(focusRequester)
                     .graphicsLayer(
-                        scaleX = if(mediaPlayer.isMirrored) -1f else 1f
-                    ),
+                        scaleX = if(mediaPlayer.isMirrored) (scale * -1) else scale,
+                        scaleY = scale
+                    )
+                    .offset{
+                        IntOffset(offset.x.toInt(), offset.y.toInt())
+                    }
+                    .onDrag{
+                        offset += it
+                    }
+                    .onClick{
+                        focusRequester.requestFocus()
+                        println("focus")
+                    }
+                    .onPointerEvent(PointerEventType.Scroll){
+                        if(isHovered){
+                            val zoomDelta = it.changes.first().scrollDelta.y
+                            scale = (scale * (1f - zoomDelta * 0.1f)).coerceIn(0.5f, 3f) // 限制缩放范围
+                        }
+                    },
                 bitmap = videoFrame!!,
                 contentDescription = "Video"
             )
