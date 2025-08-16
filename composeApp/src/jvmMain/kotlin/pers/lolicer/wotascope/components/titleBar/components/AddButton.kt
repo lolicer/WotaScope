@@ -103,7 +103,7 @@ fun AddButton(
                                 MediaPlayerListStatus.list.value +
                                 Pair(
                                     mediaPlayer,
-                                    Status(isSelected = true, isFinished = false, volume = 100)
+                                    Status(isFinished = false, volume = 100)
                                 )
                         }
                         if(showEncodeFinish) onEncodeFinish()

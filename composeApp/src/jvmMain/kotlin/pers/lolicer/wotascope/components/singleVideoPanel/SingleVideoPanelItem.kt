@@ -33,14 +33,14 @@ fun SingleVideoPanelItem(
     constraint: Modifier,
 ){
     var active by remember { mutableStateOf(false) }
-    val isSelected = remember { mutableStateOf(true) }
+    // val isSelected = remember { mutableStateOf(true) }
 
     Box(
         modifier = Modifier
             .background(Color(30, 31, 34))
             .padding(1.dp, 0.dp, 1.dp, 4.dp)
             .border(
-                if(isSelected.value) 2.dp else (-1).dp,
+                if(mediaPlayer.isSelected) 2.dp else (-1).dp,
                 Color(46, 193, 221),
                 shape = RoundedCornerShape(2)
             )
@@ -63,23 +63,21 @@ fun SingleVideoPanelItem(
                 FloatingMenu(
                     modifier = Modifier.zIndex(2f),
                     mediaPlayer = mediaPlayer,
-                    isHovered = active && isSelected.value,
+                    isHovered = active,
                     screenSize = screenSize
                 )
                 VideoDisplay(
                     modifier = Modifier.zIndex(1f),
-                    mediaPlayer = mediaPlayer,
-                    isSelected = isSelected
+                    mediaPlayer = mediaPlayer
                 )
             }
             ProgressBar(mediaPlayer = mediaPlayer)
         }
     }
 
-    LaunchedEffect(isSelected.value){
-        if(!isSelected.value){
+    LaunchedEffect(mediaPlayer.isSelected){
+        if(!mediaPlayer.isSelected){
             mediaPlayer.controls().setPause(true)
         }
-        mediaPlayer.isSelected = isSelected.value
     }
 }

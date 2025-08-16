@@ -1,10 +1,8 @@
 package pers.lolicer.wotascope.components.singleVideoPanel
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.onClick
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,12 +24,10 @@ import wotascope.composeapp.generated.resources.Res
 import wotascope.composeapp.generated.resources.wotascope_icon
 import java.nio.ByteBuffer
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun VideoDisplay(
     modifier: Modifier = Modifier,
-    mediaPlayer: EmbeddedMediaPlayer,
-    isSelected: MutableState<Boolean>
+    mediaPlayer: EmbeddedMediaPlayer
 ) {
     var videoFrame by remember { mutableStateOf<ImageBitmap?>(null) }
 
@@ -44,10 +40,7 @@ fun VideoDisplay(
     Box(
         modifier = Modifier
             .then(modifier)
-            .fillMaxSize()
-            .onClick {
-                isSelected.value = !isSelected.value
-            },
+            .fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
         if (videoFrame == null) {
