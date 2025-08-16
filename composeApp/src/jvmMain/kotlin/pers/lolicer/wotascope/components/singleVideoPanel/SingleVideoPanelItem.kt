@@ -22,6 +22,7 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import pers.lolicer.wotascope.components.singleVideoPanel.floatingMenu.FloatingMenu
 import pers.lolicer.wotascope.status.isSelected
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer
 

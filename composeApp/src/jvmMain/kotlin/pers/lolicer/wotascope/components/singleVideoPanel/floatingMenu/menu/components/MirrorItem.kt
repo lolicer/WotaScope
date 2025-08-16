@@ -1,4 +1,4 @@
-package pers.lolicer.wotascope.components.singleVideoPanel.components
+package pers.lolicer.wotascope.components.singleVideoPanel.floatingMenu.menu.components
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
