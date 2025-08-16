@@ -26,7 +26,7 @@ object MediaPlayerListStatus {
  * @param volume 视频音量，与全局音量相乘得到输出音量
  */
 class Status(
-    var isSelected: MutableState<Boolean> = mutableStateOf(true),
+    val isSelected: MutableState<Boolean> = mutableStateOf(true),
     var isFinished: Boolean,
     var volume: Int,
     val isMirrored: MutableState<Boolean> = mutableStateOf(false)
