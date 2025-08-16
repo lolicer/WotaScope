@@ -14,8 +14,8 @@ import org.jetbrains.compose.resources.painterResource
 import pers.lolicer.wotascope.status.isSelected
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer
 import wotascope.composeapp.generated.resources.Res
-import wotascope.composeapp.generated.resources.checkbox_checked
-import wotascope.composeapp.generated.resources.checkbox_unchecked
+import wotascope.composeapp.generated.resources.menu_checkbox_checked
+import wotascope.composeapp.generated.resources.menu_checkbox_unchecked
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -30,7 +30,7 @@ fun Selected(
             .onClick{
                 mediaPlayer.isSelected = !mediaPlayer.isSelected
             },
-        painter = painterResource(if(mediaPlayer.isSelected) Res.drawable.checkbox_checked else Res.drawable.checkbox_unchecked),
+        painter = painterResource(if(mediaPlayer.isSelected) Res.drawable.menu_checkbox_checked else Res.drawable.menu_checkbox_unchecked),
         contentDescription = "选中",
         tint = Color.DarkGray
     )

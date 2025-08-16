@@ -20,8 +20,8 @@ import org.jetbrains.compose.resources.painterResource
 import pers.lolicer.wotascope.status.isMirrored
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer
 import wotascope.composeapp.generated.resources.Res
-import wotascope.composeapp.generated.resources.checkbox_checked
-import wotascope.composeapp.generated.resources.checkbox_unchecked
+import wotascope.composeapp.generated.resources.menu_checkbox_checked
+import wotascope.composeapp.generated.resources.menu_checkbox_unchecked
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -46,7 +46,7 @@ fun MirrorItem(
                 .onClick{
                     mediaPlayer.isMirrored = !mediaPlayer.isMirrored
                 },
-            painter = painterResource(if(mediaPlayer.isMirrored) Res.drawable.checkbox_checked else Res.drawable.checkbox_unchecked),
+            painter = painterResource(if(mediaPlayer.isMirrored) Res.drawable.menu_checkbox_checked else Res.drawable.menu_checkbox_unchecked),
             contentDescription = if(mediaPlayer.isMirrored) "取消镜像" else "镜像",
             tint = Color(188, 190, 196)
         )
