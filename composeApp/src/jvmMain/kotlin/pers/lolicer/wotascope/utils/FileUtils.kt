@@ -27,7 +27,6 @@ class FileUtils {
         if(tmpDir.exists() && tmpDir.isDirectory){
             println(tmpDir.listFiles().size)
             tmpDir.listFiles().forEach { file ->
-                println(file.name)
                 if(file.name != "readme.txt"){
                     file.delete()
                 }

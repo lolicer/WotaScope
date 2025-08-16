@@ -1,6 +1,5 @@
 package pers.lolicer.wotascope.utils
 
-import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer
 import java.awt.FileDialog
 import java.awt.Frame
 import java.io.File
@@ -9,17 +8,6 @@ import javax.swing.JFileChooser
 import javax.swing.filechooser.FileSystemView
 
 class ExtensionUtils {
-    // 控制暂停和开始
-    fun changePauseState(mediaPlayer: EmbeddedMediaPlayer){
-        if(mediaPlayer.status().isPlaying && mediaPlayer.status().canPause()){ // 正在播放
-            mediaPlayer.controls().pause()
-        }
-        else{
-            mediaPlayer.controls().play()
-            mediaPlayer.controls().play()
-        }
-    }
-
     // 从资源管理器选择文件
     fun selectFile(): List<String>? {
 
