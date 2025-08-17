@@ -19,8 +19,8 @@ fun main() = application {
     val windowState = rememberWindowState()
     windowState.position = WindowPosition(Alignment.Center)
     windowState.size = DpSize(
-        settings.getIntOrNull(SettingsKeys.MAIN_WINDOW_WIDTH)!!.dp,
-        settings.getIntOrNull(SettingsKeys.MAIN_WINDOW_HEIGHT)!!.dp
+        settings.getIntOrNull(SettingsKeys.MAIN_WINDOW_WIDTH)!!.coerceAtLeast(90).dp,
+        settings.getIntOrNull(SettingsKeys.MAIN_WINDOW_HEIGHT)!!.coerceAtLeast(60).dp
     )
 
     Window(
