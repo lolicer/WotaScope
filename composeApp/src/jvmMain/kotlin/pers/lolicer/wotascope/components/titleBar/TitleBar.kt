@@ -26,6 +26,7 @@ import pers.lolicer.wotascope.components.titleBar.components.EncodingStatusText
 import pers.lolicer.wotascope.components.titleBar.components.EscapeButton
 import pers.lolicer.wotascope.components.titleBar.components.MaximizeButton
 import pers.lolicer.wotascope.components.titleBar.components.MinimizeButton
+import pers.lolicer.wotascope.components.titleBar.components.OverlapControlButton
 import pers.lolicer.wotascope.components.titleBar.components.SettingsButton
 import pers.lolicer.wotascope.components.titleBar.components.TitleIcon
 import pers.lolicer.wotascope.status.EncodingState
@@ -55,6 +56,8 @@ fun WindowScope.TitleBar(
             AddButton(titleHeight, { encodingState.value = EncodingState.ENCODING }, { encodingState.value = EncodingState.COMPLETED })
             Spacer(modifier = Modifier.width(8.dp))
             SettingsButton(titleHeight)
+            Spacer(modifier = Modifier.width(8.dp))
+            OverlapControlButton(titleHeight)
         }
 
         // Spacer(modifier = Modifier.fillMaxHeight().width(10.dp).background(Color.Green))

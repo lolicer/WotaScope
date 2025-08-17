@@ -5,17 +5,17 @@ import androidx.constraintlayout.compose.ConstraintSet
 
 object LayoutSet {
     fun getLayoutSet(number: Int): ConstraintSet?{
-        return when(number){
-            0 -> null
-            1 -> singleLayout
-            2 -> dualLayoutSet
-            3 -> tripleLayoutSet
-            4 -> quadLayoutSet
-            5 -> pentaLayout
-            6 -> hexaLayoutSet
-            7 -> heptaLayoutSet
-            8 -> octaLayoutSet
-            9 -> nonaLayoutSet
+        return when(number) {
+            0    -> null
+            1    -> singleLayout
+            2    -> dualLayoutSet
+            3    -> tripleLayoutSet
+            4    -> quadLayoutSet
+            5    -> pentaLayout
+            6    -> hexaLayoutSet
+            7    -> heptaLayoutSet
+            8    -> octaLayoutSet
+            9    -> nonaLayoutSet
             else -> throw IllegalArgumentException("布局数错误。")
         }
     }
@@ -38,7 +38,7 @@ object LayoutSet {
             start.linkTo(parent.start)
             end.linkTo(panel2.start)
             top.linkTo(guideline)
-            bottom.linkTo(parent.bottom)
+            // bottom.linkTo(parent.bottom)
         }
         constrain(panel2) {
             start.linkTo(panel1.end)

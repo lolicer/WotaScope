@@ -1,4 +1,4 @@
-package pers.lolicer.wotascope.components.titleBar.components.settingsWindow
+package pers.lolicer.wotascope.components
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
@@ -16,18 +16,19 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun DescriptionText(
-    showDescription: MutableState<Boolean>,
-    text: String
+    showDescription: Boolean,
+    text: String,
+    modifier: Modifier = Modifier.padding(start = 28.dp, end = 28.dp, bottom = 12.dp),
+    isParagraph: Boolean = true
 ){
     AnimatedVisibility(
-        visible = showDescription.value,
+        visible = showDescription,
         enter = expandVertically() + fadeIn(),
         exit = shrinkVertically() + fadeOut()
     ) {
         Text(
-            modifier = Modifier
-                .padding(start = 28.dp, end = 28.dp, bottom = 12.dp),
-            text = "    $text",
+            modifier = modifier,
+            text = if(isParagraph)"    " else "" + text,
             color = Color.Gray,
             fontSize = 13.sp
         )

@@ -117,13 +117,14 @@ var EmbeddedMediaPlayer.scale: Float
     }
 
 /**
- * 根据视频数量，返回每个视频应占据的宽高。
+ * 根据视频数量和是否重叠，返回每个视频应占据的宽高。
  */
-fun MediaPlayerListStatus.selectSize(): Modifier?{
+fun MediaPlayerListStatus.selectSizeModifier(): Modifier?{
     return when(this.list.value.size){
         0 -> null
         1 -> Modifier
-        2, 3, 4 -> Modifier.fillMaxSize(0.5f)
+        2 -> if(OverlapStatus.status == OverlapState.OVERLAP) Modifier else Modifier.fillMaxSize(0.5f)
+        3, 4 -> Modifier.fillMaxSize(0.5f)
         5, 6, 7, 8, 9 -> Modifier.fillMaxSize(1/3f)
         else -> { throw Exception("程序错误：超出9个视频") }
     }

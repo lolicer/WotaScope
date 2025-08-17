@@ -20,8 +20,10 @@ import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
@@ -36,6 +38,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.russhwolf.settings.set
 import org.jetbrains.compose.resources.painterResource
+import pers.lolicer.wotascope.components.DescriptionText
 import pers.lolicer.wotascope.utils.ExtensionUtils
 import pers.lolicer.wotascope.settings.SettingsKeys
 import pers.lolicer.wotascope.settings.SettingsManager.settings
@@ -77,7 +80,7 @@ fun PreEncodingSetting(
     height: Dp
 ){
     val focusManager = LocalFocusManager.current
-    val showDescription = remember { mutableStateOf(false) }
+    var showDescription by remember { mutableStateOf(false) }
 
     Row(
         modifier = Modifier
@@ -101,7 +104,7 @@ fun PreEncodingSetting(
                     .padding(start = 4.dp)
                     .pointerHoverIcon(PointerIcon.Hand)
                     .onClick{
-                        showDescription.value = !showDescription.value
+                        showDescription = !showDescription
                         focusManager.clearFocus()// 用于处理EncodedVideoDirSetting()中点击BasicTextField之外的任意部分使之失去焦点的逻辑
                     },
                 painter = painterResource(Res.drawable.settings_notice),
@@ -133,7 +136,10 @@ fun PreEncodingSetting(
         )
     }
 
-    DescriptionText(showDescription, "绝大多数视频并不将每一帧存为完整图像，而是依赖关键帧和预测帧生成图像，这使逐帧播放比较麻烦。开启此选项可保证逐帧播放时画面正常。")
+    DescriptionText(
+        showDescription,
+        "绝大多数视频并不将每一帧存为完整图像，而是依赖关键帧和预测帧生成图像，这使逐帧播放比较麻烦。开启此选项可保证逐帧播放时画面正常。"
+    )
 }
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -144,7 +150,7 @@ fun EncodedVideoDirSetting(
     val encodedVideoDir = remember {mutableStateOf(settings.getStringOrNull(SettingsKeys.ENCODED_VIDEO_DIR)!!)}
     val isFocused = remember { mutableStateOf(false) }
 
-    val showDescription = remember { mutableStateOf(false) }
+    var showDescription by remember { mutableStateOf(false) }
 
     Row(
         modifier = Modifier
@@ -170,7 +176,7 @@ fun EncodedVideoDirSetting(
                     .padding(start = 4.dp)
                     .pointerHoverIcon(PointerIcon.Hand)
                     .onClick{
-                        showDescription.value = !showDescription.value
+                        showDescription = !showDescription
                         isFocused.value = false
                     },
                 painter = painterResource(Res.drawable.settings_notice),
@@ -246,5 +252,8 @@ fun EncodedVideoDirSetting(
         )
     }
 
-    DescriptionText(showDescription, "仅当路径为默认（安装目录下的 temp_videos 文件夹）时，编码后的视频才会在程序退出或下次退出时删除。")
+    DescriptionText(
+        showDescription,
+        "仅当路径为默认（安装目录下的 temp_videos 文件夹）时，编码后的视频才会在程序退出或下次退出时删除。"
+    )
 }
