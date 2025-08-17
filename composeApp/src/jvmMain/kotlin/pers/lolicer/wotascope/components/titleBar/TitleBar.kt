@@ -28,7 +28,7 @@ import pers.lolicer.wotascope.components.titleBar.components.MaximizeButton
 import pers.lolicer.wotascope.components.titleBar.components.MinimizeButton
 import pers.lolicer.wotascope.components.titleBar.components.SettingsButton
 import pers.lolicer.wotascope.components.titleBar.components.TitleIcon
-import pers.lolicer.wotascope.status.EncodingStatus
+import pers.lolicer.wotascope.status.EncodingState
 
 @Composable
 fun WindowScope.TitleBar(
@@ -46,19 +46,19 @@ fun WindowScope.TitleBar(
         horizontalArrangement = Arrangement.SpaceBetween
     ){
 
-        val encodingStatus = remember { mutableStateOf<EncodingStatus?>(null) }
+        val encodingState = remember { mutableStateOf<EncodingState?>(null) }
         var showCompletion by remember { mutableStateOf(false) }
 
         Row{
             TitleIcon(titleHeight)
             Spacer(modifier = Modifier.width(8.dp))
-            AddButton(titleHeight, { encodingStatus.value = EncodingStatus.ENCODING }, { encodingStatus.value = EncodingStatus.COMPLETED })
+            AddButton(titleHeight, { encodingState.value = EncodingState.ENCODING }, { encodingState.value = EncodingState.COMPLETED })
             Spacer(modifier = Modifier.width(8.dp))
             SettingsButton(titleHeight)
         }
 
         // Spacer(modifier = Modifier.fillMaxHeight().width(10.dp).background(Color.Green))
-        EncodingStatusText(titleHeight, encodingStatus, showCompletion)
+        EncodingStatusText(titleHeight, encodingState, showCompletion)
 
         Row{
             MinimizeButton(titleHeight, iconSize, windowState)
@@ -66,14 +66,14 @@ fun WindowScope.TitleBar(
             EscapeButton(titleHeight, iconSize)
         }
 
-        LaunchedEffect(encodingStatus.value){
-            if(encodingStatus.value == EncodingStatus.COMPLETED){
+        LaunchedEffect(encodingState.value){
+            if(encodingState.value == EncodingState.COMPLETED){
                 delay(500)
                 showCompletion = true
                 delay(2500)
-                if(encodingStatus.value != EncodingStatus.ENCODING){
+                if(encodingState.value != EncodingState.ENCODING){
                     showCompletion = false
-                    encodingStatus.value = null
+                    encodingState.value = null
                 }
             }
         }

@@ -27,16 +27,16 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import pers.lolicer.wotascope.status.EncodingStatus
+import pers.lolicer.wotascope.status.EncodingState
 
 @Composable
 fun EncodingStatusText(
     height: Dp,
-    encodingStatus: MutableState<EncodingStatus?>,
+    encodingState: MutableState<EncodingState?>,
     showCompletion: Boolean
 ){
     Column(){
-        ShoujoIsPrayingText(height, encodingStatus.value)
+        ShoujoIsPrayingText(height, encodingState.value)
         PrayerCompleted(height, showCompletion)
     }
 }
@@ -44,7 +44,7 @@ fun EncodingStatusText(
 @Composable
 fun ShoujoIsPrayingText(
     height: Dp,
-    encodingStatus: EncodingStatus?
+    encodingState: EncodingState?
 ){
     val totalDuration = 2000 // 2秒总周期
     val waveDuration = 1500  // 波浪动画部分时长
@@ -76,7 +76,7 @@ fun ShoujoIsPrayingText(
 
     AnimatedVisibility(
         modifier = Modifier.height(height),
-        visible = (encodingStatus == EncodingStatus.ENCODING),
+        visible = (encodingState == EncodingState.ENCODING),
         enter = slideInVertically{ -it },
         exit = slideOutVertically{ -it }
     ){

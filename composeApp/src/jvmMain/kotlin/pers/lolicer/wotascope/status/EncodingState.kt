@@ -1,5 +1,5 @@
 package pers.lolicer.wotascope.status
 
-enum class EncodingStatus {
+enum class EncodingState {
     ENCODING, COMPLETED
 }
