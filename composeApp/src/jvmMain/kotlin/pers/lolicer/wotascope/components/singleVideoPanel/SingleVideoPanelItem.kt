@@ -36,7 +36,7 @@ fun SingleVideoPanelItem(
 
     Box(
         modifier = Modifier
-            .background(Color(30, 31, 34))
+            .background(Color.Transparent)
             .padding(1.dp, 0.dp, 1.dp, 4.dp)
             .border(
                 if(mediaPlayer.isSelected) 2.dp else (-1).dp,
@@ -50,12 +50,13 @@ fun SingleVideoPanelItem(
     ){
         Column (
             modifier = Modifier
-                .background(Color(30, 31, 34))
+                .background(Color.Transparent)
                 .padding(4.dp, 4.dp, 4.dp, 8.dp)
         ){
             var screenSize by remember { mutableStateOf(IntSize.Zero) }
             Box(
                 modifier = Modifier
+                    .background(Color.Transparent)
                     .fillMaxSize()
                     .onSizeChanged{ screenSize = it }
             ){

@@ -24,6 +24,7 @@ import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import org.jetbrains.compose.resources.painterResource
 import pers.lolicer.wotascope.components.DescriptionText
 import pers.lolicer.wotascope.status.MediaPlayerListStatus
@@ -37,14 +38,15 @@ import wotascope.composeapp.generated.resources.settings_toggle_on
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun OverlapSwitch(
-    height: Dp
+    height: Dp,
+    width: Dp
 ){
     var overlapped by remember { mutableStateOf(OverlapStatus.status == OverlapState.OVERLAP) }
 
     var showDescription by remember { mutableStateOf(false) }
 
     Column(
-        modifier = Modifier.width(height * 3)
+        modifier = Modifier.width(width)
     ){
         Row(
             modifier = Modifier
@@ -56,7 +58,8 @@ fun OverlapSwitch(
             Row{
                 Text(
                     text = "重叠",
-                    color = Color.LightGray
+                    color = Color.LightGray,
+                    fontSize = 14.sp
                 )
 
                 Icon(

@@ -2,6 +2,7 @@ package pers.lolicer.wotascope.components.singleVideoPanel
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.gestures.onDrag
 import androidx.compose.foundation.layout.Box
@@ -12,9 +13,11 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asComposeImageBitmap
 import androidx.compose.ui.graphics.graphicsLayer
@@ -25,6 +28,8 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.skia.Bitmap
 import org.jetbrains.skia.ColorAlphaType
 import org.jetbrains.skia.ImageInfo
+import pers.lolicer.wotascope.status.OverlapStatus
+import pers.lolicer.wotascope.status.alpha
 import pers.lolicer.wotascope.status.isMirrored
 import pers.lolicer.wotascope.status.offset
 import pers.lolicer.wotascope.status.scale
@@ -57,9 +62,10 @@ fun VideoDisplay(
 
     Box(
         modifier = Modifier
-            .then(modifier)
             .fillMaxSize()
-            .clipToBounds(),
+            .clipToBounds()
+            .background(color = Color.Transparent)
+            .then(modifier),
         contentAlignment = Alignment.Center
     ) {
         if (videoFrame == null) {
@@ -75,6 +81,7 @@ fun VideoDisplay(
                     .fillMaxSize()
                     .focusable()
                     .focusRequester(focusRequester)
+                    .alpha(mediaPlayer.alpha)
                     .graphicsLayer(
                         scaleX = if(mediaPlayer.isMirrored) (mediaPlayer.scale * -1) else mediaPlayer.scale,
                         scaleY = mediaPlayer.scale
@@ -86,14 +93,16 @@ fun VideoDisplay(
                         IntOffset(x, y)
                     }
                     .onDrag{
-                        mediaPlayer.offset += it
+                        if(!OverlapStatus.isOverlapped()){
+                            mediaPlayer.offset += it
+                        }
                     }
                     .onClick{
                         focusRequester.requestFocus()
                         println("focus")
                     }
                     .onPointerEvent(PointerEventType.Scroll){
-                        if(isHovered){
+                        if(isHovered && !OverlapStatus.isOverlapped()){
                             val zoomDelta = it.changes.first().scrollDelta.y
                             mediaPlayer.scale = (mediaPlayer.scale * (1f - zoomDelta * 0.1f))
                         }

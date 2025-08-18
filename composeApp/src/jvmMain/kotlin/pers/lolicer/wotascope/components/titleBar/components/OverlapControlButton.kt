@@ -29,6 +29,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import pers.lolicer.wotascope.components.titleBar.components.overlapControl.MiniController
 import pers.lolicer.wotascope.components.titleBar.components.overlapControl.OverlapSwitch
 import pers.lolicer.wotascope.status.MediaPlayerListStatus
 
@@ -92,12 +93,13 @@ fun OverlapControlButton(
             expanded = expanded,
             onDismissRequest = { expanded = false }
         ){
-            OverlapSwitch(titleHeight)
+            OverlapSwitch(titleHeight, titleHeight * 4)
             if(MediaPlayerListStatus.list.value.size == 2){
                 Divider(
                     modifier = Modifier.fillMaxWidth().padding(horizontal = 6.dp),
                     color = Color(188, 190, 196)
                 )
+                MiniController(titleHeight, titleHeight * 4)
             }
         }
     }

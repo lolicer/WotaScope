@@ -11,6 +11,10 @@ object OverlapStatus {
     fun updateStatus(newStatus: OverlapState) {
         _overlapStatus = newStatus
     }
+
+    fun isOverlapped(): Boolean{
+        return (status == OverlapState.OVERLAP && MediaPlayerListStatus.list.value.size == 2)
+    }
 }
 
 enum class OverlapState {

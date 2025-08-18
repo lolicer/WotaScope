@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import pers.lolicer.wotascope.components.singleVideoPanel.floatingMenu.menu.Menu
 import pers.lolicer.wotascope.components.singleVideoPanel.floatingMenu.remove.Remove
 import pers.lolicer.wotascope.components.singleVideoPanel.floatingMenu.selected.Selected
+import pers.lolicer.wotascope.status.OverlapStatus
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
@@ -40,7 +41,7 @@ fun FloatingMenu(
     AnimatedVisibility(
         modifier = modifier
             .offset(x = screenSize.width.dp - ((screenSize.width / 40).coerceAtLeast(24) * 4).dp, y = 10.dp),
-        visible = isHovered || expandedMenu.value,
+        visible = (isHovered || expandedMenu.value) && !OverlapStatus.isOverlapped(),
         enter = fadeIn(),
         exit = fadeOut()
     ) {

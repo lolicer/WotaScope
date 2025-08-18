@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BiliSlider(
+    modifier: Modifier = Modifier,
     enabled: Boolean = true,
     value: Float,
     onValueChange: (it: Float) -> Unit,
@@ -28,7 +29,8 @@ fun BiliSlider(
         modifier = Modifier
             .height(4.dp)
             .fillMaxWidth()
-            .pointerHoverIcon(PointerIcon.Hand),
+            .pointerHoverIcon(PointerIcon.Hand)
+            .then(modifier),
         enabled = enabled,
         thumb = { Box{} },
         track = {
