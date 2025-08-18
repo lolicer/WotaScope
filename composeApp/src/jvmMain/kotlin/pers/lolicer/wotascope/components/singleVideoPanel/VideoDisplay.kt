@@ -95,7 +95,7 @@ fun VideoDisplay(
                     .onPointerEvent(PointerEventType.Scroll){
                         if(isHovered){
                             val zoomDelta = it.changes.first().scrollDelta.y
-                            mediaPlayer.scale = (mediaPlayer.scale * (1f - zoomDelta * 0.1f)).coerceIn(0.5f, 3f) // 限制缩放范围
+                            mediaPlayer.scale = (mediaPlayer.scale * (1f - zoomDelta * 0.1f))
                         }
                     },
                 bitmap = videoFrame!!,

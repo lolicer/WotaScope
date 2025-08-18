@@ -2,7 +2,9 @@ package pers.lolicer.wotascope.status
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer
@@ -28,15 +30,37 @@ object MediaPlayerListStatus {
  * @param isMirrored    视频镜像状态
  * @param offset        视频位置（使用偏移量表示）
  * @param scale         视频缩放大小
+ * @param alpha         视频透明度
  */
 class Status(
-    val isSelected: MutableState<Boolean> = mutableStateOf(true),
-    var isFinished: Boolean,
-    var volume: Int,
-    val isMirrored: MutableState<Boolean> = mutableStateOf(false),
-    val offset: MutableState<Offset> = mutableStateOf(Offset(0f, 0f)),
-    val scale: MutableState<Float> = mutableStateOf(1f)
-)
+    isSelected: Boolean = true,
+    isFinished: Boolean = false,
+    volume: Int = 100,
+    isMirrored: Boolean = false,
+    offset: Offset = Offset(0f, 0f),
+    scale: Float = 1f,
+    alpha: Float = 1f
+) {
+    // 内部使用 mutableStateOf 存储状态，保证响应式更新
+    val isSelectedState = mutableStateOf(isSelected)
+    var isSelected: Boolean by isSelectedState
+
+    var isFinished: Boolean = isFinished
+
+    var volume: Int = volume
+
+    val isMirroredState = mutableStateOf(isMirrored)
+    var isMirrored: Boolean by isMirroredState
+
+    val offsetState = mutableStateOf(offset)
+    var offset: Offset by offsetState
+
+    val scaleState = mutableStateOf(scale)
+    var scale: Float by scaleState
+
+    val alphaState = mutableStateOf(alpha)
+    var alpha: Float by alphaState
+}
 
 /**
  * 视频的选择状态。
@@ -44,11 +68,11 @@ class Status(
 var EmbeddedMediaPlayer.isSelected: Boolean
     get() = MediaPlayerListStatus.list.value
         .first { it.first == this }
-        .second.isSelected.value
+        .second.isSelected
     set(value){
         MediaPlayerListStatus.list.value
             .first { it.first == this }
-            .second.isSelected.value = value
+            .second.isSelected = value
     }
 
 /**
@@ -83,11 +107,11 @@ var EmbeddedMediaPlayer.volume: Int
 var EmbeddedMediaPlayer.isMirrored: Boolean
     get() = MediaPlayerListStatus.list.value
         .first { it.first == this }
-        .second.isMirrored.value
+        .second.isMirrored
     set(value){
         MediaPlayerListStatus.list.value
             .first { it.first == this }
-            .second.isMirrored.value = value
+            .second.isMirrored = value
     }
 
 /**
@@ -96,24 +120,37 @@ var EmbeddedMediaPlayer.isMirrored: Boolean
 var EmbeddedMediaPlayer.offset: Offset
     get() = MediaPlayerListStatus.list.value
         .first {it.first == this}
-        .second.offset.value
+        .second.offset
     set(value){
         MediaPlayerListStatus.list.value
             .first{ it.first == this}
-            .second.offset.value = value
+            .second.offset = value
     }
 
 /**
- * 视频的镜像状态。
+ * 视频的镜像状态，限制在0.5f~3f。
  */
 var EmbeddedMediaPlayer.scale: Float
     get() = MediaPlayerListStatus.list.value
         .first { it.first == this }
-        .second.scale.value
+        .second.scale
     set(value){
         MediaPlayerListStatus.list.value
             .first { it.first == this }
-            .second.scale.value = value
+            .second.scale = value.coerceIn(0.5f, 3f)
+    }
+
+/**
+ * 视频透明度，限制在0f~1f，1f表示不透明。
+ */
+var EmbeddedMediaPlayer.alpha: Float
+    get() = MediaPlayerListStatus.list.value
+        .first { it.first == this }
+        .second.alpha
+    set(value){
+        MediaPlayerListStatus.list.value
+            .first { it.first == this }
+            .second.alpha = value.coerceIn(0f, 1f)
     }
 
 /**
