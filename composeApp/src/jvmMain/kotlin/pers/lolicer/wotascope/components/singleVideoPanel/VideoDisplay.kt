@@ -3,20 +3,16 @@ package pers.lolicer.wotascope.components.singleVideoPanel
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.focusable
 import androidx.compose.foundation.gestures.onDrag
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.onClick
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clipToBounds
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asComposeImageBitmap
@@ -52,8 +48,6 @@ fun VideoDisplay(
 ) {
     var videoFrame by remember { mutableStateOf<ImageBitmap?>(null) }
 
-    val focusRequester = remember { FocusRequester() }
-
     LaunchedEffect(Unit) {
         attachVideoSurface(mediaPlayer) { bitmap ->
             videoFrame = bitmap
@@ -79,8 +73,6 @@ fun VideoDisplay(
             Image(
                 modifier = Modifier
                     .fillMaxSize()
-                    .focusable()
-                    .focusRequester(focusRequester)
                     .alpha(mediaPlayer.alpha)
                     .graphicsLayer(
                         scaleX = if(mediaPlayer.isMirrored) (mediaPlayer.scale * -1) else mediaPlayer.scale,
@@ -96,10 +88,6 @@ fun VideoDisplay(
                         if(!OverlapStatus.isOverlapped()){
                             mediaPlayer.offset += it
                         }
-                    }
-                    .onClick{
-                        focusRequester.requestFocus()
-                        println("focus")
                     }
                     .onPointerEvent(PointerEventType.Scroll){
                         if(isHovered && !OverlapStatus.isOverlapped()){
