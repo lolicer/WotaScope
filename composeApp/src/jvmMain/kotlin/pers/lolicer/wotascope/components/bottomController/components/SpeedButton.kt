@@ -1,14 +1,20 @@
 package pers.lolicer.wotascope.components.bottomController.components
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.onClick
-import androidx.compose.material3.DropdownMenu
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
@@ -20,15 +26,21 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.PointerEventType
 import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.onPointerEvent
 import androidx.compose.ui.input.pointer.pointerHoverIcon
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.DpOffset
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.toSize
+import androidx.compose.ui.window.Popup
 import pers.lolicer.wotascope.components.bottomController.model.SpeedOptions
 import pers.lolicer.wotascope.status.MediaPlayerListStatus
 
@@ -39,20 +51,26 @@ fun SpeedButton(
 ){
     var active by remember { mutableStateOf(false) }
     var expanded by remember { mutableStateOf(false) }
+    var anchorBounds by remember { mutableStateOf<Rect?>(null) } // 在按钮位置设置锚点
 
     val speedString = remember { mutableStateOf("1×") }
 
     Box(
         modifier = Modifier
             .size(size)
-            .background(color = if(!active) Color.Transparent else Color(56, 58, 61))
-            .pointerHoverIcon(PointerIcon.Hand)
-            .onPointerEvent(PointerEventType.Enter) { active = true }
-            .onPointerEvent(PointerEventType.Exit) { active = false },
+            .background(color = if(!active) Color.Transparent else Color(56, 58, 61)),
         contentAlignment = Alignment.Center
     ){
         Text(
             modifier = Modifier
+                .pointerHoverIcon(PointerIcon.Hand)
+                .onPointerEvent(PointerEventType.Enter) { active = true }
+                .onPointerEvent(PointerEventType.Exit) { active = false }
+                .onGloballyPositioned { coordinates ->
+                    val position = coordinates.localToWindow(Offset.Zero)
+                    val size = coordinates.size.toSize()
+                    anchorBounds = Rect(position, size)
+                }
                 .onClick{
                     expanded = !expanded
                 },
@@ -60,36 +78,56 @@ fun SpeedButton(
             color = Color.White,
             fontWeight = FontWeight.SemiBold
         )
-        DropdownMenu(
-            modifier = Modifier,
-            containerColor = Color(43, 45, 48),
-            offset = DpOffset(x = -(size / 2), y = 0.dp),
-            expanded = expanded,
-            onDismissRequest = {expanded = false}
-        ){
-            SpeedOptions.forEach { option ->
-                DropdownMenuItem(
-                    modifier = Modifier
-                        .pointerHoverIcon(PointerIcon.Hand)
-                        .width(size * 3/2)
-                        .height(size * 2/3),
-                    text = {
-                        Text(
-                            text = option.displayText,
-                            color = option.color
-                        )
-                    },
-                    onClick = {
-                        setSpeed(value = option.value)
-                        speedString.value = option.displayText
-                        expanded = !expanded
+
+        if(anchorBounds != null){
+            Popup(
+                onDismissRequest = {
+                    if(!active) expanded = false
+                },
+                offset = IntOffset(0, -(size.value.toInt() * 4)) // y值为-(手动计算好的展开菜单的高度)
+            ) {
+                AnimatedVisibility(
+                    visible = expanded && anchorBounds != null,
+                    enter = slideInHorizontally(initialOffsetX = {it}),
+                    exit = slideOutHorizontally(targetOffsetX = {it + 10})
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(8.dp))
+                            .background(color = Color(43, 45, 48))
+                            .width(size * 3/2)
+                            .border(
+                                width = 1.dp,
+                                color = Color(67, 68, 69),
+                                shape = RoundedCornerShape(8.dp)
+                            )
+                    ) {
+                        SpeedOptions.forEach { option ->
+                            DropdownMenuItem(
+                                modifier = Modifier
+                                    .pointerHoverIcon(PointerIcon.Hand)
+                                    .height(size * 2/3)
+                                    .fillMaxWidth(),
+                                text = {
+                                    Text(
+                                        text = option.displayText,
+                                        color = option.color
+                                    )
+                                },
+                                onClick = {
+                                    setSpeed(value = option.value)
+                                    speedString.value = option.displayText
+                                    expanded = !expanded
+                                }
+                            )
+                            if(option.value != 0.25f){
+                                HorizontalDivider(
+                                    modifier = Modifier.padding(horizontal = 8.dp),
+                                    color = Color.DarkGray
+                                )
+                            }
+                        }
                     }
-                )
-                if(option.value != 0.25f) {
-                    HorizontalDivider(
-                        modifier = Modifier.padding(horizontal = 8.dp),
-                        color = Color.DarkGray
-                    )
                 }
             }
         }
