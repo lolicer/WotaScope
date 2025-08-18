@@ -51,7 +51,7 @@ fun SkipBackButton(
                         }
                     }
 
-                    PositionStatus.setProgressBarUpdateEnabled(!PositionStatus.shouldUpdateProgressBar)
+                    PositionStatus.setProgressBarUpdateEnabled(true)
                 },
             painter = painterResource(Res.drawable.media_skip_back_5),
             contentDescription = "快退五秒",

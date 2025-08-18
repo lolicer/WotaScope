@@ -25,6 +25,7 @@ import pers.lolicer.wotascope.status.isFinished
 import pers.lolicer.wotascope.status.isSelected
 import wotascope.composeapp.generated.resources.Res
 import wotascope.composeapp.generated.resources.media_fastforward
+import kotlin.math.ceil
 
 
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalFoundationApi::class)
@@ -47,12 +48,20 @@ fun FastForwardButton(
                 .onClick{
                     MediaPlayerListStatus.list.value.forEach { elem ->
                         if(elem.first.isSelected && !elem.first.isFinished){
-                            elem.first.controls().skipTime(1000/30)
+                            val time = elem.first.status().time()
+                            val length = elem.first.status().length()
+                            val remainingTime = length - time
+                            if(remainingTime > ceil(1000f/30f)){
+                                elem.first.controls().skipTime(1000/30)
+                            }
+                            else{
+                                println("“下一帧”失败，已接近结束。")
+                            }
                             elem.first.controls().setPause(true)
                         }
                     }
 
-                    PositionStatus.setProgressBarUpdateEnabled(!PositionStatus.shouldUpdateProgressBar)
+                    PositionStatus.setProgressBarUpdateEnabled(true)
                 },
             painter = painterResource(Res.drawable.media_fastforward),
             contentDescription = "前进一帧",

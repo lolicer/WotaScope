@@ -47,11 +47,23 @@ fun SkipForwardButton(
                 .onClick{
                     MediaPlayerListStatus.list.value.forEach { elem ->
                         if(elem.first.isSelected && !elem.first.isFinished){
-                            elem.first.controls().skipTime(1000 * 10)
+                            val time = elem.first.status().time()
+                            val length = elem.first.status().length()
+                            val remainingTime = length - time
+
+                            if(remainingTime > 1000 * 10){
+                                elem.first.controls().skipTime(1000 * 10)
+                            }
+                            else if(remainingTime > 1000){
+                                elem.first.controls().setTime(length - 1000)
+                            }
+                            else{
+                                println("“快进十秒”失败，已接近结束。")
+                            }
                         }
                     }
 
-                    PositionStatus.setProgressBarUpdateEnabled(!PositionStatus.shouldUpdateProgressBar)
+                    PositionStatus.setProgressBarUpdateEnabled(true)
                 },
             painter = painterResource(Res.drawable.media_skip_forward_10),
             contentDescription = "快进十秒",

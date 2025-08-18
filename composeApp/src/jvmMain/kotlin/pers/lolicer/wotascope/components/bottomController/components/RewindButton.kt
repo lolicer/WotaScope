@@ -52,7 +52,7 @@ fun RewindButton(
                         }
                     }
 
-                    PositionStatus.setProgressBarUpdateEnabled(!PositionStatus.shouldUpdateProgressBar)
+                    PositionStatus.setProgressBarUpdateEnabled(true)
                 },
             painter = painterResource(Res.drawable.media_rewind),
             contentDescription = "后退一帧",

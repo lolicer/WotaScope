@@ -2,6 +2,7 @@ package pers.lolicer.wotascope.components.singleVideoPanel
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import pers.lolicer.wotascope.components.BiliSlider
@@ -16,7 +17,15 @@ fun ProgressBar(
     mediaPlayer: EmbeddedMediaPlayer
 ){
     val shouldUpdateProgressBar = PositionStatus.shouldUpdateProgressBar
-    val progressValue = remember(shouldUpdateProgressBar){ mutableStateOf(mediaPlayer.status().position()) }
+    val progressValue = remember{ mutableStateOf(mediaPlayer.status().position()) }
+
+    LaunchedEffect(shouldUpdateProgressBar){
+        if(shouldUpdateProgressBar){
+            progressValue.value = mediaPlayer.status().position()
+            PositionStatus.setProgressBarUpdateEnabled(false)
+        }
+    }
+
     val isDragging = remember { mutableStateOf(false) }
 
     BiliSlider(
