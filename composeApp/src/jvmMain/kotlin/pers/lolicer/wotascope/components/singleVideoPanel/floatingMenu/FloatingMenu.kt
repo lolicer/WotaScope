@@ -40,7 +40,7 @@ fun FloatingMenu(
 
     AnimatedVisibility(
         modifier = modifier
-            .offset(x = screenSize.width.dp - ((screenSize.width / 40).coerceAtLeast(24) * 4).dp, y = 10.dp),
+            .offset(x = screenSize.width.dp - ((screenSize.width / 40).coerceIn(24, 30) * 4).dp, y = 10.dp),
         visible = (isHovered || expandedMenu.value) && !OverlapStatus.isOverlapped(),
         enter = fadeIn(),
         exit = fadeOut()
@@ -49,10 +49,10 @@ fun FloatingMenu(
             modifier = Modifier
                 .clip(RoundedCornerShape(16))
                 .background(color = Color.LightGray)
-                .height((screenSize.width / 40 + 6).coerceAtLeast(24).dp),
+                .height((screenSize.width / 40 + 6).coerceIn(24, 30).dp),
             verticalAlignment = Alignment.CenterVertically
         ){
-            val height = (screenSize.width / 40).coerceAtLeast(24).dp
+            val height = (screenSize.width / 40).coerceIn(24, 30).dp
             Spacer(modifier = Modifier.width(3.dp).fillMaxHeight())
 
             Menu(mediaPlayer, expandedMenu, height)
