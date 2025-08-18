@@ -5,6 +5,7 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import pers.lolicer.wotascope.components.BiliSlider
+import pers.lolicer.wotascope.status.PositionStatus
 import pers.lolicer.wotascope.status.isSelected
 import uk.co.caprica.vlcj.player.base.MediaPlayer
 import uk.co.caprica.vlcj.player.base.MediaPlayerEventAdapter
@@ -14,7 +15,8 @@ import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer
 fun ProgressBar(
     mediaPlayer: EmbeddedMediaPlayer
 ){
-    val progressValue = remember{ mutableStateOf(mediaPlayer.status().position()) }
+    val shouldUpdateProgressBar = PositionStatus.shouldUpdateProgressBar
+    val progressValue = remember(shouldUpdateProgressBar){ mutableStateOf(mediaPlayer.status().position()) }
     val isDragging = remember { mutableStateOf(false) }
 
     BiliSlider(

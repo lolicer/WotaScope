@@ -20,6 +20,7 @@ import androidx.compose.ui.input.pointer.onPointerEvent
 import androidx.compose.ui.input.pointer.pointerHoverIcon
 import org.jetbrains.compose.resources.painterResource
 import pers.lolicer.wotascope.status.MediaPlayerListStatus
+import pers.lolicer.wotascope.status.PositionStatus
 import pers.lolicer.wotascope.status.isFinished
 import pers.lolicer.wotascope.status.isSelected
 import wotascope.composeapp.generated.resources.Res
@@ -50,6 +51,8 @@ fun FastForwardButton(
                             elem.first.controls().setPause(true)
                         }
                     }
+
+                    PositionStatus.setProgressBarUpdateEnabled(!PositionStatus.shouldUpdateProgressBar)
                 },
             painter = painterResource(Res.drawable.media_fastforward),
             contentDescription = "前进一帧",

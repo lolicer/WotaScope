@@ -20,6 +20,7 @@ import androidx.compose.ui.input.pointer.onPointerEvent
 import androidx.compose.ui.input.pointer.pointerHoverIcon
 import org.jetbrains.compose.resources.painterResource
 import pers.lolicer.wotascope.status.MediaPlayerListStatus
+import pers.lolicer.wotascope.status.PositionStatus
 import pers.lolicer.wotascope.status.isFinished
 import pers.lolicer.wotascope.status.isSelected
 import wotascope.composeapp.generated.resources.Res
@@ -49,6 +50,8 @@ fun SkipBackButton(
                             elem.first.controls().skipTime(-1000 * 5)
                         }
                     }
+
+                    PositionStatus.setProgressBarUpdateEnabled(!PositionStatus.shouldUpdateProgressBar)
                 },
             painter = painterResource(Res.drawable.media_skip_back_5),
             contentDescription = "快退五秒",
