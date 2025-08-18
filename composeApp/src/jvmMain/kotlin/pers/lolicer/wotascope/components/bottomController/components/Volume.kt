@@ -1,27 +1,17 @@
 package pers.lolicer.wotascope.components.bottomController.components
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.onClick
 import androidx.compose.material.Icon
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Slider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.input.pointer.PointerIcon
-import androidx.compose.ui.input.pointer.pointerHoverIcon
-import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.painterResource
+import pers.lolicer.wotascope.components.BiliSlider
 import pers.lolicer.wotascope.status.MediaPlayerListStatus
 import pers.lolicer.wotascope.status.isAllMute
 import pers.lolicer.wotascope.status.volume
@@ -31,7 +21,7 @@ import wotascope.composeapp.generated.resources.volume_1
 import wotascope.composeapp.generated.resources.volume_2
 
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun Volume(
     modifier: Modifier
@@ -72,10 +62,7 @@ fun Volume(
             tint = Color.White
         )
 
-        Slider(
-            modifier = Modifier
-                .height(4.dp)
-                .pointerHoverIcon(PointerIcon.Hand),
+        BiliSlider(
             value = progress.value,
             onValueChange = {
                 progress.value = it
@@ -86,17 +73,7 @@ fun Volume(
                     mediaPlayer.audio().setVolume((oldVolume * it).toInt())
                 }
             },
-            thumb = {Box{}},
-            track = {
-                Row(
-                    modifier = Modifier
-                        .clip(shape = RectangleShape)
-                        .height(4.dp)
-                ){
-                    Box(modifier = Modifier.fillMaxWidth(progress.value).height(4.dp).background(color = Color(	0, 191, 255)))
-                    Box(modifier = Modifier.fillMaxWidth().height(4.dp).background(color = Color(212, 212, 212)))
-                }
-            }
+            onValueChangeFinished = {},
         )
     }
 }
