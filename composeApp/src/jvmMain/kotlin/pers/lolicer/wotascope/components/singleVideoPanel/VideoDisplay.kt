@@ -64,9 +64,32 @@ fun VideoDisplay(
     ) {
         if (videoFrame == null) {
             Image(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .alpha(mediaPlayer.alpha)
+                    .graphicsLayer(
+                        scaleX = if(mediaPlayer.isMirrored) (mediaPlayer.scale * -1) else mediaPlayer.scale,
+                        scaleY = mediaPlayer.scale
+                    )
+                    .offset{
+                        val x = mediaPlayer.offset.x.toInt()
+                        val y = mediaPlayer.offset.y.toInt()
+
+                        IntOffset(x, y)
+                    }
+                    .onDrag{
+                        if(!OverlapStatus.isOverlapped()){
+                            mediaPlayer.offset += it
+                        }
+                    }
+                    .onPointerEvent(PointerEventType.Scroll){
+                        if(isHovered && !OverlapStatus.isOverlapped()){
+                            val zoomDelta = it.changes.first().scrollDelta.y
+                            mediaPlayer.scale = (mediaPlayer.scale * (1f - zoomDelta * 0.1f))
+                        }
+                    },
                 painter = painterResource(Res.drawable.wotascope_icon),
-                contentDescription = "Video",
-                modifier = Modifier.fillMaxSize()
+                contentDescription = "Video"
             )
         }
         else {

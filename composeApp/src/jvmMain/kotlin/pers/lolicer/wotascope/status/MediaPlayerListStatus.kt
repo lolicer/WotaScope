@@ -128,7 +128,7 @@ var EmbeddedMediaPlayer.offset: Offset
     }
 
 /**
- * 视频的镜像状态，限制在0.5f~3f。
+ * 视频的缩放状态，限制在0.5f~3f。
  */
 var EmbeddedMediaPlayer.scale: Float
     get() = MediaPlayerListStatus.list.value
