@@ -15,7 +15,6 @@ import pers.lolicer.wotascope.settings.SettingsManager.settings
 import pers.lolicer.wotascope.status.GlobalTrayState
 import wotascope.composeapp.generated.resources.Res
 import wotascope.composeapp.generated.resources.compose_multiplatform
-import wotascope.composeapp.generated.resources.wotascope_icon
 
 fun main() = application {
     val windowState = rememberWindowState()
@@ -33,7 +32,7 @@ fun main() = application {
         state = windowState,
         onCloseRequest = ::exitApplication,
         title = "WotaScope",
-        icon = painterResource(Res.drawable.wotascope_icon),
+        icon = painterResource(Res.drawable.compose_multiplatform),
         undecorated = true,
         transparent = true
     ) {
