@@ -13,6 +13,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asComposeImageBitmap
@@ -68,18 +69,18 @@ fun VideoDisplay(
                     .fillMaxSize()
                     .alpha(mediaPlayer.alpha)
                     .graphicsLayer(
-                        scaleX = if(mediaPlayer.isMirrored) (mediaPlayer.scale * -1) else mediaPlayer.scale,
+                        scaleX = if(!mediaPlayer.isMirrored) mediaPlayer.scale else -mediaPlayer.scale,
                         scaleY = mediaPlayer.scale
                     )
                     .offset{
-                        val x = mediaPlayer.offset.x.toInt()
+                        val x = if(!mediaPlayer.isMirrored) mediaPlayer.offset.x.toInt() else -mediaPlayer.offset.x.toInt()
                         val y = mediaPlayer.offset.y.toInt()
 
                         IntOffset(x, y)
                     }
                     .onDrag{
                         if(!OverlapStatus.isOverlapped()){
-                            mediaPlayer.offset += it
+                            mediaPlayer.offset += Offset(if(!mediaPlayer.isMirrored) it.x else -it.x, it.y)
                         }
                     }
                     .onPointerEvent(PointerEventType.Scroll){
@@ -98,18 +99,18 @@ fun VideoDisplay(
                     .fillMaxSize()
                     .alpha(mediaPlayer.alpha)
                     .graphicsLayer(
-                        scaleX = if(mediaPlayer.isMirrored) (mediaPlayer.scale * -1) else mediaPlayer.scale,
+                        scaleX = if(!mediaPlayer.isMirrored) mediaPlayer.scale else -mediaPlayer.scale,
                         scaleY = mediaPlayer.scale
                     )
                     .offset{
-                        val x = mediaPlayer.offset.x.toInt()
+                        val x = if(!mediaPlayer.isMirrored) mediaPlayer.offset.x.toInt() else -mediaPlayer.offset.x.toInt()
                         val y = mediaPlayer.offset.y.toInt()
 
                         IntOffset(x, y)
                     }
                     .onDrag{
                         if(!OverlapStatus.isOverlapped()){
-                            mediaPlayer.offset += it
+                            mediaPlayer.offset += Offset(if(!mediaPlayer.isMirrored) it.x else -it.x, it.y)
                         }
                     }
                     .onPointerEvent(PointerEventType.Scroll){
