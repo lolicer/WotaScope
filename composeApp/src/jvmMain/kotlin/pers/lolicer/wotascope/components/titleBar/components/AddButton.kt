@@ -25,6 +25,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Notification
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import pers.lolicer.wotascope.status.MediaPlayerListStatus
@@ -34,6 +35,9 @@ import pers.lolicer.wotascope.utils.ExtensionUtils
 import pers.lolicer.wotascope.settings.SettingsKeys
 import pers.lolicer.wotascope.settings.SettingsManager
 import uk.co.caprica.vlcj.factory.MediaPlayerFactory
+import java.io.File
+import androidx.compose.ui.window.rememberNotification
+import pers.lolicer.wotascope.status.GlobalTrayState
 
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalFoundationApi::class)
 @Composable
@@ -46,6 +50,12 @@ fun AddButton(
 
     var active by remember {mutableStateOf(false)}
     var isPressed by remember {mutableStateOf(false)}
+
+    val warning = rememberNotification(
+        title = "Warning：解码失败",
+        message = "解码为全关键帧视频失败，将尝试播放原视频。",
+        type = Notification.Type.Warning
+    )
 
     Text(
         "添加",
@@ -93,6 +103,10 @@ fun AddButton(
                                         )!!,
                                         autoPrint = true
                                     ).second
+                                    if(!File(path).exists()){
+                                        path = it
+                                        GlobalTrayState.trayState?.sendNotification(warning)
+                                    }
                                 }
                             }
                             val factory = MediaPlayerFactory()
