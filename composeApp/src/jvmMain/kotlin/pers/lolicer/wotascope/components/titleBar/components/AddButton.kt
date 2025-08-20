@@ -36,7 +36,6 @@ import pers.lolicer.wotascope.settings.SettingsKeys
 import pers.lolicer.wotascope.settings.SettingsManager
 import uk.co.caprica.vlcj.factory.MediaPlayerFactory
 import java.io.File
-import androidx.compose.ui.window.rememberNotification
 import pers.lolicer.wotascope.status.GlobalTrayState
 
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalFoundationApi::class)
@@ -50,12 +49,6 @@ fun AddButton(
 
     var active by remember {mutableStateOf(false)}
     var isPressed by remember {mutableStateOf(false)}
-
-    val warning = rememberNotification(
-        title = "Warning：解码失败",
-        message = "解码为全关键帧视频失败，将尝试播放原视频。",
-        type = Notification.Type.Warning
-    )
 
     Text(
         "添加",
@@ -96,15 +89,22 @@ fun AddButton(
                                 onEncodeStart()
 
                                 if(!ExecUtils().hasAllKeyFrames(path, false)) {
-                                    path = ExecUtils().convertVideo(
+                                    val msg = ExecUtils().convertVideo(
                                         path = path,
                                         targetDir = SettingsManager.settings.getStringOrNull(
                                             SettingsKeys.ENCODED_VIDEO_DIR
                                         )!!,
                                         autoPrint = true
-                                    ).second
-                                    if(!File(path).exists()){
-                                        path = it
+                                    )
+                                    if(File(msg.second).exists()){
+                                        path = msg.second
+                                    }
+                                    else{
+                                        val warning = Notification(
+                                            title = "Warning：解码失败",
+                                            message = "解码为全关键帧视频失败，将尝试播放原视频。\n${msg.first.second}",
+                                            type = Notification.Type.Warning
+                                        )
                                         GlobalTrayState.trayState?.sendNotification(warning)
                                     }
                                 }
