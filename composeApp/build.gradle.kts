@@ -62,7 +62,7 @@ compose.desktop {
         nativeDistributions {
             targetFormats(TargetFormat.Msi)
             packageName = "WotaScope"
-            packageVersion = "1.0.9"
+            packageVersion = "1.0.17"
 
             modules("java.instrument", "java.prefs", "jdk.unsupported")
             jvmArgs += mutableListOf(
@@ -74,6 +74,7 @@ compose.desktop {
             windows{
                 shortcut = true
                 dirChooser = true
+                iconFile.set(project.file("resources\\windows\\compose-multiplatform.ico"))
             }
         }
     }
