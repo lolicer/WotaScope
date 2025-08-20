@@ -136,6 +136,7 @@ fun PauseButton(
                                     val isSelected = mediaPlayer.isSelected
                                     if(isSelected) {
                                         mediaPlayer.controls().play()
+                                        mediaPlayer.controls().play()
                                         mediaPlayer.controls().setRate(MediaPlayerListStatus.speed)
                                         mediaPlayer.audio().setVolume((mediaPlayer.volume * MediaPlayerListStatus.globalVolumeProp).toInt())
                                         mediaPlayer.isFinished = false

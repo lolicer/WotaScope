@@ -168,6 +168,6 @@ private fun attachVideoSurface(
     )
 
     mediaPlayer.videoSurface().set(videoSurface)
-    // mediaPlayer.controls().play()
     println("set videoSurface")
+    mediaPlayer.media().startPaused(mediaPlayer.media().info().mrl())
 }
