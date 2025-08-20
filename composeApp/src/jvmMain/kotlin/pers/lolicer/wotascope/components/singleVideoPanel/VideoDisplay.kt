@@ -37,7 +37,7 @@ import uk.co.caprica.vlcj.player.embedded.videosurface.callback.BufferFormat
 import uk.co.caprica.vlcj.player.embedded.videosurface.callback.BufferFormatCallback
 import uk.co.caprica.vlcj.player.embedded.videosurface.callback.format.RV32BufferFormat
 import wotascope.composeapp.generated.resources.Res
-import wotascope.composeapp.generated.resources.wotascope_icon
+import wotascope.composeapp.generated.resources.video_play_failed
 import java.nio.ByteBuffer
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalComposeUiApi::class)
@@ -89,7 +89,7 @@ fun VideoDisplay(
                             mediaPlayer.scale = (mediaPlayer.scale * (1f - zoomDelta * 0.1f))
                         }
                     },
-                painter = painterResource(Res.drawable.wotascope_icon),
+                painter = painterResource(Res.drawable.video_play_failed),
                 contentDescription = "Video"
             )
         }
