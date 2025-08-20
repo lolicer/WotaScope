@@ -4,12 +4,6 @@
 
 
 
->   最近了解到 英伟达的图像比较与分析工具`ICAT`，功能非常完善，建议大家优先下载。
->
->   https://www.nvidia.cn/geforce/technologies/icat/
->
->   本应用也会继续更新，尽力优化体验。
-
 
 
 # WotaScope
@@ -24,19 +18,19 @@
 
 ## 一、使用方式
 
--   **支持的视频格式**
+### **支持的视频格式**
 
-    `.mp4` `.avi` `.mkv` `.flv` `.mov` `.wmv`
+`.mp4` `.avi` `.mkv` `.flv` `.mov` `.wmv`
 
-    建议格式为`.mp4`和`.mov`，其他格式可能无法编码为全关键帧逐帧播放。
+建议格式为`.mp4`和`.mov`，其他格式可能无法编码为全关键帧逐帧播放。
 
--   **如何下载**
+### **如何下载**
 
 ​	请在[此处（github）](https://github.com/lolicer/WotaScope/releases)或[此处（gitee）](https://gitee.com/lolicer/WotaScope/releases)获取最新版本。
 
--   **如何使用**
+### **如何使用**
 
-​	像普通的软件一样，安装、打开，然后使用。:)
+​	像普通的软件一样，安装、打开，然后使用。awa
 
 >   ​	初次打开应用以及初次导入视频时会有短暂卡顿。
 
@@ -46,15 +40,23 @@
 
 >   ​	如果关闭应用时没有将视频从应用中移除，则视频会在下一次关闭应用时删除。
 
-![image-20250804225817638](images/image-20250804225817638.png)
+![img_settings](images/img_settings.png)
 
-​	最多支持同时播放九个本地视频，可通过点击视频画面选中/取消。
+​	最多支持同时播放九个本地视频，可通过悬浮菜单选中/取消。
 
 >   ​	有蓝框为选中状态，无蓝框为非选中状态。
 >
 >   ​	默认为选中状态。
 
-![image-20250804231928478](images/image-20250804231928478.png)
+![img_main](images/img_main.png)
+
+​	鼠标悬停于视频上时可使用鼠标拖动/滚轮缩放视频，通过悬浮菜单复位或镜像视频。
+
+![img_main_opt](images/img_main_opt.gif)
+
+​	当视频数量为 `2` 时可使用重叠功能，使两视频重叠，并调节位置、缩放、透明度。
+
+![img_overlap](images/img_overlap.gif)
 
 -   **如何卸载**
 
@@ -64,27 +66,17 @@
 
     -   方法二：直接删除整个安装文件夹。
 
->    	本应用不会在系统盘留下任何垃圾文件/文件夹，但似乎会将设置保留在注册表`HKEY_LOCAL_MACHINE\SOFTWARE\JavaSoft\Prefs`中，具体在哪我也没找到qwq。
+>    	本应用不会在系统盘留下任何垃圾文件/文件夹，但似乎会将设置保留在注册表`HKEY_LOCAL_MACHINE\SOFTWARE\JavaSoft\Prefs`中，具体在哪我也没找到。qaq
 
 
 
-##  二、当前BUG/后续优化
+## 二、当前BUG/后续优化
 
--   BUG - 编码状态显示不完全正确；
-
--   BUG - 将软件宽度/高度缩放到 0 将导致下次无法打开；（乐）
-
-- 添加快捷键；
-
-- 使用JNI（或其它什么方法）调用Windows原生的文件/文件夹选择器，取代当前的JVM选择器；
-
-- 针对不同视频BPM不同的问题进一步优化；
-
-- 添加流媒体支持；
-
-- 实现更自由的布局，如裁切/重合、镜像视频；
-
-- 优化主题色，添加亮色模式。
+-   添加快捷键；
+-   使用JNI（或其它什么方法）调用Windows原生的文件/文件夹选择器，取代当前的JVM选择器；
+-   针对不同视频BPM不同的问题进一步优化；
+-   添加流媒体支持；
+-   优化主题色，添加亮色模式。
 
 
 
@@ -134,11 +126,19 @@
 
     `menu_reset.svg`: `tabler:refresh`
 
+    `menu_circle.svg`: `tabler:circle-filled`
+
+    `menu_circle_outline.svg`: `tabler:circle`
+
+    `menu_square.svg`: `tabler:square`
+
 - https://github.com/Tencent/tdesign-icons
 
     `media_close.svg`: `tdesign:close-circle-filled`
 
 -   ~~某只粉发粉瞳的魅魔~~
+
+-   应用图标更改自`compose-multiplatform`默认图标
 
 
 
@@ -151,6 +151,7 @@
 | constraintlayout-compose-multiplatform | https://github.com/Lavmee/constraintlayout-compose-multiplatform |
 | multiplatform-settings                 | https://github.com/russhwolf/multiplatform-settings          |
 | rjuszczyk                              | https://github.com/rjuszczyk/ComposeVideoPlayer              |
+| icat（觉得本软件不好用可以试试这个）   | https://www.nvidia.cn/geforce/technologies/icat/             |
 
 
 
