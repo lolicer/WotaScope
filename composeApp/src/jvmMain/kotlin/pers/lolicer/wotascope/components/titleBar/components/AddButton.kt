@@ -109,7 +109,7 @@ fun AddButton(
                                     }
                                 }
                             }
-                            val factory = MediaPlayerFactory()
+                            val factory = MediaPlayerFactory("--aout=directsound")
                             val mediaPlayer = factory.mediaPlayers().newEmbeddedMediaPlayer()
                             mediaPlayer.media().prepare(path)
 
